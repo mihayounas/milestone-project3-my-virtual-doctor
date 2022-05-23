@@ -1,6 +1,7 @@
 import gspread
 from google.oauth2.service_account import Credentials
 
+
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
@@ -21,9 +22,31 @@ def get_details_data():
     print('Welcome to My Virtual Doctor !')
     print('\n An app which helps you book your doctor appointments fast!\n')
     print('To use this app, hit enter after each choice.\n')
+    print('After confirming all your details you will receive\n')
+    print('a confirmation email!\n')
     
-    data_str = input("Please Enter Your Full Name here(space between):")
-    print(f"Hello {data_str}")
+    name_str = input("Please Enter Your Full Name here(space between):")
+    name_data = name_str.split(" ")
+    validate_data(name_data)
+
+    # birth_str = input("Please enter your date of birth 00/00/0000:\n")
+    # print(f"Born On {birth_str}\n")
+    # birth_data = birth_str.split("/")
+    # validate_data(birth_data)
+
+
+def validate_data(values):
+    """
+    Inside this function we will check if there will be minimum 2 strings
+    to confirm the full name and if the date is in this format 00/00/0000.
+    """
+    try:
+        if len(values) != 2:
+            raise ValueError(
+                f"Minimum 2 names required you have entered {len(values)}"
+            )
+    except ValueError as e:
+        print(f'Invalid data: {e}, please try again.\n')    
 
 
 get_details_data()
