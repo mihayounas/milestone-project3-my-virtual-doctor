@@ -1,6 +1,7 @@
 import gspread
 from google.oauth2.service_account import Credentials
 import datetime
+from datetime import date, timedelta
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -16,7 +17,9 @@ SHEET = GSPREAD_CLIENT.open("my_virtual_doctor")
 
 def get_details_data():
     """
-    Get input details from the customer .
+    Get input details from the customer.
+    Get Full Name and date of birth.
+    Displaying the age of the customer.
     """
 
     print('Welcome to My Virtual Doctor !')
@@ -39,9 +42,11 @@ def get_details_data():
     except ValueError:
         isValidDate = True
     if (isValidDate):
-        print("The date of birth is valid ...")
+        print("Date of birth is valid ...")
     else:
-        print("The date of birth is not valid..")
+        print("Date of birth is not valid...")
+    age = (date.today() - inputDate.year) / timedelta(days=365.2425)
+    print(f"You are {age} old")
+   
 
-        
 get_details_data()
