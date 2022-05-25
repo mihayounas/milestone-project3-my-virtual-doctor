@@ -1,7 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
 import datetime
-from datetime import date, timedelta
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -45,8 +44,11 @@ def get_details_data():
         print("Date of birth is valid ...")
     else:
         print("Date of birth is not valid...")
-    age = (date.today() - inputDate.year) / timedelta(days=365.2425)
-    print(f"You are {age} old")
+    birth_date = datetime.datetime(int(year), int(month), int(day))
+    age = (datetime.datetime.now() - birth_date)
+    convertdays = int(age.days)
+    age_years = convertdays/365
+    print(f"You are {int(age_years)} years old")
    
 
 get_details_data()
