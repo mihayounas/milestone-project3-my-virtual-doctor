@@ -1,6 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
-
+import datetime
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -24,17 +24,24 @@ def get_details_data():
     print('To use this app, press enter after each choice.\n')
     print('After confirming all your details you will receive\n')
     print('a confirmation email!\n')
-    name = input('Please enter your full name :')
+    name = input('Please enter your full name :\n')
     try:
         name.split()[1]
         print(f"Hello, {name}!")
     except IndexError:
         print("Sorry you will need to enter minimum two names...")
 
-    # birth_str = input("Please enter your date of birth 00/00/0000:\n")
-    # print(f"Born On {birth_str}\n")
-    # birth_data = birth_str.split("/")
-    # validate_data(birth_data)
+    inputDate = input("Enter the date of birth : ")
+    day, month, year = inputDate.split('/')
+    isValidDate = True
+    try:
+        datetime.datetime(int(day), int(month), int(year))
+    except ValueError:
+        isValidDate = True
+    if (isValidDate):
+        print("The date of birth is valid ...")
+    else:
+        print("The date of birth is not valid..")
 
-    
+        
 get_details_data()
