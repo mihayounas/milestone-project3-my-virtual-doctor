@@ -15,6 +15,11 @@ SHEET = GSPREAD_CLIENT.open("my_virtual_doctor")
 
 
 def welcome_message():
+    """
+    Welcoming the patients or the admin.
+    Giving the choice of booking an appointment 
+    or logging in as admin.
+    """
     print('Welcome to My Virtual Doctor !')
     print('\n An app which helps you book your doctor appointments fast!\n')
     print('To use this app, press enter after each choice.\n')
@@ -26,16 +31,11 @@ def welcome_message():
             'Please press "r" to register an appointment or "a"'
             'for admin area:\n\n'
         )
-        admin_or_patient = admin_or_patient.lower()
-
         if admin_or_patient == 'r':
+            confirm_terms()
             get_details_data()
             return False
-
-        print('\nInvalid entry, please try again\n')
-
-
-welcome_message()
+        print('Invalid entry, please try again\n')
 
 
 def get_details_data():
@@ -67,7 +67,27 @@ def get_details_data():
     convertdays = int(age.days)
     age_years = convertdays/365
     print(f"You are {int(age_years)} years old")
-   
 
 
+def confirm_terms():
+    """
+    Function which will let patient decide either to continue 
+    with appointment or go back,for example if admin was to log in
+    but by mistake pressed "r" or the user doesn't agree to the terms of
+    saving of data.
+    """
+    print('Please note we are saving your details in our database.')
+    print('If you agree to the terms plese confirm by pressing')
+    book_or_exit = input('"y" or "n" to cancel and go back to the main menu..')
 
+    if book_or_exit == 'y':
+        # Start getting details for booking
+        print("Thank you please follow the steps to get your appointment : ")
+        get_details_data()
+    else:
+        welcome_message()
+
+
+welcome_message()
+confirm_terms()
+get_details_data()
