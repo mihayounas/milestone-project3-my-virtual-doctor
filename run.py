@@ -43,19 +43,25 @@ def get_details_data():
     Get Full Name and date of birth.
     Displaying the age of the customer.
     """
-    fname = input('Please enter your first name :\n')
-    lname = input('Please enter your last name :\n')
-    if fname == lname:
-        print("Sorry please check your details...")
+    name = input('Please enter your full name with spaces between :\n')
+    fname, lname = name.split(" ")
+    for character in name:
+        if character.isdigit():
+            print(name)
     else:
-        return f"Hello, {fname} {lname} !" 
-    
-    return fname and lname
-    worksheet_update = SHEET.worksheet('details')
-    worksheet_update.append_row(fname, lname)
+        print("Sorry your name contains a number,please try again...")
+    return name
+    if fname != lname:
+        print(f"Welcome {name}!")
+    else:
+        print("Sorry you must enter minimum 2 names,please try again...")
 
 
 def validate_date():
+    """
+    Validating data format for a easy reading and 
+    calculating patients age by date of birth
+    """
     inputDate = input("Enter the date of birth : ")
     day, month, year = inputDate.split('/')
     isValidDate = True
