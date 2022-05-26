@@ -22,7 +22,7 @@ def welcome_message():
     or logging in as admin.
     """
     print('Welcome to My Virtual Doctor !')
-    print('\n An app which helps you book your doctor appointments fast!\n')
+    print('An app which helps you book your doctor appointments fast!\n')
     print('To use this app, press enter after each choice.\n')
     print('After confirming all your details you will receive\n')
     print('a confirmation email!\n')
@@ -30,7 +30,7 @@ def welcome_message():
     while True:
         admin_or_patient = input(
             'Please press "r" to register an appointment or "a"'
-            'for admin area:\n\n'
+            'for admin area:\n'
         )
         if admin_or_patient == 'r':
             return False
@@ -47,22 +47,22 @@ def get_details_data():
     fname, lname = name.split(" ")
     for character in name:
         if character.isdigit():
-            print(name)
+            print("Sorry your name contains a number,please try again...\n")
     else:
-        print("Sorry your name contains a number,please try again...")
-    return name
+        return name
+        
     if fname != lname:
         print(f"Welcome {name}!")
     else:
-        print("Sorry you must enter minimum 2 names,please try again...")
-
+        print("Sorry you must enter minimum 2 names,please try again...\n") 
+    
 
 def validate_date():
     """
     Validating data format for a easy reading and 
     calculating patients age by date of birth
     """
-    inputDate = input("Enter the date of birth : ")
+    inputDate = input("Enter the date of birth : \n")
     day, month, year = inputDate.split('/')
     isValidDate = True
     try:
@@ -70,14 +70,14 @@ def validate_date():
     except ValueError:
         isValidDate = True
     if (isValidDate):
-        print("Date of birth is valid ...")
+        print("Date of birth is valid ...\n")
     else:
-        print("Date of birth is not valid...")
+        print("Date of birth is not valid...\n")
     birth_date = datetime.datetime(int(year), int(month), int(day))
     age = (datetime.datetime.now() - birth_date)
     convertdays = int(age.days)
     age_years = convertdays/365
-    print(f"You are {int(age_years)} years old")
+    print(f"You are {int(age_years)} years old.")
 
     return age
 
@@ -86,16 +86,16 @@ def validate_date():
     return birth_date
 
 
-def update_worksheet(data, worksheet):
-    """
-    Receives a list of strings to be inserted into worksheet
-    Update the relevant worksheet with the data provided
-    """
-    worksheet_to_update = SHEET.worksheet(worksheet)
-    worksheet_to_update.append_row(data)
-    print(f"{worksheet} data saved succesfully\n")
+def get_details_values(data):
+    headings = SHEET.worksheet('details').get_all_values()[0]
+    headings_dict = {headings[i]: data[i] for i in range(len(headings))}
+    data = SHEET.worksheet("details")
+    return headings_dict
 
 
 welcome_message()
-data = get_details_data()
+details_data = get_details_data()
 validate_date()
+details_values = get_details_values(details_data)
+print('Please check your details provided: \n')
+print(details_data)
