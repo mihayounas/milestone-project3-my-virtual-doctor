@@ -50,12 +50,25 @@ def get_details_data():
             print("Sorry your name contains a number,please try again...\n")
     else:
         return name
-        
     if fname != lname:
         print(f"Welcome {name}!")
     else:
         print("Sorry you must enter minimum 2 names,please try again...\n") 
-    
+
+
+def update_worksheet(new_row, worksheet):
+    """
+    Update the specified worksheet,
+    adding a new row with the list data provided.
+    """
+    print(f"Updating {worksheet} worksheet...\n")
+    worksheet_to_update = SHEET.worksheet(worksheet)
+
+    # adds new row to the end of the current data
+    worksheet_to_update.append_row(new_row)
+
+    print(f"{worksheet} worksheet updated successfully\n")
+
 
 def validate_date():
     """
@@ -89,8 +102,10 @@ def validate_date():
 def get_details_values(data):
     headings = SHEET.worksheet('details').get_all_values()[0]
     headings_dict = {headings[i]: data[i] for i in range(len(headings))}
-    data = SHEET.worksheet("details")
     return headings_dict
+    data = SHEET.worksheet("details")
+    values_list = list(headings_dict)
+    print(values_list)
 
 
 welcome_message()
@@ -98,4 +113,6 @@ details_data = get_details_data()
 validate_date()
 details_values = get_details_values(details_data)
 print('Please check your details provided: \n')
-print(details_data)
+print(details_values)
+get_details_values(details_values)
+update_worksheet(details_values, "details")
