@@ -1,6 +1,7 @@
 import gspread
 from google.oauth2.service_account import Credentials
 import datetime
+import re
 
 
 SCOPE = [
@@ -56,7 +57,7 @@ def get_details_data():
         print("Sorry you must enter minimum 2 names,please try again...\n") 
 
 
-def insert_name_data():
+def insert_details_data():
     """
     Inserts data into the spreadsheet.
     The top data is new data in spreadsheet.
@@ -69,15 +70,27 @@ def insert_name_data():
     convertdays = int(age.days)
     age_years = convertdays/365
     print(f"You are {int(age_years)} years old.")
+    email = input("Please enter a valid email address:\n")
+    pat = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+\.[a-z]{1,3}$"
+    if re.match(pat, email):
+        print("Valid email...\n")
+    else:
+        print("Sorry invalid address,please try again...\n")
+        return email
+    symptoms = input("Please enter you symptoms bellow :\n")
+    if len(symptoms) < 6:
+        print("Please add more details for your doctor.")
+    else: 
+        print("Thank you for your details,a confirmation email will follow.")
     details = SHEET.worksheet("details")
-    row = [f"{name}", f"{born}", f"{age_years}"]
+    row = [f"{name}", f"{born}", f"{int(age_years)} years old", f"{email}", f"{symptoms}"]
     index = 2
     details.insert_row(row, index)
 
 
 def main():
     welcome_message()
-    insert_name_data()
+    insert_details_data()
 
 
 main()
