@@ -56,58 +56,30 @@ def get_details_data():
         print("Sorry you must enter minimum 2 names,please try again...\n") 
 
 
-def update_worksheet(new_row, worksheet):
+def insert_name_data():
     """
-    Update the specified worksheet,
-    adding a new row with the list data provided.
+    Inserts data into the spreadsheet.
+    The top data is new data in spreadsheet.
     """
-    print(f"Updating {worksheet} worksheet...\n")
-    worksheet_to_update = SHEET.worksheet(worksheet)
-
-    # adds new row to the end of the current data
-    worksheet_to_update.append_row(new_row)
-
-    print(f"{worksheet} worksheet updated successfully\n")
-
-
-def validate_date():
-    """
-    Validating data format for a easy reading and 
-    calculating patients age by date of birth
-    """
-    inputDate = input("Enter the date of birth : \n")
-    day, month, year = inputDate.split('/')
-    isValidDate = True
-    try:
-        datetime.datetime(int(day), int(month), int(year))
-    except ValueError:
-        isValidDate = True
-    if (isValidDate):
-        print("Date of birth is valid ...\n")
-    else:
-        print("Date of birth is not valid...\n")
+    name = get_details_data()
+    born = input("Enter the date of birth : \n")
+    day, month, year = born.split('/')
     birth_date = datetime.datetime(int(year), int(month), int(day))
     age = (datetime.datetime.now() - birth_date)
     convertdays = int(age.days)
     age_years = convertdays/365
     print(f"You are {int(age_years)} years old.")
-
-    return age
-
-    input("Please enter a valid email: \n")
-
-    return birth_date
-
-
-def get_details_values():
     details = SHEET.worksheet("details")
-    name = get_details_data()
-    row = [f"{name}"]
+    row = [f"{name}", f"{born}", f"{age_years}"]
     index = 2
     details.insert_row(row, index)
-   
 
-welcome_message()
-get_details_values()
-validate_date()
+
+def main():
+    welcome_message()
+    insert_name_data()
+
+
+main()
+
 
