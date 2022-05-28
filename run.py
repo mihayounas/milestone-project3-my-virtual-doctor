@@ -99,20 +99,15 @@ def validate_date():
     return birth_date
 
 
-def get_details_values(data):
-    headings = SHEET.worksheet('details').get_all_values()[0]
-    headings_dict = {headings[i]: data[i] for i in range(len(headings))}
-    return headings_dict
-    data = SHEET.worksheet("details")
-    values_list = list(headings_dict)
-    print(values_list)
-
+def get_details_values():
+    details = SHEET.worksheet("details")
+    name = get_details_data()
+    row = [f"{name}"]
+    index = 2
+    details.insert_row(row, index)
+   
 
 welcome_message()
-details_data = get_details_data()
+get_details_values()
 validate_date()
-details_values = get_details_values(details_data)
-print('Please check your details provided: \n')
-print(details_values)
-get_details_values(details_values)
-update_worksheet(details_values, "details")
+
