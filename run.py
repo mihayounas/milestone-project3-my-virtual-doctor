@@ -38,13 +38,19 @@ def welcome_message():
         print('Invalid entry, please try again\n')
    
 
-def get_details_data():
+welcome_message()
+name = input('Please enter your full name with spaces between :\n')
+born = input("Please enter your date of birth: \n")
+email = input("Please enter a valid email address:\n")
+symptoms = input("Please enter you symptoms bellow :\n")
+
+
+def get_name_data():
     """
     Get input details from the customer.
     Get Full Name and date of birth.
     Displaying the age of the customer.
     """
-    name = input('Please enter your full name with spaces between :\n')
     fname, lname = name.split(" ")
     for character in name:
         if character.isdigit():
@@ -55,44 +61,46 @@ def get_details_data():
         print(f"Welcome {name}!")
     else:
         print("Sorry you must enter minimum 2 names,please try again...\n") 
+    
+    return name
 
 
-def insert_details_data():
-    """
-    Inserts data into the spreadsheet.
-    The top data is new data in spreadsheet.
-    """
-    name = get_details_data()
-    born = input("Enter the date of birth : \n")
+def get_age():
     day, month, year = born.split('/')
     birth_date = datetime.datetime(int(year), int(month), int(day))
     age = (datetime.datetime.now() - birth_date)
     convertdays = int(age.days)
     age_years = convertdays/365
     print(f"You are {int(age_years)} years old.")
-    email = input("Please enter a valid email address:\n")
+    return age
+    
+
+def get_email_data():
     pat = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+\.[a-z]{1,3}$"
     if re.match(pat, email):
         print("Valid email...\n")
     else:
         print("Sorry invalid address,please try again...\n")
-        return email
-    symptoms = input("Please enter you symptoms bellow :\n")
+    
+    return email
+
+
+def get_symptoms_data():
     if len(symptoms) < 6:
         print("Please add more details for your doctor.")
     else: 
         print("Thank you for your details,a confirmation email will follow.")
+
+    return symptoms
+
+
+def update_worksheet():
+    age_years = get_age()
     details = SHEET.worksheet("details")
-    row = [f"{name}", f"{born}", f"{int(age_years)} years old", f"{email}", f"{symptoms}"]
+    row = [f"{name}", f"{born}", "years old", f"{email}", f"{symptoms}"]
     index = 2
-    details.insert_row(row, index)
+    details.insert_row(row, index) 
+   
 
-
-def main():
-    welcome_message()
-    insert_details_data()
-
-
-main()
-
-
+get_symptoms_data()
+update_worksheet()
