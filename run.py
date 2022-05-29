@@ -36,7 +36,12 @@ def welcome_message():
         if admin_or_patient == 'r':
             return False
         print('Invalid entry, please try again...\n')
-    return True
+        return True
+        if admin_or_patient == 'a':
+            return False
+        print('Invalid entry, please try again...\n')
+        return True
+        admin_login()
 # Starting by taking patient's details 
 
 
@@ -152,7 +157,15 @@ def confirmation_data():
     welcome_message()
 
 # Taking user's Admin details
-    
+
+
+def admin_login():
+    asses_or_shift = input(
+        "To asses a patient press 'a' or 's' to manage shift...\n"
+    )  
+    if asses_or_shift == 'a':
+        welcome_message()
+
 
 welcome_message()
 name = input('Please enter your full name with spaces between :\n')
