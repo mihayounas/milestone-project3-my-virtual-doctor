@@ -57,6 +57,11 @@ def validate_name(name):
 
 
 def get_age():
+    """
+    Gets the date of birth input and validates 
+    the right date format.
+    Calculates age in years .
+    """
     day, month, year = born.split('/')
     birth_date = datetime.datetime(int(year), int(month), int(day))
     age = (datetime.datetime.now() - birth_date)
@@ -67,6 +72,10 @@ def get_age():
 
 
 def validate_email():
+    """
+    Validates email addresses by checking 
+    for a common pathern and returns a valid email address.
+    """
     pat = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+\.[a-z]{1,3}$"
     if re.match(pat, email):
         print("Valid email...\n")
@@ -77,6 +86,11 @@ def validate_email():
 
 
 def validate_symptoms():
+    """
+    Checks if symptoms message is descriptive enough
+    and makes sure that it gives the right information 
+    for the appointment.
+    """
     if len(symptoms) < 8:
         print("Please add more details for your doctor.\n")
     else: 
@@ -91,6 +105,10 @@ def validate_symptoms():
 
 
 def update_worksheet():
+    """
+    Updates the right worksheet in order 
+    to store patient details into the database.
+    """
     details = SHEET.worksheet("details")
     row = [
         f"{name}", f"{born}", f"{age_years} years", f"{email}", f"{symptoms}"
@@ -100,6 +118,13 @@ def update_worksheet():
    
 
 def exit_screen():
+    """
+    This is an exit function wich gives the opportunity 
+    for the patient to see his appointment and manage it ,
+    cancel it or reschedule it.
+    Also there is an option to close it and take them to 
+    the main screen.
+    """
     print("Thank you for visiting our application !")
     print("What would you like to do next ?")
     exit = input("To manage your appointments press '1' or 'e' to close : \n")
