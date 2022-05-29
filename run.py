@@ -37,6 +37,8 @@ def welcome_message():
             return False
         print('Invalid entry, please try again...\n')
    
+# Starting by taking patient's details 
+
 
 def validate_name(name):
     """
@@ -136,10 +138,17 @@ def exit_screen():
 
 
 def confirmation_data():
+    """
+    Confirms and return the input data before 
+    sending the confirmation email.
+    """
     print(
         f"{name}\n, {born}\n, {age_years} years\n, {email}\n, {symptoms}\n"
         )
-   
+
+
+# Taking user's Admin details
+    
 
 welcome_message()
 name = input('Please enter your full name with spaces between :\n')
