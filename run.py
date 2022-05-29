@@ -77,10 +77,15 @@ def validate_email():
 
 
 def validate_symptoms():
-    if len(symptoms) < 6:
+    if len(symptoms) < 8:
         print("Please add more details for your doctor.\n")
     else: 
         print("Thank you for your details,a confirmation email will follow.\n")
+        menu_exit = input("Please press 'm' for main menu or 'e' to exit...\n")
+        if menu_exit == "m":
+            welcome_message()
+        else:
+            exit_screen()
 
     return symptoms
 
@@ -93,7 +98,24 @@ def update_worksheet():
     index = 2
     details.insert_row(row, index) 
    
+
+def exit_screen():
+    print("Thank you for visiting our application !")
+    print("What would you like to do next ?")
+    exit = input("To manage your appointments press '1' or 'e' to close : \n")
+    if exit == "1":
+        confirmation_data()
+    else:
+        print("Thank you for your appoinment!")
+        welcome_message()
+
+
+def confirmation_data():
+    print(
+        f"{name}\n, {born}\n, {age_years} years\n, {email}\n, {symptoms}\n"
+        )
    
+
 welcome_message()
 name = input('Please enter your full name with spaces between :\n')
 validate_name(name)
