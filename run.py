@@ -22,7 +22,7 @@ def welcome_message():
     Giving the choice of booking an appointment 
     or logging in as admin.
     """
-    print('Welcome to My Virtual Doctor !')
+    print('Welcome to My Virtual Doctor !\n')
     print('An app which helps you book your doctor appointments fast!\n')
     print('To use this app, press enter after each choice.\n')
     print('After confirming all your details you will receive\n')
@@ -35,17 +35,10 @@ def welcome_message():
         )
         if admin_or_patient == 'r':
             return False
-        print('Invalid entry, please try again\n')
+        print('Invalid entry, please try again...\n')
    
 
-welcome_message()
-name = input('Please enter your full name with spaces between :\n')
-born = input("Please enter your date of birth: \n")
-email = input("Please enter a valid email address:\n")
-symptoms = input("Please enter you symptoms bellow :\n")
-
-
-def get_name_data():
+def validate_name(name):
     """
     Get input details from the customer.
     Get Full Name and date of birth.
@@ -55,14 +48,12 @@ def get_name_data():
     for character in name:
         if character.isdigit():
             print("Sorry your name contains a number,please try again...\n")
-    else:
-        return name
-    if fname != lname:
-        print(f"Welcome {name}!")
+        else:
+            return name
+    if fname and lname != 2:
+        print(f"Welcome {name}!\n")
     else:
         print("Sorry you must enter minimum 2 names,please try again...\n") 
-    
-    return name
 
 
 def get_age():
@@ -70,12 +61,12 @@ def get_age():
     birth_date = datetime.datetime(int(year), int(month), int(day))
     age = (datetime.datetime.now() - birth_date)
     convertdays = int(age.days)
-    age_years = convertdays/365
-    print(f"You are {int(age_years)} years old.")
-    return age
-    
+    age_years = int(convertdays/365)
+    print(f"You are {int(age_years)} years old\n.")
+    return age_years
 
-def get_email_data():
+
+def validate_email():
     pat = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+\.[a-z]{1,3}$"
     if re.match(pat, email):
         print("Valid email...\n")
@@ -85,22 +76,31 @@ def get_email_data():
     return email
 
 
-def get_symptoms_data():
+def validate_symptoms():
     if len(symptoms) < 6:
-        print("Please add more details for your doctor.")
+        print("Please add more details for your doctor.\n")
     else: 
-        print("Thank you for your details,a confirmation email will follow.")
+        print("Thank you for your details,a confirmation email will follow.\n")
 
     return symptoms
 
 
 def update_worksheet():
-    age_years = get_age()
     details = SHEET.worksheet("details")
-    row = [f"{name}", f"{born}", "years old", f"{email}", f"{symptoms}"]
+    row = [
+        f"{name}", f"{born}", f"{age_years} years", f"{email}", f"{symptoms}"
+        ]
     index = 2
     details.insert_row(row, index) 
    
-
-get_symptoms_data()
+   
+welcome_message()
+name = input('Please enter your full name with spaces between :\n')
+validate_name(name)
+born = input("Please enter your date of birth: \n")
+age_years = get_age()
+email = input("Please enter a valid email address:\n")
+validate_email()
+symptoms = input("Please enter you symptoms bellow :\n")
+validate_symptoms()
 update_worksheet()
