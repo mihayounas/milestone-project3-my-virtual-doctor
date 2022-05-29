@@ -36,7 +36,7 @@ def welcome_message():
         if admin_or_patient == 'r':
             return False
         print('Invalid entry, please try again...\n')
-   
+    return True
 # Starting by taking patient's details 
 
 
@@ -56,7 +56,7 @@ def validate_name(name):
         print(f"Welcome {name}!\n")
     else:
         print("Sorry you must enter minimum 2 names,please try again...\n") 
-
+        
 
 def get_age():
     """
@@ -97,11 +97,6 @@ def validate_symptoms():
         print("Please add more details for your doctor.\n")
     else: 
         print("Thank you for your details,a confirmation email will follow.\n")
-        menu_exit = input("Please press 'm' for main menu or 'e' to exit...\n")
-        if menu_exit == "m":
-            welcome_message()
-        else:
-            exit_screen()
 
     return symptoms
 
@@ -119,6 +114,14 @@ def update_worksheet():
     details.insert_row(row, index) 
    
 
+def exit_menu():
+    menu_exit = input("Please press 'm' for main menu or 'e' to exit...\n")
+    if menu_exit == "m":
+        welcome_message()
+    else:
+        exit_screen()
+
+
 def exit_screen():
     """
     This is an exit function wich gives the opportunity 
@@ -134,7 +137,6 @@ def exit_screen():
         confirmation_data()
     else:
         print("Thank you for your appoinment!")
-        welcome_message()
 
 
 def confirmation_data():
@@ -142,10 +144,12 @@ def confirmation_data():
     Confirms and return the input data before 
     sending the confirmation email.
     """
-    print(
-        f"{name}\n, {born}\n, {age_years} years\n, {email}\n, {symptoms}\n"
-        )
-
+    print(f"Name : {name}")
+    print(f"DOB : {born}")
+    print(f"Age : {age_years} years")
+    print(f"Email : {email}")
+    print(f"Your message :{symptoms}")
+    welcome_message()
 
 # Taking user's Admin details
     
@@ -160,3 +164,6 @@ validate_email()
 symptoms = input("Please enter you symptoms bellow :\n")
 validate_symptoms()
 update_worksheet()
+exit_menu()
+exit_screen()
+confirmation_data()
