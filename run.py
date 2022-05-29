@@ -1,7 +1,10 @@
-import gspread
-from google.oauth2.service_account import Credentials
+"""
+This module imports date and time
+"""
 import datetime
 import re
+import gspread
+from google.oauth2.service_account import Credentials
 
 
 SCOPE = [
@@ -19,7 +22,7 @@ SHEET = GSPREAD_CLIENT.open("my_virtual_doctor")
 def welcome_message():
     """
     Welcoming the patients or the admin.
-    Giving the choice of booking an appointment 
+    Giving the choice of booking an appointment
     or logging in as admin.
     """
     print('Welcome to My Virtual Doctor !\n')
@@ -37,35 +40,30 @@ def welcome_message():
             return False
         print('Invalid entry, please try again...\n')
         return True
-        if admin_or_patient == 'a':
-            return False
-        print('Invalid entry, please try again...\n')
-        return True
-        admin_login()
-# Starting by taking patient's details 
+# Starting by taking patient's details
 
 
-def validate_name(name):
+def validate_name(data):
     """
     Get input details from the customer.
     Get Full Name and date of birth.
     Displaying the age of the customer.
     """
-    fname, lname = name.split(" ")
-    for character in name:
+    fname, lname = data.split(" ")
+    for character in data:
         if character.isdigit():
             print("Sorry your name contains a number,please try again...\n")
         else:
-            return name
+            return data
     if fname and lname != 2:
         print(f"Welcome {name}!\n")
     else:
-        print("Sorry you must enter minimum 2 names,please try again...\n") 
-        
+        print("Sorry you must enter minimum 2 names,please try again...\n")
+
 
 def get_age():
     """
-    Gets the date of birth input and validates 
+    Gets the date of birth input and validates
     the right date format.
     Calculates age in years .
     """
@@ -73,34 +71,33 @@ def get_age():
     birth_date = datetime.datetime(int(year), int(month), int(day))
     age = (datetime.datetime.now() - birth_date)
     convertdays = int(age.days)
-    age_years = int(convertdays/365)
-    print(f"You are {int(age_years)} years old\n.")
-    return age_years
+    user_age = int(convertdays/365)
+    print(f"You are {int(user_age)} years old\n.")
+    return user_age
 
 
 def validate_email():
     """
-    Validates email addresses by checking 
+    Validates email addresses by checking
     for a common pathern and returns a valid email address.
     """
-    pat = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+\.[a-z]{1,3}$"
+    pat = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+.[a-z]{1,3}$"
     if re.match(pat, email):
         print("Valid email...\n")
     else:
         print("Sorry invalid address,please try again...\n")
-    
     return email
 
 
 def validate_symptoms():
     """
     Checks if symptoms message is descriptive enough
-    and makes sure that it gives the right information 
+    and makes sure that it gives the right information
     for the appointment.
     """
     if len(symptoms) < 8:
         print("Please add more details for your doctor.\n")
-    else: 
+    else:
         print("Thank you for your details,a confirmation email will follow.\n")
 
     return symptoms
@@ -108,7 +105,7 @@ def validate_symptoms():
 
 def update_worksheet():
     """
-    Updates the right worksheet in order 
+    Updates the right worksheet in order
     to store patient details into the database.
     """
     details = SHEET.worksheet("details")
@@ -116,10 +113,15 @@ def update_worksheet():
         f"{name}", f"{born}", f"{age_years} years", f"{email}", f"{symptoms}"
         ]
     index = 2
-    details.insert_row(row, index) 
-   
+    details.insert_row(row, index)
+
 
 def exit_menu():
+    """
+    The exit menu will offer a choice to user,
+    he can return to the main menu and start
+    again or can exit the screen.
+    """
     menu_exit = input("Please press 'm' for main menu or 'e' to exit...\n")
     if menu_exit == "m":
         welcome_message()
@@ -129,16 +131,18 @@ def exit_menu():
 
 def exit_screen():
     """
-    This is an exit function wich gives the opportunity 
+    This is an exit function wich gives the opportunity
     for the patient to see his appointment and manage it ,
     cancel it or reschedule it.
-    Also there is an option to close it and take them to 
+    Also there is an option to close it and take them to
     the main screen.
     """
     print("Thank you for visiting our application !")
     print("What would you like to do next ?")
-    exit = input("To manage your appointments press '1' or 'e' to close : \n")
-    if exit == "1":
+    exit_choice = input(
+        "To manage your appointments press '1' or 'e' to close:\n"
+        )
+    if exit_choice == "1":
         confirmation_data()
     else:
         print("Thank you for your appoinment!")
@@ -146,7 +150,7 @@ def exit_screen():
 
 def confirmation_data():
     """
-    Confirms and return the input data before 
+    Confirms and return the input data before
     sending the confirmation email.
     """
     print(f"Name : {name}")
@@ -160,9 +164,14 @@ def confirmation_data():
 
 
 def admin_login():
+    """
+    This function will enter the admin only area
+    and will have a choice of asses the patient
+    or open the screen to manage the weekly shift.
+    """
     asses_or_shift = input(
         "To asses a patient press 'a' or 's' to manage shift...\n"
-    )  
+    )
     if asses_or_shift == 'a':
         welcome_message()
 
