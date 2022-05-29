@@ -39,26 +39,29 @@ def welcome_message():
         if admin_or_patient == 'r':
             return False
         print('Invalid entry, please try again...\n')
-        return True
+        validate_name()
 # Starting by taking patient's details
 
 
-def validate_name(data):
+def validate_name():
     """
     Get input details from the customer.
     Get Full Name and date of birth.
     Displaying the age of the customer.
     """
-    fname, lname = data.split(" ")
-    for character in data:
+    name = input('Please enter your full name with spaces between :\n')
+    fname, lname = name.split(" ")
+    for character in name:
         if character.isdigit():
             print("Sorry your name contains a number,please try again...\n")
+            validate_name()
         else:
-            return data
+            return name
     if fname and lname != 2:
-        print(f"Welcome {name}!\n")
-    else:
         print("Sorry you must enter minimum 2 names,please try again...\n")
+        validate_name()
+    else:
+        print(f"Welcome {name}!\n")
 
 
 def get_age():
@@ -72,7 +75,7 @@ def get_age():
     age = (datetime.datetime.now() - birth_date)
     convertdays = int(age.days)
     user_age = int(convertdays/365)
-    print(f"You are {int(user_age)} years old\n.")
+    print(f"You are {int(user_age)} years old\n")
     return user_age
 
 
@@ -81,6 +84,7 @@ def validate_email():
     Validates email addresses by checking
     for a common pathern and returns a valid email address.
     """
+    email = input("Please enter a valid email address:\n")
     pat = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+.[a-z]{1,3}$"
     if re.match(pat, email):
         print("Valid email...\n")
@@ -95,6 +99,7 @@ def validate_symptoms():
     and makes sure that it gives the right information
     for the appointment.
     """
+    symptoms = input("Please enter you symptoms bellow :\n")
     if len(symptoms) < 8:
         print("Please add more details for your doctor.\n")
     else:
@@ -110,7 +115,8 @@ def update_worksheet():
     """
     details = SHEET.worksheet("details")
     row = [
-        f"{name}", f"{born}", f"{age_years} years", f"{email}", f"{symptoms}"
+        f"{val_name}", f"{born}", f"{age_years} years", f"{email_val}",
+        f"{symptoms_val}"
         ]
     index = 2
     details.insert_row(row, index)
@@ -143,9 +149,9 @@ def exit_screen():
         "To manage your appointments press '1' or 'e' to close:\n"
         )
     if exit_choice == "1":
-        confirmation_data()
-    else:
-        print("Thank you for your appoinment!")
+        return False
+    print("Thank you for your appoinment!")
+    welcome_message()
 
 
 def confirmation_data():
@@ -153,13 +159,19 @@ def confirmation_data():
     Confirms and return the input data before
     sending the confirmation email.
     """
-    print(f"Name : {name}")
+    print(f"Name : {val_name}")
     print(f"DOB : {born}")
     print(f"Age : {age_years} years")
-    print(f"Email : {email}")
-    print(f"Your message :{symptoms}")
+    print(f"Email : {email_val}")
+    print(f"Your message :{symptoms_val}")
+    change_app = input(
+        "If you wish to make any changes press '1' or 'e' to exit...\n"
+        )
+    if change_app == '1':
+        return False
+    print("Thank you for your booking!\n")
     welcome_message()
-
+    validate_name()
 # Taking user's Admin details
 
 
@@ -177,15 +189,10 @@ def admin_login():
 
 
 welcome_message()
-name = input('Please enter your full name with spaces between :\n')
-validate_name(name)
+val_name = validate_name()
 born = input("Please enter your date of birth: \n")
 age_years = get_age()
-email = input("Please enter a valid email address:\n")
-validate_email()
-symptoms = input("Please enter you symptoms bellow :\n")
-validate_symptoms()
+email_val = validate_email()
+symptoms_val = validate_symptoms()
 update_worksheet()
-exit_menu()
-exit_screen()
 confirmation_data()
