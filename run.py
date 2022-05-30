@@ -6,7 +6,6 @@ import re
 import gspread
 from google.oauth2.service_account import Credentials
 
-
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
@@ -57,23 +56,16 @@ def validate_name():
     if len(lname) < 2:
         print("Sorry you must enter your last name, please try again...\n")
         validate_name()
-    for character in fname:
-        if character.isdigit():
-            print(
-                "Sorry your first name contains a number, please try again..\n"
-                )
-            validate_name()
-        else:
-            return name
-    for character in lname:
-        if character.isdigit():
-            print(
-                "Sorry your last name contains a number,please try again...\n"
-                )
-            validate_name()
-        else:
-            return name
-        print(f"Welcome {name}!\n")
+    if any(chr.isdigit() for chr in name):
+        print(
+            "Sorry your Name should contain only letters,please try again..."
+            "\n"
+        )
+        validate_name()
+        return False
+    else:
+        print(f"Welcome {name} !\n")
+    return name
 
 
 def get_age():
@@ -97,11 +89,13 @@ def validate_email():
     for a common pathern and returns a valid email address.
     """
     email = input("Please enter a valid email address:\n")
-    pat = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+.[a-z]{1,3}$"
-    if re.match(pat, email):
-        print("Valid email...\n")
+    regex = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+.[a-z]{1,3}$"
+    if re.search(regex, email):
+        print(f"Valid Email : {email}")
     else:
-        print("Sorry invalid address,please try again...\n")
+        print("Sorry your email is not valid,please try again...\n")
+        validate_email()
+        return True
     return email
 
 
@@ -112,8 +106,9 @@ def validate_symptoms():
     for the appointment.
     """
     symptoms = input("Please enter you symptoms bellow :\n")
-    if len(symptoms) < 8:
+    if len(symptoms) < 5:
         print("Please add more details for your doctor.\n")
+        validate_symptoms()
     else:
         print("Thank you for your details,a confirmation email will follow.\n")
 
