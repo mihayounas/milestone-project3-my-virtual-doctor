@@ -46,21 +46,33 @@ def welcome_message():
 def validate_name():
     """
     Get input details from the customer.
-    Get Full Name and date of birth.
+    Get your Full Name and date of birth.
     Displaying the age of the customer.
     """
     name = input('Please enter your full name with spaces between :\n')
     fname, lname = name.split(" ")
-    for character in name:
+    if len(fname) < 2:
+        print("Sorry you must enter your first name, please try again...\n")
+        validate_name()
+    if len(lname) < 2:
+        print("Sorry you must enter your last name, please try again...\n")
+        validate_name()
+    for character in fname:
         if character.isdigit():
-            print("Sorry your name contains a number,please try again...\n")
+            print(
+                "Sorry your first name contains a number, please try again..\n"
+                )
             validate_name()
         else:
             return name
-    if fname and lname != 2:
-        print("Sorry you must enter minimum 2 names,please try again...\n")
-        validate_name()
-    else:
+    for character in lname:
+        if character.isdigit():
+            print(
+                "Sorry your last name contains a number,please try again...\n"
+                )
+            validate_name()
+        else:
+            return name
         print(f"Welcome {name}!\n")
 
 
