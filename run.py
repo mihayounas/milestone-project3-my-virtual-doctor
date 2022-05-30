@@ -6,6 +6,7 @@ import re
 import gspread
 from google.oauth2.service_account import Credentials
 
+
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
@@ -110,7 +111,8 @@ def validate_symptoms():
         print("Please add more details for your doctor.\n")
         validate_symptoms()
     else:
-        print("Thank you for your details,a confirmation email will follow.\n")
+        print("Thank you for your details,please chose a date...\n")
+        pick_a_date()
 
     return symptoms
 
@@ -123,7 +125,7 @@ def update_worksheet():
     details = SHEET.worksheet("details")
     row = [
         f"{val_name}", f"{born}", f"{age_years} years", f"{email_val}",
-        f"{symptoms_val}"
+        f"{symptoms_val}", f"{date}", f"{chosen_time}"
         ]
     index = 2
     details.insert_row(row, index)
@@ -150,14 +152,14 @@ def exit_screen():
     Also there is an option to close it and take them to
     the main screen.
     """
-    print("Thank you for visiting our application !")
-    print("What would you like to do next ?")
+    print("Thank you for visiting our application !\n")
+    print("What would you like to do next ?\n")
     exit_choice = input(
         "To manage your appointments press '1' or 'e' to close:\n"
         )
     if exit_choice == "1":
         return False
-    print("Thank you for your appoinment!")
+    print("Thank you for your appoinment!\n")
     welcome_message()
 
 
@@ -171,6 +173,7 @@ def confirmation_data():
     print(f"Age : {age_years} years")
     print(f"Email : {email_val}")
     print(f"Your message :{symptoms_val}")
+    print(f"Your appointment is on {date} at {chosen_time}")
     change_app = input(
         "If you wish to make any changes press '1' or 'e' to exit...\n"
         )
@@ -200,8 +203,50 @@ def pick_a_date():
     Helps the patient pick a available date and time
     """
     date_chosen = input(
-        "Please enter day and first three letters of the month...\n"
+        "Please enter the day and first three letters of the month with space"
+        "...\n"
     )
+    date_chosen_value = date_chosen.split(" ")
+    if date_chosen_value == 5:
+        print(
+            "Sorry no appointment for today,please chose a different date "
+            "or press 'e' to exit...\n"
+            )
+        if date_chosen_value == 'e':
+            welcome_message()
+        else:
+            print(
+                "Date available,please press 'c' to confirm or 'e'"
+                "to exit...\n"
+            )
+    return date_chosen_value
+
+
+def get_time():
+    """
+    Gets time input and validates that
+    time is in a timeframe 9am-5pm
+    """
+    time = input("Please chose a time between 9am - 5pm...\n")
+    for time in range(9, 13) and time in range(1, 6):
+        print(f"Time confirmed {time}...\n")
+        break
+    else:
+        print(
+            "Sorry, you must chose a time between 9am to 5pm,please try again"
+            "...\n"
+            )
+        get_time()
+    for time in range(1, 6):
+        print(f"Time confirmed {time}...\n")
+        break
+    else:
+        print(
+            "Sorry, you must chose a time between 9am to 5pm,please try again"
+            "...\n"
+            )
+        get_time()
+    return time
 
 
 welcome_message()
@@ -210,5 +255,7 @@ born = input("Please enter your date of birth: \n")
 age_years = get_age()
 email_val = validate_email()
 symptoms_val = validate_symptoms()
+date = pick_a_date()
+chosen_time = get_time()
 update_worksheet()
 confirmation_data()
