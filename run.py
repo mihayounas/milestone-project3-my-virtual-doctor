@@ -195,6 +195,15 @@ def admin_login():
         welcome_message()
 
 
+def pick_a_date():
+    """
+    Helps the patient pick a available date and time
+    """
+    date_chosen = input(
+        "Please enter day and first three letters of the month...\n"
+    )
+
+
 welcome_message()
 val_name = validate_name()
 born = input("Please enter your date of birth: \n")
