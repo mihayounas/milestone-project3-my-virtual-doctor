@@ -2,6 +2,7 @@
 This module imports date and time
 """
 import datetime
+import calendar
 import re
 import gspread
 from google.oauth2.service_account import Credentials
@@ -126,7 +127,7 @@ def update_worksheet():
     details = SHEET.worksheet("details")
     row = [
         f"{NAME}", f"{BORN}", f"{EMAIL}",
-        f"{SYMPTOMS}"
+        f"{SYMPTOMS}", f"{DATE}", f"{TIME}:00"
         ]
     index = 2
     details.insert_row(row, index)
@@ -173,6 +174,7 @@ def confirmation_data():
     print(f"DOB : {BORN}")
     print(f"Email : {EMAIL}")
     print(f"Your message :{SYMPTOMS}")
+    print(f"Your appointment is on {DATE} at {TIME}:00 ")
     # print(f"Your appointment is on {date} at {chosen_time}")
     change_app = input(
         "If you wish to make any changes press '1' or 'e' to exit...\n"
@@ -203,19 +205,16 @@ def pick_a_date():
     """
     Helps the patient pick a available date and time
     """
-    dates = [
-        'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep',
-        'oct', 'nov', 'dec'
-        ]
     date_chosen = input(
-        "Please enter the first 3 letters of the month...\n"
+        "Please enter the month you wish to book for...\n"
         "...\n"
     )
-    if any(item in date_chosen for item in dates):
-        print(f"Month chosen is {date_chosen}")
+    for date_chosen in range(1, 13):
+        print(calendar.month_name[date_chosen])
+        break
     else:
-        print("Please check the format required...\n")
-    return date_chosen
+        print("Sorry you must choose a number from 1 to 12...\n")
+        return date_chosen
 
 
 def get_time():
@@ -224,11 +223,11 @@ def get_time():
     time is in a timeframe 9 - 18
     """
     time_val = input("Please choose a time between 9 - 18...\n")
-    time_choice = range(9, 19)
-    if time_val in time_choice:
-        print("Time available...\n")
-    else:
+    if int(time_val) in range(9, 19):
         print("Time chosen is not available,please try again...\n")
+        return time_val
+    else:
+        print("Valid time...\n")
     return time_val
 
 
