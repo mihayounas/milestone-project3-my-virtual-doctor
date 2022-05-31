@@ -49,24 +49,21 @@ def validate_name():
     Get your Full Name and date of birth.
     Displaying the age of the customer.
     """
-    name = input('Please enter your full name with spaces between :\n')
-    fname, lname = name.split(" ")
-    if len(fname) < 2:
-        print("Sorry you must enter your first name, please try again...\n")
-        validate_name()
-    if len(lname) < 2:
-        print("Sorry you must enter your last name, please try again...\n")
-        validate_name()
-    if any(chr.isdigit() for chr in name):
-        print(
-            "Sorry your Name should contain only letters,please try again..."
-            "\n"
-        )
-        validate_name()
-        return False
-    else:
-        print(f"Welcome {name} !\n")
-    return name
+    while True:
+        names = input('Please enter your full name with spaces between :\n')
+        #  Don't accept numbers in name
+        if any(chr.isdigit() for chr in names):
+            print(
+                "Sorry your Name should contain only letters,"
+                "please try again..."
+                "\n"
+                )
+        elif names.__contains__(' '):
+            print(f"Welcome {names} !\n")
+            return names
+        else:
+            print("Please enter first and last name...\n")
+    return False
 
 
 def get_age():
@@ -75,7 +72,8 @@ def get_age():
     the right date format.
     Calculates age in years .
     """
-    day, month, year = born.split('/')
+    born_date = input("Please enter your date of birth: \n")
+    day, month, year = born_date.split('/')
     birth_date = datetime.datetime(int(year), int(month), int(day))
     age = (datetime.datetime.now() - birth_date)
     convertdays = int(age.days)
@@ -89,15 +87,15 @@ def validate_email():
     Validates email addresses by checking
     for a common pathern and returns a valid email address.
     """
-    email = input("Please enter a valid email address:\n")
+    email_val = input("Please enter a valid email address:\n")
     regex = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+.[a-z]{1,3}$"
-    if re.search(regex, email):
-        print(f"Valid Email : {email}")
+    if re.search(regex, email_val):
+        print(f"Valid Email : {email_val}")
     else:
         print("Sorry your email is not valid,please try again...\n")
         validate_email()
         return True
-    return email
+    return email_val
 
 
 def validate_symptoms():
@@ -106,15 +104,15 @@ def validate_symptoms():
     and makes sure that it gives the right information
     for the appointment.
     """
-    symptoms = input("Please enter you symptoms bellow :\n")
-    if len(symptoms) < 5:
+    symptoms_val = input("Please enter you symptoms bellow :\n")
+    if len(symptoms_val) < 5:
         print("Please add more details for your doctor.\n")
         validate_symptoms()
     else:
         print("Thank you for your details,please chose a date...\n")
         pick_a_date()
 
-    return symptoms
+    return symptoms_val
 
 
 def update_worksheet():
@@ -124,8 +122,8 @@ def update_worksheet():
     """
     details = SHEET.worksheet("details")
     row = [
-        f"{val_name}", f"{born}", f"{age_years} years", f"{email_val}",
-        f"{symptoms_val}", f"{date}", f"{chosen_time}"
+        f"{NAME}", f"{BORN}", f"{AGE_YEARS} years", f"{EMAIL}",
+        f"{SYMPTOMS}"
         ]
     index = 2
     details.insert_row(row, index)
@@ -139,7 +137,7 @@ def exit_menu():
     """
     menu_exit = input("Please press 'm' for main menu or 'e' to exit...\n")
     if menu_exit == "m":
-        welcome_message()
+        main()
     else:
         exit_screen()
 
@@ -160,7 +158,7 @@ def exit_screen():
     if exit_choice == "1":
         return False
     print("Thank you for your appoinment!\n")
-    welcome_message()
+    main()
 
 
 def confirmation_data():
@@ -168,20 +166,21 @@ def confirmation_data():
     Confirms and return the input data before
     sending the confirmation email.
     """
-    print(f"Name : {val_name}")
-    print(f"DOB : {born}")
-    print(f"Age : {age_years} years")
-    print(f"Email : {email_val}")
-    print(f"Your message :{symptoms_val}")
-    print(f"Your appointment is on {date} at {chosen_time}")
+    print(f"Name : {NAME}")
+    print(f"DOB : {BORN}")
+    print(f"Age : {AGE_YEARS} years")
+    print(f"Email : {EMAIL}")
+    print(f"Your message :{SYMPTOMS}")
+    # print(f"Your appointment is on {date} at {chosen_time}")
     change_app = input(
         "If you wish to make any changes press '1' or 'e' to exit...\n"
         )
     if change_app == '1':
+        print("Thank you for your booking!\n")
         return False
-    print("Thank you for your booking!\n")
-    welcome_message()
-    validate_name()
+    else:
+        print("Thank you...")
+        main()
 # Taking user's Admin details
 
 
@@ -213,7 +212,7 @@ def pick_a_date():
             "or press 'e' to exit...\n"
             )
         if date_chosen_value == 'e':
-            welcome_message()
+            main()
         else:
             print(
                 "Date available,please press 'c' to confirm or 'e'"
@@ -227,9 +226,9 @@ def get_time():
     Gets time input and validates that
     time is in a timeframe 9am-5pm
     """
-    time = input("Please chose a time between 9am - 5pm...\n")
-    for time in range(9, 13) and time in range(1, 6):
-        print(f"Time confirmed {time}...\n")
+    time_val = input("Please chose a time between 9am - 5pm...\n")
+    for time_val in range(9, 13) and time_val in range(1, 6):
+        print(f"Time confirmed {time_val}...\n")
         break
     else:
         print(
@@ -237,25 +236,24 @@ def get_time():
             "...\n"
             )
         get_time()
-    for time in range(1, 6):
-        print(f"Time confirmed {time}...\n")
-        break
-    else:
-        print(
-            "Sorry, you must chose a time between 9am to 5pm,please try again"
-            "...\n"
-            )
-        get_time()
-    return time
+    return time_val
 
 
-welcome_message()
-val_name = validate_name()
-born = input("Please enter your date of birth: \n")
-age_years = get_age()
-email_val = validate_email()
-symptoms_val = validate_symptoms()
-date = pick_a_date()
-chosen_time = get_time()
-update_worksheet()
-confirmation_data()
+def main():
+    """
+    Run all the functions
+    """
+    welcome_message()
+    validate_name()
+    get_age()
+    validate_email()
+    validate_symptoms()
+    pick_a_date()
+    get_time()
+    update_worksheet()
+    confirmation_data()
+
+
+main()
+
+NAME, BORN, AGE_YEARS, EMAIL, SYMPTOMS, DATE, TIME = ("")
