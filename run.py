@@ -51,7 +51,7 @@ def validate_name():
     """
     while True:
         names = input('Please enter your full name with spaces between :\n')
-        #  Don't accept numbers in name
+        #  Don't accept numbers in name,letters only
         if any(chr.isdigit() for chr in names):
             print(
                 "Sorry your Name should contain only letters,"
@@ -79,14 +79,13 @@ def get_age():
             return born_date
         else:
             print("Sorry please include format 00/00/000...")
-            return False
     day, month, year = born_date
     birth_date = datetime.datetime(int(year), int(month), int(day))
     age = (datetime.datetime.now() - birth_date)
     convertdays = int(age.days)
     user_age = int(convertdays/365)
     print(f"You are {int(user_age)} years old\n")
-    return user_age
+    return False
 
 
 def validate_email():
