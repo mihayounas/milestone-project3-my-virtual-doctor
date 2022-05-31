@@ -72,8 +72,15 @@ def get_age():
     the right date format.
     Calculates age in years .
     """
-    born_date = input("Please enter your date of birth: \n")
-    day, month, year = born_date.split('/')
+    while True:
+        born_date = input("Please enter your date of birth: \n")
+        if born_date.__contains__('/'):
+            print(f"Born on {born_date}")
+            return born_date
+        else:
+            print("Sorry please include format 00/00/000...")
+            return False
+    day, month, year = born_date
     birth_date = datetime.datetime(int(year), int(month), int(day))
     age = (datetime.datetime.now() - birth_date)
     convertdays = int(age.days)
