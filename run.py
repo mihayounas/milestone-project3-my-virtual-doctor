@@ -72,20 +72,19 @@ def get_age():
     the right date format.
     Calculates age in years .
     """
-    while True:
-        born_date = input("Please enter your date of birth: \n")
-        if born_date.__contains__('/'):
-            print(f"Born on {born_date}")
-            return born_date
-        else:
-            print("Sorry please include format 00/00/000...")
-    day, month, year = born_date
+    born_date = input("Please enter your date of birth: \n")
+    if born_date.__contains__('/'):
+        print(f"Date of birth:{born_date}")
+    else:
+        print("Sorry please include format 00/00/000...")
+        return born_date
+    day, month, year = born_date.split('/')
     birth_date = datetime.datetime(int(year), int(month), int(day))
     age = (datetime.datetime.now() - birth_date)
     convertdays = int(age.days)
     user_age = int(convertdays/365)
     print(f"You are {int(user_age)} years old\n")
-    return False
+    return born_date
 
 
 def validate_email():
@@ -99,8 +98,6 @@ def validate_email():
         print(f"Valid Email : {email_val}")
     else:
         print("Sorry your email is not valid,please try again...\n")
-        validate_email()
-        return True
     return email_val
 
 
@@ -128,7 +125,7 @@ def update_worksheet():
     """
     details = SHEET.worksheet("details")
     row = [
-        f"{NAME}", f"{BORN}", f"{AGE_YEARS} years", f"{EMAIL}",
+        f"{NAME}", f"{BORN}", f"{EMAIL}",
         f"{SYMPTOMS}"
         ]
     index = 2
@@ -174,7 +171,6 @@ def confirmation_data():
     """
     print(f"Name : {NAME}")
     print(f"DOB : {BORN}")
-    print(f"Age : {AGE_YEARS} years")
     print(f"Email : {EMAIL}")
     print(f"Your message :{SYMPTOMS}")
     # print(f"Your appointment is on {date} at {chosen_time}")
@@ -207,42 +203,45 @@ def pick_a_date():
     """
     Helps the patient pick a available date and time
     """
+    dates = [
+        'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep',
+        'oct', 'nov', 'dec'
+        ]
     date_chosen = input(
-        "Please enter the day and first three letters of the month with space"
+        "Please enter the first 3 letters of the month...\n"
         "...\n"
     )
-    date_chosen_value = date_chosen.split(" ")
-    if date_chosen_value == 5:
-        print(
-            "Sorry no appointment for today,please chose a different date "
-            "or press 'e' to exit...\n"
-            )
-        if date_chosen_value == 'e':
-            main()
-        else:
-            print(
-                "Date available,please press 'c' to confirm or 'e'"
-                "to exit...\n"
-            )
-    return date_chosen_value
+    if any(item in date_chosen for item in dates):
+        print(f"Month chosen is {date_chosen}")
+    else:
+        print("Please check the format required...\n")
+    return date_chosen
 
 
 def get_time():
     """
     Gets time input and validates that
-    time is in a timeframe 9am-5pm
+    time is in a timeframe 9 - 18
     """
-    time_val = input("Please chose a time between 9am - 5pm...\n")
-    for time_val in range(9, 13) and time_val in range(1, 6):
-        print(f"Time confirmed {time_val}...\n")
-        break
+    time_val = input("Please choose a time between 9 - 18...\n")
+    time_choice = range(9, 19)
+    if time_val in time_choice:
+        print("Time available...\n")
     else:
-        print(
-            "Sorry, you must chose a time between 9am to 5pm,please try again"
-            "...\n"
-            )
-        get_time()
+        print("Time chosen is not available,please try again...\n")
     return time_val
+
+
+# Declare global variables used to return all the details
+welcome_message()
+NAME = validate_name()
+BORN = get_age()
+EMAIL = validate_email()
+SYMPTOMS = validate_symptoms()
+DATE = pick_a_date()
+TIME = get_time()
+update_worksheet()
+confirmation_data()
 
 
 def main():
@@ -261,5 +260,3 @@ def main():
 
 
 main()
-
-NAME, BORN, AGE_YEARS, EMAIL, SYMPTOMS, DATE, TIME = ("")
