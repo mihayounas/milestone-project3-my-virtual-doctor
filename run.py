@@ -23,6 +23,17 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("my_virtual_doctor")
 
 
+def welcome_msg(text):
+    """
+    Print banner msg using Figlet font.
+    Args:
+    """
+    font = Figlet(font="ogre")
+    print("-" * 120)
+    print(colored(font.renderText(text), "blue"))
+    print("-" * 120)
+
+
 def welcome_message():
     """
     Welcoming the patients or the admin.
@@ -42,22 +53,24 @@ def welcome_message():
             'for admin area:\n'
         )
         if admin_or_patient == 'r':
+            get_name()
             return False
         print('Invalid entry, please try again...\n')
-        validate_name()
+    return True
 # Starting by taking patient's details
 
 
-def welcome_msg(text):
+def get_name():
     """
-    Print banner msg using Figlet font.
-    Args:
-        text (str): text to be printed
+    Gets name input from the user
     """
-    font = Figlet(font="ogre")
-    print("-" * 80)
-    print(colored(font.renderText(text), "blue"))
-    print("-" * 80)
+    name = validate_name()
+    if name:
+        print(f'Welcome {name}...\n')
+        return True
+    else:
+        print("Name not valid,please try again...\n")
+    return True
 
 
 def validate_name():
@@ -67,7 +80,7 @@ def validate_name():
     Displaying the age of the customer.
     """
     while True:
-        names = input('Please enter your full name with spaces between :\n')
+        names = input('Please enter your first and last name with space:\n')
         #  Don't accept numbers in name,letters only
         if any(chr.isdigit() for chr in names):
             print(
@@ -75,12 +88,13 @@ def validate_name():
                 "please try again..."
                 "\n"
                 )
+            return False
+        #  Only accept if name contains a space
         elif names.__contains__(' '):
-            print(f"Welcome {names} !\n")
             return names
         else:
-            print("Please enter first and last name...\n")
-    return False
+            print("Please enter your first and last name...\n")
+    return True
 
 
 def get_age():
@@ -89,19 +103,33 @@ def get_age():
     the right date format.
     Calculates age in years .
     """
-    born_date = input("Please enter your date of birth: \n")
-    if born_date.__contains__('/'):
-        print(f"Date of birth:{born_date}")
-    else:
-        print("Sorry please include format 00/00/000...")
-        return born_date
-    day, month, year = born_date.split('/')
-    birth_date = datetime.datetime(int(year), int(month), int(day))
-    age = (datetime.datetime.now() - birth_date)
-    convertdays = int(age.days)
-    user_age = int(convertdays/365)
-    print(f"You are {int(user_age)} years old\n")
-    return born_date
+    while True:
+        born_date = input("Please enter your date of birth: \n")
+        if born_date.__contains__('/'):
+            print(f"Date of birth:{born_date}")
+            return False
+        else:
+            print("Sorry please include format 00/00/000...")
+            validate_age()
+    return True
+
+
+def validate_age():
+    """
+    Validates and calculates age of the user
+    by the date of birth.
+    """
+    while True:
+        born_date = input()
+        day, month, year = born_date.split('/')
+        birth_date = datetime.datetime(int(year), int(month), int(day))
+        age = (datetime.datetime.now() - birth_date)
+        convertdays = int(age.days)
+        if age == int(convertdays/365):
+            print(f"Your are {age} years old...\n")
+        else:
+            print("No age to display...\n")
+    return True
 
 
 def validate_email():
@@ -109,13 +137,15 @@ def validate_email():
     Validates email addresses by checking
     for a common pathern and returns a valid email address.
     """
-    email_val = input("Please enter a valid email address:\n")
-    regex = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+.[a-z]{1,3}$"
-    if re.search(regex, email_val):
-        print(f"Valid Email : {email_val}")
-    else:
-        print("Sorry your email is not valid,please try again...\n")
-    return email_val
+    while True:
+        email_val = input("Please enter a valid email address:\n")
+        regex = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+.[a-z]{1,3}$"
+        if re.search(regex, email_val):
+            print(f"Valid Email : {email_val}")
+            return False
+        else:
+            print("Sorry your email is not valid,please try again...\n")
+    return True
 
 
 def validate_symptoms():
@@ -276,7 +306,7 @@ def get_time():
 
 # Declare global variables used to return all the details
 welcome_message()
-NAME = validate_name()
+NAME = get_name()
 BORN = get_age()
 EMAIL = validate_email()
 SYMPTOMS = validate_symptoms()
@@ -291,8 +321,9 @@ def main():
     Run all the functions
     """
     welcome_message()
-    validate_name()
+    get_name()
     get_age()
+    validate_age()
     validate_email()
     validate_symptoms()
     pick_a_date()
