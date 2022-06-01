@@ -3,6 +3,10 @@ This module imports date and time
 """
 import datetime
 import re
+# import Pyfiglet library for text to fonts functionality
+from pyfiglet import Figlet
+# import Termcolor library for text colours
+from termcolor import colored
 import gspread
 from google.oauth2.service_account import Credentials
 
@@ -25,12 +29,13 @@ def welcome_message():
     Giving the choice of booking an appointment
     or logging in as admin.
     """
+    text = "Welcome"
+    welcome_msg(text)
     print('Welcome to My Virtual Doctor !\n')
     print('An app which helps you book your doctor appointments fast!\n')
     print('To use this app, press enter after each choice.\n')
     print('After confirming all your details you will receive\n')
     print('a confirmation email!\n')
-
     while True:
         admin_or_patient = input(
             'Please press "r" to register an appointment or "a"'
@@ -41,6 +46,18 @@ def welcome_message():
         print('Invalid entry, please try again...\n')
         validate_name()
 # Starting by taking patient's details
+
+
+def welcome_msg(text):
+    """
+    Print banner msg using Figlet font.
+    Args:
+        text (str): text to be printed
+    """
+    font = Figlet(font="ogre")
+    print("-" * 80)
+    print(colored(font.renderText(text), "blue"))
+    print("-" * 80)
 
 
 def validate_name():
@@ -182,8 +199,8 @@ def confirmation_data():
         print("Thank you for your booking!\n")
         return False
     else:
-        print("Thank you...")
-        main()
+        text = "Thank you..."
+        welcome_msg(text)
 # Taking user's Admin details
 
 
@@ -204,10 +221,12 @@ def pick_a_date():
     """
     Helps the patient pick a available date and time
     """
-    # pick_day = input("Please enter the day in numbers 1-31....\n")
-    date1 = input('Enter a date in YYYY-MM-DD format: \n')
-    date1 = datetime.datetime.strptime(date1, "%Y-%m-%d")
-    return date1
+    month_choice = input("Please enter your chosen date...")
+    if month_choice == month_choice.strftime("%b"):
+        print(month_choice)
+    else:
+        print("Sorry,please enter first three letters of the month...\n")
+        return month_choice
 
 
 def get_time():
