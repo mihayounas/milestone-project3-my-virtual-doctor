@@ -204,17 +204,10 @@ def pick_a_date():
     """
     Helps the patient pick a available date and time
     """
-    pick_day = input("Please enter the day in numbers 1-31....\n")
-    for pick_day in range(1, 32):
-        print(pick_day)
-        date_choice = input(
-            "Please enter the month you wish to book for...\n"
-            "...\n"
-            )
-        datetime_object = datetime.datetime.strptime(date_choice, "%m")
-        date_choice = datetime_object.strftime("%b")
-        print("Your appoinment date is : ", pick_day, date_choice)
-        return date_choice
+    # pick_day = input("Please enter the day in numbers 1-31....\n")
+    date1 = input('Enter a date in YYYY-MM-DD format: \n')
+    date1 = datetime.datetime.strptime(date1, "%Y-%m-%d")
+    return date1
 
 
 def get_time():
