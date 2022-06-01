@@ -2,7 +2,6 @@
 This module imports date and time
 """
 import datetime
-import calendar
 import re
 import gspread
 from google.oauth2.service_account import Credentials
@@ -205,16 +204,17 @@ def pick_a_date():
     """
     Helps the patient pick a available date and time
     """
-    date_chosen = input(
-        "Please enter the month you wish to book for...\n"
-        "...\n"
-    )
-    for date_chosen in range(1, 13):
-        print(calendar.month_name[date_chosen])
-        break
-    else:
-        print("Sorry you must choose a number from 1 to 12...\n")
-        return date_chosen
+    pick_day = input("Please enter the day in numbers 1-31....\n")
+    for pick_day in range(1, 32):
+        print(pick_day)
+        date_choice = input(
+            "Please enter the month you wish to book for...\n"
+            "...\n"
+            )
+        datetime_object = datetime.datetime.strptime(date_choice, "%m")
+        date_choice = datetime_object.strftime("%b")
+        print("Your appoinment date is : ", pick_day, date_choice)
+        return date_choice
 
 
 def get_time():
