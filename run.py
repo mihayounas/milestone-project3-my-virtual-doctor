@@ -54,7 +54,6 @@ def welcome_message():
         if admin_or_patient == 'r':
             return False
         print('Invalid entry, please try again...\n')
-        get_name()
     return True
 # Starting by taking patient's details
 
@@ -96,28 +95,34 @@ def validate_name():
 
 
 def get_birth_date():
+    date_val = val_date()
+    if date_val:
+        print(f"Your date of birth is : {date_val}\n")
+    else:
+        print("Please enter the right format DD/MM/YYY...\n")
+    return date_val
+
+
+def val_date():
     """
     Validates and calculates age of the user
     by the date of birth.
     """
-    date_input = input("Please enter your date of b: ")
-    format_str = "%d/%m/%Y"
-
-    try:
-        datetime.datetime.strptime(date_input, format_str)
-        print("This is the correct date string format.")
-    except ValueError:
-        print(
-            "This is the incorrect date string format.It should be "
-            "DD/MM/YYYY...\n"
-            )
-    day, month, year = date_input.split('/')
-    birth_date = datetime.datetime(int(year), int(month), int(day))
-    age = (datetime.datetime.now() - birth_date)
-    convertdays = int(age.days)
-    age = int(convertdays/365)
-    print(f"Your are {age} years old...\n")
-    return date_input
+    while True:
+        date_input = input(
+            "Please enter your date of birth in this "
+            "format DD/MM/YYYY:\n"
+        )
+        if date_input.__contains__("/"):
+            format_str = "%d/%m/%Y"
+            datetime.datetime.strptime(date_input, format_str)
+            return date_input
+        else:
+            print(
+                "This is the incorrect date format.It should be "
+                "DD/MM/YYYY...\n"
+                )
+    return True
 
 
 def validate_email():
@@ -133,7 +138,7 @@ def validate_email():
             return False
         else:
             print("Sorry your email is not valid,please try again...\n")
-            return email_val
+    return email_val
 
 
 def validate_symptoms():
