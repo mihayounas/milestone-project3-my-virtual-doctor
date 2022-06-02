@@ -138,7 +138,7 @@ def validate_email():
             return False
         else:
             print("Sorry your email is not valid,please try again...\n")
-    return email_val
+    return True
 
 
 def validate_symptoms():
