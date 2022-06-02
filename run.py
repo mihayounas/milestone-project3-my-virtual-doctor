@@ -26,7 +26,6 @@ SHEET = GSPREAD_CLIENT.open("my_virtual_doctor")
 def welcome_msg(text):
     """
     Print banner msg using Figlet font.
-    Args:
     """
     font = Figlet(font="ogre")
     print("-" * 120)
@@ -53,9 +52,9 @@ def welcome_message():
             'for admin area:\n'
         )
         if admin_or_patient == 'r':
-            get_name()
             return False
         print('Invalid entry, please try again...\n')
+        get_name()
     return True
 # Starting by taking patient's details
 
@@ -67,10 +66,9 @@ def get_name():
     name = validate_name()
     if name:
         print(f'Welcome {name}...\n')
-        return True
     else:
         print("Name not valid,please try again...\n")
-    return True
+    return name
 
 
 def validate_name():
@@ -97,21 +95,20 @@ def validate_name():
     return True
 
 
-def get_age():
+def get_birth_date():
     """
     Gets the date of birth input and validates
     the right date format.
     Calculates age in years .
     """
-    while True:
-        born_date = input("Please enter your date of birth: \n")
-        if born_date.__contains__('/'):
-            print(f"Date of birth:{born_date}")
-            return False
-        else:
-            print("Sorry please include format 00/00/000...")
-            validate_age()
-    return True
+    born_date = input("Please enter your date of birth: \n")
+    age_years = validate_age()
+    if born_date:
+        print(f"Date of birth:{born_date}")
+        print(f"You are {age_years} years old")
+    else:
+        print("Sorry please include format 00/00/000...")
+        return born_date
 
 
 def validate_age():
@@ -119,17 +116,14 @@ def validate_age():
     Validates and calculates age of the user
     by the date of birth.
     """
-    while True:
-        born_date = input()
-        day, month, year = born_date.split('/')
-        birth_date = datetime.datetime(int(year), int(month), int(day))
-        age = (datetime.datetime.now() - birth_date)
-        convertdays = int(age.days)
-        if age == int(convertdays/365):
-            print(f"Your are {age} years old...\n")
-        else:
-            print("No age to display...\n")
-    return True
+    born_date = input()
+    day, month, year = born_date.split('/')
+    birth_date = datetime.datetime(int(year), int(month), int(day))
+    age = (datetime.datetime.now() - birth_date)
+    convertdays = int(age.days)
+    age = int(convertdays/365)
+    print(f"Your are {age} years old...\n")
+    return age
 
 
 def validate_email():
@@ -218,6 +212,7 @@ def confirmation_data():
     """
     print(f"Name : {NAME}")
     print(f"DOB : {BORN}")
+    print(f"You are {AGE} years old")
     print(f"Email : {EMAIL}")
     print(f"Your message :{SYMPTOMS}")
     print(f"Your appointment is on {DATE} at {TIME}:00 ")
@@ -307,7 +302,8 @@ def get_time():
 # Declare global variables used to return all the details
 welcome_message()
 NAME = get_name()
-BORN = get_age()
+BORN = get_birth_date()
+AGE = validate_age()
 EMAIL = validate_email()
 SYMPTOMS = validate_symptoms()
 DATE = pick_a_date()
@@ -322,7 +318,7 @@ def main():
     """
     welcome_message()
     get_name()
-    get_age()
+    get_birth_date()
     validate_age()
     validate_email()
     validate_symptoms()
