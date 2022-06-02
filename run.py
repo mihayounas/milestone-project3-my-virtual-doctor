@@ -97,33 +97,27 @@ def validate_name():
 
 def get_birth_date():
     """
-    Gets the date of birth input and validates
-    the right date format.
-    Calculates age in years .
-    """
-    born_date = input("Please enter your date of birth: \n")
-    age_years = validate_age()
-    if born_date:
-        print(f"Date of birth:{born_date}")
-        print(f"You are {age_years} years old")
-    else:
-        print("Sorry please include format 00/00/000...")
-        return born_date
-
-
-def validate_age():
-    """
     Validates and calculates age of the user
     by the date of birth.
     """
-    born_date = input()
-    day, month, year = born_date.split('/')
+    date_input = input("Please enter your date of b: ")
+    format_str = "%d/%m/%Y"
+
+    try:
+        datetime.datetime.strptime(date_input, format_str)
+        print("This is the correct date string format.")
+    except ValueError:
+        print(
+            "This is the incorrect date string format.It should be "
+            "DD/MM/YYYY...\n"
+            )
+    day, month, year = date_input.split('/')
     birth_date = datetime.datetime(int(year), int(month), int(day))
     age = (datetime.datetime.now() - birth_date)
     convertdays = int(age.days)
     age = int(convertdays/365)
     print(f"Your are {age} years old...\n")
-    return age
+    return date_input
 
 
 def validate_email():
@@ -139,7 +133,7 @@ def validate_email():
             return False
         else:
             print("Sorry your email is not valid,please try again...\n")
-    return True
+            return email_val
 
 
 def validate_symptoms():
@@ -212,7 +206,6 @@ def confirmation_data():
     """
     print(f"Name : {NAME}")
     print(f"DOB : {BORN}")
-    print(f"You are {AGE} years old")
     print(f"Email : {EMAIL}")
     print(f"Your message :{SYMPTOMS}")
     print(f"Your appointment is on {DATE} at {TIME}:00 ")
@@ -303,7 +296,6 @@ def get_time():
 welcome_message()
 NAME = get_name()
 BORN = get_birth_date()
-AGE = validate_age()
 EMAIL = validate_email()
 SYMPTOMS = validate_symptoms()
 DATE = pick_a_date()
@@ -319,7 +311,6 @@ def main():
     welcome_message()
     get_name()
     get_birth_date()
-    validate_age()
     validate_email()
     validate_symptoms()
     pick_a_date()
