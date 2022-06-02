@@ -3,6 +3,7 @@ This module imports date and time
 """
 import datetime
 import re
+import calendar
 # import Pyfiglet library for text to fonts functionality
 from pyfiglet import Figlet
 # import Termcolor library for text colours
@@ -153,7 +154,6 @@ def validate_symptoms():
         validate_symptoms()
     else:
         print("Thank you for your details,please chose a date...\n")
-        pick_a_date()
 
     return symptoms_val
 
@@ -244,43 +244,19 @@ def pick_a_date():
     """
     Helps the patient pick a available date and time
     """
-    date_chosen = input(
-        "Please enter the date you would like"
-        "in this format dd/mm/yyyy :...\n"
+    month_inp = int(
+        input("Please enter the month you wish to book for...\n : ")
         )
-    day, month, year = date_chosen.split('/')
-    day = int(day)
-    month = int(month)
-    year = int(year)
-    if(
-        month == 1 or month == 3 or month == 5 or month == 7 or
-        month == 10 or month == 12
-    ):
-        max1 = 31
-    elif (month == 4 or month == 6 or month == 9 or month == 11):
-        max1 = 30
-    elif (year % 4 == 0 and year % 100 != 0 or year % 400 == 0):
-        max1 = 29
+    year_inp = int(input("Please enter the year...\n "))
+    print(calendar.month(year_inp, month_inp))
+    day_inp = input("Enter a day from the calendar...\n")
+    print(f"Your booking date is {day_inp}/{month_inp}/{year_inp}...\n")
+    pick_choice = input("Please press '1' to confirm or 'e' to exit")
+    if pick_choice == '1':
+        confirmation_data()
     else:
-        max1 = 28
-    if(month < 1 or month != 12):
-        print("Date is invalid ,please try again...\n")
-        return date_chosen
-    elif(day < 1 or day > max1):
-        print("Date is invalid ,please try again...\n")
-        return date_chosen
-    elif (day == max1 and month == 12):
-        day = 1
-        month = month + 1
-        print(f"Date is valid and available {date_chosen}")
-    elif (day == 31 and month == 12):
-        day = 1
-        month = 1
-        year = year + 1
-        print(f"Date is valid and available {date_chosen}")
-    else:
-        day = day + 1
-        print(f"Date is valid and available {date_chosen}")
+        exit_screen()
+    return (f"{day_inp}/{month_inp}/{year_inp}")
 
 
 def get_time():
