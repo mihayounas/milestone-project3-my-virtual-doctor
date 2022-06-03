@@ -228,9 +228,9 @@ def pick_a_date():
     """
     chosen_date = validate_booking_date()
     if chosen_date:
-        print(f"Your {chosen_date} is available...")
+        print(f"Your {chosen_date} is available...\n")
     else:
-        print(f"{chosen_date} is not valid please enter the date again...")
+        print(f"{chosen_date} is not valid please enter the date again...\n")
     return chosen_date
 
 
@@ -256,7 +256,6 @@ def validate_booking_date():
         else:
             print("Sorry your date is invalid,please try again...\n")
     return True
-    
 
 
 # Gat time for the appoinment
@@ -331,13 +330,12 @@ def confirmation_data():
     Confirms and return the input data before
     sending the confirmation email.
     """
+    print("Please check your details bellow...\n")
     print(f"Name : {NAME}\n")
     print(f"DOB : {BORN}\n")
     print(f"Email : {EMAIL}\n")
-    print(f"Your personalised message {SYMPTOMS}\n")
-    print(f"Your date is: {DATE}")
-    print(f"Your appointment is on at {TIME}:00 \n")
-    # print(f"Your appointment is on {date} at {chosen_time}")
+    print(f"Your personalised message to the doctor : {SYMPTOMS}\n")
+    print(f"Your appointment date and time : {DATE} at {TIME}:00 ...\n")
     change_app = input(
         "If you wish to make any changes press '1' or 'e' to exit...\n"
         )
@@ -364,6 +362,7 @@ def admin_login():
 
 
 # Declare global variables used to return all the details
+# in confirmation_data function and display it at the end
 welcome_message()
 NAME = get_name()
 BORN = get_birth_date()
@@ -371,6 +370,7 @@ EMAIL = get_email()
 SYMPTOMS = get_symptoms()
 DATE = pick_a_date()
 TIME = get_time()
+confirmation_data()
 update_worksheet()
 
 
@@ -385,6 +385,7 @@ def main():
     get_symptoms()
     pick_a_date()
     get_time()
+    confirmation_data()
     update_worksheet()
 
 
