@@ -96,6 +96,11 @@ def validate_name():
 
 
 def get_birth_date():
+    """
+    Getting the date of birth and validting is,
+    returning date of birth if it's matching
+    the format.
+    """
     date_val = val_date()
     if date_val:
         print(f"Your date of birth is : {date_val}\n")
@@ -126,6 +131,20 @@ def val_date():
     return True
 
 
+def get_email():
+    """
+    Getting the email address and validating the format
+    if is matching then return the user email if not
+    then restart and getting the email again.
+    """
+    email = validate_email()
+    if email:
+        print(f"Your email is :{email}")
+    else:
+        print("Sorry your email is not valid,please try again...\n")
+    return email
+
+
 def validate_email():
     """
     Validates email addresses by checking
@@ -135,8 +154,7 @@ def validate_email():
         email_val = input("Please enter a valid email address:\n")
         regex = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+.[a-z]{1,3}$"
         if re.search(regex, email_val):
-            print(f"Valid Email : {email_val}")
-            return False
+            return email_val
         else:
             print("Sorry your email is not valid,please try again...\n")
     return True
@@ -166,7 +184,7 @@ def update_worksheet():
     details = SHEET.worksheet("details")
     row = [
         f"{NAME}", f"{BORN}", f"{EMAIL}",
-        f"{SYMPTOMS}", f"{DATE}", f"{TIME}:00"
+        f"{TIME}:00"
         ]
     index = 2
     details.insert_row(row, index)
@@ -212,8 +230,8 @@ def confirmation_data():
     print(f"Name : {NAME}")
     print(f"DOB : {BORN}")
     print(f"Email : {EMAIL}")
-    print(f"Your message :{SYMPTOMS}")
-    print(f"Your appointment is on {DATE} at {TIME}:00 ")
+    print("Your message :")
+    print(f"Your appointment is on at {TIME}:00 ")
     # print(f"Your appointment is on {date} at {chosen_time}")
     change_app = input(
         "If you wish to make any changes press '1' or 'e' to exit...\n"
@@ -256,7 +274,6 @@ def pick_a_date():
         confirmation_data()
     else:
         exit_screen()
-    return (f"{day_inp}/{month_inp}/{year_inp}")
 
 
 def get_time():
@@ -277,12 +294,9 @@ def get_time():
 welcome_message()
 NAME = get_name()
 BORN = get_birth_date()
-EMAIL = validate_email()
-SYMPTOMS = validate_symptoms()
-DATE = pick_a_date()
+EMAIL = get_email()
 TIME = get_time()
 update_worksheet()
-confirmation_data()
 
 
 def main():
@@ -297,7 +311,6 @@ def main():
     pick_a_date()
     get_time()
     update_worksheet()
-    confirmation_data()
 
 
 main()
