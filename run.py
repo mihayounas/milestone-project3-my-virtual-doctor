@@ -190,10 +190,10 @@ def validate_symptoms():
     while True:
         symptoms_val = input("Please enter you symptoms bellow :\n")
         # Only accept a proper message description
-        if len(symptoms_val) < 8:
-            return False
+        if len(symptoms_val) > 8:
+            return symptoms_val
         else:
-            print("Message stored...\n")
+            print("Please add more details for your doctor...\n")
     return True
 
 
