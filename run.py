@@ -184,7 +184,7 @@ def update_worksheet():
     details = SHEET.worksheet("details")
     row = [
         f"{NAME}", f"{BORN}", f"{EMAIL}",
-        f"{TIME}:00"
+        f"{DATE}", f"{TIME}:00"
         ]
     index = 2
     details.insert_row(row, index)
@@ -230,7 +230,7 @@ def confirmation_data():
     print(f"Name : {NAME}")
     print(f"DOB : {BORN}")
     print(f"Email : {EMAIL}")
-    print("Your message :")
+    print(f"Your date is: {DATE}")
     print(f"Your appointment is on at {TIME}:00 ")
     # print(f"Your appointment is on {date} at {chosen_time}")
     change_app = input(
@@ -259,21 +259,30 @@ def admin_login():
 
 
 def pick_a_date():
+    chosen_date = validate_booking_date()
+    if chosen_date:
+        print(f"Your {chosen_date} is available...")
+    else:
+        print(f"{chosen_date} is not valid please enter the date again...")
+    return chosen_date
+
+
+def validate_booking_date():
     """
     Helps the patient pick a available date and time
     """
-    month_inp = int(
-        input("Please enter the month you wish to book for...\n : ")
+    while True:
+        month_inp = int(
+            input("Please enter the month you wish to book for...\n : ")
         )
-    year_inp = int(input("Please enter the year...\n "))
-    print(calendar.month(year_inp, month_inp))
-    day_inp = input("Enter a day from the calendar...\n")
-    print(f"Your booking date is {day_inp}/{month_inp}/{year_inp}...\n")
-    pick_choice = input("Please press '1' to confirm or 'e' to exit")
-    if pick_choice == '1':
-        confirmation_data()
+        year_inp = int(input("Please enter the year...\n "))
+        print(calendar.month(year_inp, month_inp))
+        day_inp = input("Enter a day from the calendar...\n")
+    if day_inp.__contains__("/") and month_inp.__contains__("/") and year_inpx.__contains__("/"):
+        return False
     else:
-        exit_screen()
+        print(f"Your chosen date is: {date}")
+    return True
 
 
 def get_time():
@@ -295,6 +304,7 @@ welcome_message()
 NAME = get_name()
 BORN = get_birth_date()
 EMAIL = get_email()
+DATE = pick_a_date()
 TIME = get_time()
 update_worksheet()
 
