@@ -194,7 +194,8 @@ def validate_email():
         else:
             print(
                 colored(
-                    "Sorry your email is not valid,please try again...\n"
+                    "Sorry your email is not valid,please try again...\n",
+                    'red'
                     )
                     )
     return True
