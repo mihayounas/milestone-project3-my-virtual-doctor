@@ -6,7 +6,6 @@ This app's purpose is to help patients to book their appointments
 change or cancel it.
 
 The information of the user is saved into a spreadsheet on Google drive.
-An email will be sent to confirm after collecting all the data.
 """
 import datetime
 import re
@@ -53,14 +52,18 @@ def welcome_message():
     print('Welcome to My Virtual Doctor !\n')
     print('An app which helps you book your doctor appointments fast!\n')
     print('To use this app, press enter after each choice.\n')
-    print('After confirming all your details you will receive\n')
-    print('a confirmation email!\n')
+    print('After confirming all your details you will be able\n')
+    print('to see, edit or cancel your appoinment...!\n')
     while True:
         admin_or_patient = input(
             'Please press "r" to register an appointment or "a"'
             'for admin area:\n'
         )
         if admin_or_patient == 'r':
+            main()
+            return False
+        if admin_or_patient == 'a':
+            admin_login()
             return False
         print('Invalid entry, please try again...\n')
     return True
@@ -375,11 +378,47 @@ def admin_login():
     or open the screen to manage the weekly shift.
     """
     print("-" * 120)
+    admin_pass = 'Admin'
+    inputs = 0
+    admin_welcome = 'Welcome to Admin Department'
+    welcome_msg(admin_welcome)
+    while True:
+        admin_pass_input = input(
+            "Please enter your password to log in...\n"
+            )
+        if inputs == 3:
+            print(
+                "You have reached maximum attempts, password is invalid..."
+                "Please start again...\n"
+                )
+            welcome_message()
+            return False
+        if admin_pass_input == admin_pass:
+            print("Valid Password...\n")
+            return False
+        else:
+            print('\nWrong password, please try again\n')
+            inputs += 1
+    return True
+
+
+def asses_patient_or_shift():
+    print("-" * 120)
+    admin_val = admin_login()
     asses_or_shift = input(
-        "To asses a patient press 'a' or 's' to manage shift...\n"
-    )
+            "To asses a patient press 'a' or 's' to manage shift...\n"
+        )
+    if admin_val:
+        return admin_val
+    else:
+        print("not valid")
     if asses_or_shift == 'a':
-        welcome_message()
+        admin_name = input("Please enter your name...\n")
+        # Asses patients over the phone or over the counter
+        # and enter their details
+        main()
+    else:
+        print(f"Welcome {admin_name}, you can now manage shift...\n")
 
 
 # Declare global variables used to return all the details
@@ -399,7 +438,6 @@ def main():
     """
     Run all the functions
     """
-    welcome_message()
     get_name()
     get_birth_date()
     validate_email()
