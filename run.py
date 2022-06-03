@@ -95,7 +95,10 @@ def validate_name():
         elif names.__contains__(' '):
             return names
         else:
-            print("Please enter your first and last name...\n")
+            print(
+                "Invalid please try again...\n"
+                "First and Last name with space between...\n"
+            )
     return True
 
 
