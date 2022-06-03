@@ -1,5 +1,12 @@
 """
-This module imports date and time
+Main My Virtual Doctor file for a command line interface appointments
+system for patients and admins.
+
+This app's purpose is to help patients to book their appointments
+change or cancel it.
+
+The information of the user is saved into a spreadsheet on Google drive.
+An email will be sent to confirm after collecting all the data.
 """
 import datetime
 import re
@@ -66,11 +73,13 @@ def get_name():
     Gets name input from the user
     """
     # Gets a validated name to display
+    print("-" * 120)
     name = validate_name()
     if name:
         print(f'Welcome {name}...\n')
     else:
         print("Name not valid,please try again...\n")
+    print("-" * 120)
     return name
 
 
@@ -105,10 +114,11 @@ def validate_name():
 # Get DATE of birth input
 def get_birth_date():
     """
-    Getting the date of birth and validting is,
+    Getting the date of birth and validating is,
     returning date of birth if it's matching
     the format.
     """
+    print("-" * 120)
     # Gets a validated date of birth and display it
     date_val = val_date()
     if date_val:
@@ -149,6 +159,7 @@ def get_email():
     if is matching then return the user email if not
     then restart and getting the email again.
     """
+    print("-" * 120)
     # Get the email from the user after the validation and display it
     email = validate_email()
     if email:
@@ -182,6 +193,7 @@ def get_symptoms():
     symptoms for the doctor to know before hand what to
     discuss on their appointment.
     """
+    print("-" * 120)
     # Get user symptoms and display a response message
     user_symptoms = validate_symptoms()
     if user_symptoms:
@@ -229,6 +241,7 @@ def pick_a_date():
     """
     Getting a booking date for the user.
     """
+    print("-" * 120)
     chosen_date = validate_booking_date()
     if chosen_date:
         print(f"Your {chosen_date} is available...\n")
@@ -267,6 +280,7 @@ def get_time():
     Gets the time input for the appointment
     and diplays it.
     """
+    print("-" * 120)
     time_choice = validate_time()
     if time_choice:
         print("Time is valid...\n")
@@ -302,6 +316,7 @@ def exit_menu():
     he can return to the main menu and start
     again or can exit the screen.
     """
+    print("-" * 120)
     menu_exit = input("Please press 'm' for main menu or 'e' to exit...\n")
     if menu_exit == "m":
         main()
@@ -317,6 +332,7 @@ def exit_screen():
     Also there is an option to close it and take them to
     the main screen.
     """
+    print("-" * 120)
     print("Thank you for visiting our application !\n")
     print("What would you like to do next ?\n")
     exit_choice = input(
@@ -333,6 +349,7 @@ def confirmation_data():
     Confirms and return the input data before
     sending the confirmation email.
     """
+    print("-" * 120)
     print("Please check your details bellow...\n")
     print(f"Name : {NAME}\n")
     print(f"DOB : {BORN}\n")
@@ -357,6 +374,7 @@ def admin_login():
     and will have a choice of asses the patient
     or open the screen to manage the weekly shift.
     """
+    print("-" * 120)
     asses_or_shift = input(
         "To asses a patient press 'a' or 's' to manage shift...\n"
     )
