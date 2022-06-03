@@ -107,9 +107,11 @@ def validate_name():
             return names
         else:
             print(
-                "Invalid please try again...\n"
-                "First and Last name with space between...\n"
-            )
+                colored(
+                    "Invalid entry, please try again...\n"
+                    "First and Last name with space between...\n", 'red'
+                    )
+                    )
     return True
 
 
@@ -126,7 +128,7 @@ def get_birth_date():
     if date_val:
         print(f"Your date of birth is : {date_val}\n")
     else:
-        print("Please enter the right format DD/MM/YYY...\n")
+        print(colored("Please enter the right format DD/MM/YYY...\n", 'red'))
     return date_val
 
 
@@ -148,9 +150,11 @@ def val_date():
             return date_input
         else:
             print(
-                "This is the incorrect date format.It should be "
-                "DD/MM/YYYY...\n"
-                )
+                colored(
+                    "This is the incorrect date format.It should be "
+                    "DD/MM/YYYY...\n", 'red'
+                    )
+                    )
     return True
 
 
@@ -167,7 +171,11 @@ def get_email():
     if email:
         print(f"Your email is :{email}")
     else:
-        print("Sorry your email is not valid,please try again...\n")
+        print(
+            colored(
+                "Sorry your email is not valid,please try again...\n", 'red'
+            )
+            )
     return email
 
 
@@ -184,7 +192,11 @@ def validate_email():
         if re.search(regex, email_val):
             return email_val
         else:
-            print("Sorry your email is not valid,please try again...\n")
+            print(
+                colored(
+                    "Sorry your email is not valid,please try again...\n"
+                    )
+                    )
     return True
 
 
@@ -201,7 +213,11 @@ def get_symptoms():
     if user_symptoms:
         print("Thank you for your details,please chose a date...\n")
     else:
-        print("Please add more details for your doctor...\n")
+        print(
+            colored(
+                "Please add more details for your doctor...\n", 'pink'
+                )
+                )
     return user_symptoms
 
 
@@ -218,7 +234,11 @@ def validate_symptoms():
         if len(symptoms_val) > 8:
             return symptoms_val
         else:
-            print("Please add more details for your doctor...\n")
+            print(
+                colored(
+                    "Please add more details for your doctor...\n", 'pink'
+                    )
+                    )
     return True
 
 
@@ -272,7 +292,11 @@ def validate_booking_date():
         if date.__contains__('/'):
             return date
         else:
-            print("Sorry your date is invalid,please try again...\n")
+            print(
+                colored(
+                    "Sorry your date is invalid,please try again...\n", 'red'
+                )
+                )
     return True
 
 
@@ -290,9 +314,11 @@ def get_time():
         print("Time available...\n")
     else:
         print(
-            "Sorry time is invalid please try again,"
-            "input only times between 9-18...\n"
-        )
+            colored(
+                "Sorry time is invalid please try again,"
+                "input only times between 9-18...\n"
+                )
+                )
     return time_choice
 
 
@@ -307,7 +333,11 @@ def validate_time():
             print("Valid time...\n")
             return time_val
         else:
-            print("Time chosen is not available,please try again...\n")
+            print(
+                colored(
+                    "Time chosen is not available,please try again...\n", 'red'
+                    )
+                    )
     return True
 
 
@@ -319,7 +349,11 @@ def exit_menu():
     again or can exit the screen.
     """
     print("-" * 120)
-    menu_exit = input("Please press 'm' for main menu or 'e' to exit...\n")
+    menu_exit = input(
+        colored(
+            "Please press 'm' for main menu or 'e' to exit...\n", 'blue'
+            )
+            )
     if menu_exit == "m":
         main()
     else:
@@ -343,7 +377,6 @@ def exit_screen():
     if exit_choice == "1":
         return False
     print("Thank you for your appoinment!\n")
-    main()
 
 
 def confirmation_data():
