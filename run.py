@@ -60,10 +60,9 @@ def welcome_message():
             'for admin area:\n'
         )
         if admin_or_patient == 'r':
-            main()
             return False
         if admin_or_patient == 'a':
-            admin_login()
+            asses_patient_or_shift()
             return False
         print('Invalid entry, please try again...\n')
     return True
@@ -371,6 +370,55 @@ def confirmation_data():
 # Taking user's Admin details
 
 
+def admin_shift_management():
+    """
+    Takes admin requests and store it into the spreadsheet
+    for the managers to check and approve.
+    """
+    # Takes admin name and validates it and then takes patient details
+    admin_name = validate_name()
+    if admin_name:
+        print(f"Welcome {admin_name}, what would you like to do?...")
+        message = input(
+            "Please enter your request bellow, to be checked and approved"
+            " by manager on shift...\n"
+            )
+        print(
+            f"Your message: [{message}] will be checked and manager"
+            " will approve it shortly...\n"
+            )
+        exit_menu()
+    else:
+        print("Name not valid,please try again...\n")
+    print("-" * 120)
+    return admin_name
+
+
+def asses_patient_or_shift():
+    """
+    Gets the choice from the admin if he wants to asses patient
+    or manage the shift and holidays requests.
+    """
+    print("-" * 120)
+    admin_val = admin_login()
+    asses_or_shift = input(
+            "To asses a patient press 'a' or 's' to manage shift...\n"
+        )
+    if admin_val:
+        return admin_val
+    else:
+        print("Logged in ...\n")
+    if asses_or_shift == 'a':
+        print(
+            "Please assess your patients carefully...\n"
+            )
+        get_name()
+        # Asses patients over the phone or over the counter
+        # and enter their details
+    if asses_or_shift == 's':
+        admin_shift_management()
+
+
 def admin_login():
     """
     This function will enter the admin only area
@@ -380,7 +428,7 @@ def admin_login():
     print("-" * 120)
     admin_pass = 'Admin'
     inputs = 0
-    admin_welcome = 'Welcome to Admin Department'
+    admin_welcome = 'Welcome Admin'
     welcome_msg(admin_welcome)
     while True:
         admin_pass_input = input(
@@ -402,42 +450,11 @@ def admin_login():
     return True
 
 
-def asses_patient_or_shift():
-    print("-" * 120)
-    admin_val = admin_login()
-    asses_or_shift = input(
-            "To asses a patient press 'a' or 's' to manage shift...\n"
-        )
-    if admin_val:
-        return admin_val
-    else:
-        print("not valid")
-    if asses_or_shift == 'a':
-        admin_name = input("Please enter your name...\n")
-        # Asses patients over the phone or over the counter
-        # and enter their details
-        main()
-    else:
-        print(f"Welcome {admin_name}, you can now manage shift...\n")
-
-
-# Declare global variables used to return all the details
-# in confirmation_data function and display it at the end
-welcome_message()
-NAME = get_name()
-BORN = get_birth_date()
-EMAIL = get_email()
-SYMPTOMS = get_symptoms()
-DATE = pick_a_date()
-TIME = get_time()
-confirmation_data()
-update_worksheet()
-
-
 def main():
     """
     Run all the functions
     """
+    welcome_message()
     get_name()
     get_birth_date()
     validate_email()
@@ -449,3 +466,14 @@ def main():
 
 
 main()
+# Declare global variables used to return all the details
+# in confirmation_data function and display it at the end
+welcome_message()
+NAME = get_name()
+BORN = get_birth_date()
+EMAIL = get_email()
+SYMPTOMS = get_symptoms()
+DATE = pick_a_date()
+TIME = get_time()
+confirmation_data()
+update_worksheet()
