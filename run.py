@@ -221,6 +221,7 @@ def update_worksheet():
     details.insert_row(row, index)
 
 
+# Pick an appointment date and validate it
 def pick_a_date():
     """
     Getting a booking date for the user.
@@ -246,26 +247,50 @@ def validate_booking_date():
         if year_inp >= 2022:
             print(calendar.month(year_inp, month_inp))
         else:
-            print("Sorry you have to pick current year 2022 or later...")
+            print("Sorry you have to pick current year 2022 or later...\n")
             return month_inp
         day_inp = input("Enter a day from the calendar...\n")
         date = f"{day_inp}/{month_inp}/{year_inp}"
         if date.__contains__('/'):
             return date
+        else:
+            print("Sorry your date is invalid,please try again...\n")
+    return True
+    
 
 
+# Gat time for the appoinment
 def get_time():
+    """
+    Gets the time input for the appointment
+    and diplays it.
+    """
+    time_choice = validate_time()
+    if time_choice:
+        print("Time is valid...\n")
+        print("Checking if is available...\n")
+        print("Time available...\n")
+    else:
+        print(
+            "Sorry time is invalid please try again,"
+            "input only times between 9-18...\n"
+        )
+    return time_choice
+
+
+def validate_time():
     """
     Gets time input and validates that
     time is in a timeframe 9 - 18
     """
-    time_val = input("Please choose a time between 9 - 18...\n")
-    if int(time_val) in range(9, 19):
-        print("Time chosen is not available,please try again...\n")
-        return time_val
-    else:
-        print("Valid time...\n")
-    return time_val
+    while True:
+        time_val = input("Please choose a time between 9 - 18...\n")
+        if int(time_val) in range(9, 19):
+            print("Valid time...\n")
+            return time_val
+        else:
+            print("Time chosen is not available,please try again...\n")
+    return True
 
 
 # exit options
