@@ -60,6 +60,7 @@ def welcome_message():
 
 
 # Starting by taking patient's details
+# NAME input
 def get_name():
     """
     Gets name input from the user
@@ -73,6 +74,7 @@ def get_name():
     return name
 
 
+# NAME validation
 def validate_name():
     """
     Get input details from the customer.
@@ -97,6 +99,7 @@ def validate_name():
     return True
 
 
+# Get DATE of birth input
 def get_birth_date():
     """
     Getting the date of birth and validting is,
@@ -112,6 +115,7 @@ def get_birth_date():
     return date_val
 
 
+# Validate DATE of birth
 def val_date():
     """
     Validates and calculates age of the user
@@ -135,6 +139,7 @@ def val_date():
     return True
 
 
+# Get EMAIL input from the user
 def get_email():
     """
     Getting the email address and validating the format
@@ -150,6 +155,7 @@ def get_email():
     return email
 
 
+# Validate EMAIL input
 def validate_email():
     """
     Validates email addresses by checking
@@ -166,6 +172,7 @@ def validate_email():
     return True
 
 
+# Get SYMPTOMS input
 def get_symptoms():
     """
     Gets the user personalised message describing his
@@ -181,6 +188,7 @@ def get_symptoms():
     return user_symptoms
 
 
+# Validate SYMPTOMS input
 def validate_symptoms():
     """
     Checks if symptoms message is descriptive enough
@@ -197,6 +205,7 @@ def validate_symptoms():
     return True
 
 
+# Update and store the details of the user in the spreadsheet
 def update_worksheet():
     """
     Updates the right worksheet in order
@@ -212,6 +221,54 @@ def update_worksheet():
     details.insert_row(row, index)
 
 
+def pick_a_date():
+    """
+    Getting a booking date for the user.
+    """
+    chosen_date = validate_booking_date()
+    if chosen_date:
+        print(f"Your {chosen_date} is available...")
+    else:
+        print(f"{chosen_date} is not valid please enter the date again...")
+    return chosen_date
+
+
+def validate_booking_date():
+    """
+    Helps the patient pick a available date and
+    displaying a calendar for checking the days.
+    """
+    while True:
+        month_inp = int(
+            input("Please enter the month you wish to book for...\n : ")
+        )
+        year_inp = int(input("Please enter the year...\n "))
+        if year_inp >= 2022:
+            print(calendar.month(year_inp, month_inp))
+        else:
+            print("Sorry you have to pick current year 2022 or later...")
+            return month_inp
+        day_inp = input("Enter a day from the calendar...\n")
+        date = f"{day_inp}/{month_inp}/{year_inp}"
+        if date.__contains__('/'):
+            return date
+
+
+def get_time():
+    """
+    Gets time input and validates that
+    time is in a timeframe 9 - 18
+    """
+    time_val = input("Please choose a time between 9 - 18...\n")
+    if int(time_val) in range(9, 19):
+        print("Time chosen is not available,please try again...\n")
+        return time_val
+    else:
+        print("Valid time...\n")
+    return time_val
+
+
+# exit options
 def exit_menu():
     """
     The exit menu will offer a choice to user,
@@ -279,53 +336,6 @@ def admin_login():
     )
     if asses_or_shift == 'a':
         welcome_message()
-
-
-def pick_a_date():
-    """
-    Getting a booking date for the user.
-    """
-    chosen_date = validate_booking_date()
-    if chosen_date:
-        print(f"Your {chosen_date} is available...")
-    else:
-        print(f"{chosen_date} is not valid please enter the date again...")
-    return chosen_date
-
-
-def validate_booking_date():
-    """
-    Helps the patient pick a available date and
-    displaying a calendar for checking the days.
-    """
-    while True:
-        month_inp = int(
-            input("Please enter the month you wish to book for...\n : ")
-        )
-        year_inp = int(input("Please enter the year...\n "))
-        if year_inp >= 2022:
-            print(calendar.month(year_inp, month_inp))
-        else:
-            print("Sorry you have to pick current year 2022 or later...")
-            return month_inp
-        day_inp = input("Enter a day from the calendar...\n")
-        date = f"{day_inp}/{month_inp}/{year_inp}"
-        if date.__contains__('/'):
-            return date
-
-
-def get_time():
-    """
-    Gets time input and validates that
-    time is in a timeframe 9 - 18
-    """
-    time_val = input("Please choose a time between 9 - 18...\n")
-    if int(time_val) in range(9, 19):
-        print("Time chosen is not available,please try again...\n")
-        return time_val
-    else:
-        print("Valid time...\n")
-    return time_val
 
 
 # Declare global variables used to return all the details
