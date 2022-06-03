@@ -28,6 +28,7 @@ def welcome_msg(text):
     """
     Print banner msg using Figlet font.
     """
+    # Displays a welcome message in blue color Figlet
     font = Figlet(font="ogre")
     print("-" * 120)
     print(colored(font.renderText(text), "blue"))
@@ -56,13 +57,14 @@ def welcome_message():
             return False
         print('Invalid entry, please try again...\n')
     return True
+
+
 # Starting by taking patient's details
-
-
 def get_name():
     """
     Gets name input from the user
     """
+    # Gets a validated name to display
     name = validate_name()
     if name:
         print(f'Welcome {name}...\n')
@@ -101,6 +103,7 @@ def get_birth_date():
     returning date of birth if it's matching
     the format.
     """
+    # Gets a validated date of birth and display it
     date_val = val_date()
     if date_val:
         print(f"Your date of birth is : {date_val}\n")
@@ -119,6 +122,7 @@ def val_date():
             "Please enter your date of birth in this "
             "format DD/MM/YYYY:\n"
         )
+        # Only accept if it contains a /
         if date_input.__contains__("/"):
             format_str = "%d/%m/%Y"
             datetime.datetime.strptime(date_input, format_str)
@@ -137,6 +141,7 @@ def get_email():
     if is matching then return the user email if not
     then restart and getting the email again.
     """
+    # Get the email from the user after the validation and display it
     email = validate_email()
     if email:
         print(f"Your email is :{email}")
@@ -153,11 +158,27 @@ def validate_email():
     while True:
         email_val = input("Please enter a valid email address:\n")
         regex = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+.[a-z]{1,3}$"
+        # Only accept if it's matching the regex format
         if re.search(regex, email_val):
             return email_val
         else:
             print("Sorry your email is not valid,please try again...\n")
     return True
+
+
+def get_symptoms():
+    """
+    Gets the user personalised message describing his
+    symptoms for the doctor to know before hand what to
+    discuss on their appointment.
+    """
+    # Get user symptoms and display a response message
+    user_symptoms = validate_symptoms()
+    if user_symptoms:
+        print("Thank you for your details,please chose a date...\n")
+    else:
+        print("Please add more details for your doctor...\n")
+    return user_symptoms
 
 
 def validate_symptoms():
@@ -166,14 +187,14 @@ def validate_symptoms():
     and makes sure that it gives the right information
     for the appointment.
     """
-    symptoms_val = input("Please enter you symptoms bellow :\n")
-    if len(symptoms_val) < 5:
-        print("Please add more details for your doctor.\n")
-        validate_symptoms()
-    else:
-        print("Thank you for your details,please chose a date...\n")
-
-    return symptoms_val
+    while True:
+        symptoms_val = input("Please enter you symptoms bellow :\n")
+        # Only accept a proper message description
+        if len(symptoms_val) < 8:
+            return False
+        else:
+            print("Message stored...\n")
+    return True
 
 
 def update_worksheet():
@@ -181,10 +202,11 @@ def update_worksheet():
     Updates the right worksheet in order
     to store patient details into the database.
     """
+    # Get all the details stored into the worksheet
     details = SHEET.worksheet("details")
     row = [
         f"{NAME}", f"{BORN}", f"{EMAIL}",
-        f"{DATE}", f"{TIME}:00"
+        f"{SYMPTOMS}", f"{DATE}", f"{TIME}:00"
         ]
     index = 2
     details.insert_row(row, index)
@@ -227,11 +249,12 @@ def confirmation_data():
     Confirms and return the input data before
     sending the confirmation email.
     """
-    print(f"Name : {NAME}")
-    print(f"DOB : {BORN}")
-    print(f"Email : {EMAIL}")
+    print(f"Name : {NAME}\n")
+    print(f"DOB : {BORN}\n")
+    print(f"Email : {EMAIL}\n")
+    print(f"Your personalised message {SYMPTOMS}\n")
     print(f"Your date is: {DATE}")
-    print(f"Your appointment is on at {TIME}:00 ")
+    print(f"Your appointment is on at {TIME}:00 \n")
     # print(f"Your appointment is on {date} at {chosen_time}")
     change_app = input(
         "If you wish to make any changes press '1' or 'e' to exit...\n"
@@ -259,6 +282,9 @@ def admin_login():
 
 
 def pick_a_date():
+    """
+    Getting a booking date for the user.
+    """
     chosen_date = validate_booking_date()
     if chosen_date:
         print(f"Your {chosen_date} is available...")
@@ -269,20 +295,23 @@ def pick_a_date():
 
 def validate_booking_date():
     """
-    Helps the patient pick a available date and time
+    Helps the patient pick a available date and
+    displaying a calendar for checking the days.
     """
     while True:
         month_inp = int(
             input("Please enter the month you wish to book for...\n : ")
         )
         year_inp = int(input("Please enter the year...\n "))
-        print(calendar.month(year_inp, month_inp))
+        if year_inp >= 2022:
+            print(calendar.month(year_inp, month_inp))
+        else:
+            print("Sorry you have to pick current year 2022 or later...")
+            return month_inp
         day_inp = input("Enter a day from the calendar...\n")
-    if day_inp.__contains__("/") and month_inp.__contains__("/") and year_inpx.__contains__("/"):
-        return False
-    else:
-        print(f"Your chosen date is: {date}")
-    return True
+        date = f"{day_inp}/{month_inp}/{year_inp}"
+        if date.__contains__('/'):
+            return date
 
 
 def get_time():
@@ -304,6 +333,7 @@ welcome_message()
 NAME = get_name()
 BORN = get_birth_date()
 EMAIL = get_email()
+SYMPTOMS = get_symptoms()
 DATE = pick_a_date()
 TIME = get_time()
 update_worksheet()
@@ -317,7 +347,7 @@ def main():
     get_name()
     get_birth_date()
     validate_email()
-    validate_symptoms()
+    get_symptoms()
     pick_a_date()
     get_time()
     update_worksheet()
