@@ -56,7 +56,7 @@ def welcome_message():
     print('to see, edit or cancel your appoinment...!\n')
     while True:
         admin_or_patient = input(
-            'Please press "r" to register an appointment or "a"'
+            'Please press "r" to register an appointment or "a" '
             'for admin area:\n'
         )
         if admin_or_patient == 'r':
@@ -336,7 +336,7 @@ def validate_time():
     time is in a timeframe 9 - 18
     """
     while True:
-        time_val = input("Please choose a time between 9 - 18...\n")
+        time_val = input("Please enter a time between 9 - 18...\n")
         if int(time_val) in range(9, 19):
             print("Valid time...\n")
             return time_val
@@ -422,19 +422,21 @@ def admin_shift_management():
     admin_name = validate_name()
     if admin_name:
         print(f"Welcome {admin_name}, what would you like to do?...")
+        get_shift_days()
+        get_shift_times()
         message = input(
             "Please enter your request bellow, to be checked and approved"
-            " by manager on shift...\n"
+            " by manager on shift make sure to include the dates you are "
+            "are requesting for...\n"
             )
         print(
             f"Your message: [{message}] will be checked and manager"
             " will approve it shortly...\n"
             )
-        exit_menu()
     else:
         print("Name not valid,please try again...\n")
-    print("-" * 120)
-    return admin_name
+        print("-" * 120)
+        return admin_name
 
 
 def asses_patient_or_shift():
@@ -493,6 +495,55 @@ def admin_login():
     return True
 
 
+def get_shift_days():
+    """
+    Gets information about each admin's personal shift
+    in order to get the infor into the spreadsheet
+    for the manager to analyse and approve.
+    """
+    shift_info = input(
+        "Please enter the days of the week that you work...\n"
+        )
+    return shift_info
+
+
+def get_shift_times():
+    """
+    Gets shift times from the admin and store it into the
+    spreadsheet for manager to assess...
+    """
+    shift_time = input("Please enter the shift times...\n")
+    if shift_time:
+        print("Thank you for your details...\n")
+        print("We can confirm that your data is correct...\n")
+    else:
+        print(
+            "Sorry this data does not match our records, please try again...\n"
+            )
+        return shift_time
+
+
+def admin_confirmation_data():
+    """
+    Collects all the data form the admin and displays it 
+    """
+
+ 
+def update_admin_worksheet():
+    """
+    Updates the admin worksheet in order
+    to store admin details into the database.
+    """
+    # Get all the details stored into the worksheet
+    details = SHEET.worksheet("admin")
+    row = [
+        f"{NAME}",
+        f"{SYMPTOMS}", f"{DATE}", f"{TIME}:00"
+        ]
+    index = 2
+    details.insert_row(row, index)
+
+
 # Declare global variables used to return all the details
 # in confirmation_data function and display it at the end
 welcome_message()
@@ -504,6 +555,7 @@ DATE = pick_a_date()
 TIME = get_time()
 confirmation_data()
 update_worksheet()
+ADMIN = admin_shift_management()
 
 
 def main():
