@@ -155,6 +155,7 @@ def val_date():
                     "DD/MM/YYYY...\n", 'red'
                     )
                     )
+            return date_input
     return True
 
 
@@ -280,8 +281,14 @@ def validate_booking_date():
     """
     while True:
         month_inp = int(
-            input("Please enter the month you wish to book for...\n : ")
+            input("Please enter the month you wish to book for 1-12...\n : ")
         )
+        if month_inp <= 12 and month_inp != 0:
+            print("Month input is valid...")
+            break
+        else:
+            print("Not valid...")
+            return month_inp
         year_inp = int(input("Please enter the year...\n "))
         if year_inp >= 2022:
             print(calendar.month(year_inp, month_inp))
@@ -377,7 +384,9 @@ def exit_screen():
         )
     if exit_choice == "1":
         return False
-    print("Thank you for your appoinment!\n")
+    else:
+        text = "Thank you!...GoodBye...exiting...\n"
+        welcome_msg(text)
 
 
 def confirmation_data():
@@ -484,6 +493,19 @@ def admin_login():
     return True
 
 
+# Declare global variables used to return all the details
+# in confirmation_data function and display it at the end
+welcome_message()
+NAME = get_name()
+BORN = get_birth_date()
+EMAIL = get_email()
+SYMPTOMS = get_symptoms()
+DATE = pick_a_date()
+TIME = get_time()
+confirmation_data()
+update_worksheet()
+
+
 def main():
     """
     Run all the functions
@@ -500,14 +522,3 @@ def main():
 
 
 main()
-# Declare global variables used to return all the details
-# in confirmation_data function and display it at the end
-welcome_message()
-NAME = get_name()
-BORN = get_birth_date()
-EMAIL = get_email()
-SYMPTOMS = get_symptoms()
-DATE = pick_a_date()
-TIME = get_time()
-confirmation_data()
-update_worksheet()
