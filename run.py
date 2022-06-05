@@ -128,9 +128,16 @@ def get_birth_date():
     date_val = val_date()
     if date_val:
         print(f"Your date of birth is : {date_val}\n")
+        day, month, year = date_val.split('/')
+        birth_date = datetime.datetime(int(year), int(month), int(day))
+        age_years = (datetime.datetime.now() - birth_date)
+        convertdays = int(age_years.days)
+        age_years = int(convertdays/365)
+        print(f"Your are {age_years} years old...\n")
+        return date_val
     else:
         print(colored("Please enter the right format DD/MM/YYY...\n", 'red'))
-    return date_val
+        return date_val
 
 
 # Validate DATE of birth
@@ -501,10 +508,19 @@ def exit_screen():
         "To manage your appointments press '1' or 'e' to close:\n"
         )
     if exit_choice == "1":
-        return False
+        get_user_values()
     else:
         text = "GoodBye...\n"
         welcome_msg(text)
+
+
+def get_user_values():
+    """
+    Gets all the values entered and allows changes .
+    """
+    headings = SHEET.worksheet('details').get_all_values()[0]
+    headings_dict = {headings[i]: [i] for i in range(len(headings))}
+    return headings_dict
 
 
 # Update and store the details of the user in the spreadsheet
@@ -531,10 +547,13 @@ def main_user():
     date_user = pick_a_date()
     time_user = get_time()
     data = [
-        name_user, birth_date, email_user, symptoms_user, date_user, time_user
+        name_user, birth_date, email_user, symptoms_user, date_user,
+        time_user
         ]
     update_worksheet(data, 'details')
-    exit_menu()
+    exit_screen()
+    values_data = get_user_values()
+    return values_data
 
 
 def main_admin():
