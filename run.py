@@ -63,6 +63,7 @@ def welcome_message():
             return False
         if admin_or_patient == 'a':
             asses_patient_or_shift()
+            main_admin()
             return False
         print('Invalid entry, please try again...\n')
     return True
@@ -321,7 +322,7 @@ def validate_time():
         time_val = input("Please enter a time between 9 - 18...\n")
         if int(time_val) in range(9, 19):
             print("Valid time...\n")
-            return time_val
+            return f"{time_val}:00"
         else:
             print(
                 colored(
@@ -331,25 +332,7 @@ def validate_time():
     return True
 
 
-def confirmation_data():
-    """
-    Confirms and return the input data before
-    sending the confirmation email.
-    """
-    print("-" * 120)
-    print("Please check your details bellow...\n")
-    change_app = input(
-        "If you wish to make any changes press '1' or 'e' to exit...\n"
-        )
-    if change_app == '1':
-        print("Thank you for your booking!\n")
-        return False
-    else:
-        text = "Thank you..."
-        welcome_msg(text)
 # Taking user's Admin details
-
-
 def val_admin_message():
     """
     Gets a message from the admin like a holiday
@@ -392,9 +375,7 @@ def admin_shift_management():
     else:
         print("Name not valid,please try again...\n")
         print("-" * 120)
-        return admin_name
-    update_admin_worksheet()
-    exit_menu()
+    return admin_name
 
 
 def asses_patient_or_shift():
@@ -415,7 +396,7 @@ def asses_patient_or_shift():
         print(
             "Please assess your patients carefully...\n"
             )
-        get_name()
+        main_user()
         # Asses patients over the phone or over the counter
         # and enter their details
     if asses_or_shift == 's':
@@ -483,7 +464,7 @@ def get_shift_times():
         print(
             "Sorry this data does not match our records, please try again...\n"
             )
-        return shift_time
+    return shift_time
 
 
 # exit options
@@ -522,27 +503,8 @@ def exit_screen():
     if exit_choice == "1":
         return False
     else:
-        text = "GoodBye...exiting...\n"
+        text = "GoodBye...\n"
         welcome_msg(text)
-
-
-def update_admin_worksheet():
-    """
-    Updates the admin worksheet in order
-    to store admin details into the database.
-    """
-    # Get all the details stored into the worksheet
-    admin_input_name = admin_shift_management()
-    shift_days = get_shift_days()
-    shift_times = get_shift_times()
-    admin_mess = val_admin_message()
-    admin = SHEET.worksheet("admin")
-    row = [
-        f"{admin_input_name}", f"{shift_days}", f"{shift_times}",
-        f"{admin_mess}"
-        ]
-    index = 2
-    admin.insert_row(row, index)
 
 
 # Update and store the details of the user in the spreadsheet
@@ -559,7 +521,8 @@ def update_worksheet(data, worksheet):
 
 def main_user():
     """
-    Run all the functions
+    Run all the functions for user input, validation
+    and saving into the spreadsheet...
     """
     name_user = get_name()
     birth_date = get_birth_date()
@@ -571,6 +534,21 @@ def main_user():
         name_user, birth_date, email_user, symptoms_user, date_user, time_user
         ]
     update_worksheet(data, 'details')
+    exit_menu()
+
+
+def main_admin():
+    """
+    Run all the functions for admin section when called
+    """
+    # Get all the details stored into the worksheet
+    admin_input_name = admin_shift_management()
+    shift_days = get_shift_days()
+    shift_times = get_shift_times()
+    admin_mess = val_admin_message()
+    data = [admin_input_name, shift_days, shift_times, admin_mess]
+    update_worksheet(data, "admin")
+    exit_menu()
 
 
 welcome_message()
