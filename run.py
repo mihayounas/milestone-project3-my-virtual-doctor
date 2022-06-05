@@ -305,7 +305,7 @@ def validate_booking_date():
                     "Sorry your date is invalid,please try again...\n", 'red'
                 )
                 )
-    return True
+            return month_inp
 
 
 # Gat time for the appoinment
@@ -349,46 +349,6 @@ def validate_time():
     return True
 
 
-# exit options
-def exit_menu():
-    """
-    The exit menu will offer a choice to user,
-    he can return to the main menu and start
-    again or can exit the screen.
-    """
-    print("-" * 120)
-    menu_exit = input(
-        colored(
-            "Please press 'm' for main menu or 'e' to exit...\n", 'blue'
-            )
-            )
-    if menu_exit == "m":
-        main()
-    else:
-        exit_screen()
-
-
-def exit_screen():
-    """
-    This is an exit function wich gives the opportunity
-    for the patient to see his appointment and manage it ,
-    cancel it or reschedule it.
-    Also there is an option to close it and take them to
-    the main screen.
-    """
-    print("-" * 120)
-    print("Thank you for visiting our application !\n")
-    print("What would you like to do next ?\n")
-    exit_choice = input(
-        "To manage your appointments press '1' or 'e' to close:\n"
-        )
-    if exit_choice == "1":
-        return False
-    else:
-        text = "Thank you!...GoodBye...exiting...\n"
-        welcome_msg(text)
-
-
 def confirmation_data():
     """
     Confirms and return the input data before
@@ -413,17 +373,12 @@ def confirmation_data():
 # Taking user's Admin details
 
 
-def admin_shift_management():
+def val_admin_message():
     """
-    Takes admin requests and store it into the spreadsheet
-    for the managers to check and approve.
+    Gets a message from the admin like a holiday
+    request of shift change
     """
-    # Takes admin name and validates it and then takes patient details
-    admin_name = validate_name()
-    if admin_name:
-        print(f"Welcome {admin_name}, what would you like to do?...")
-        get_shift_days()
-        get_shift_times()
+    while True:
         message = input(
             "Please enter your request bellow, to be checked and approved"
             " by manager on shift make sure to include the dates you are "
@@ -433,10 +388,39 @@ def admin_shift_management():
             f"Your message: [{message}] will be checked and manager"
             " will approve it shortly...\n"
             )
+        if len(message) > 8:
+            return message
+        else:
+            print(
+                colored(
+                    "Please add more details to describe the situation"
+                    "for the manager...\n", 'pink'
+                    )
+                    )
+    return True
+
+
+def admin_shift_management():
+    """
+    Takes admin requests and store it into the spreadsheet
+    for the managers to check and approve.
+    """
+    # Takes admin name and validates it and then takes patient details
+    admin_name = input("Please enter your full name : \n")
+    if len(admin_name) > 4:
+        print(
+            f"Welcome {admin_name}, please follow the next steps in"
+            "order to send your request..."
+        )
     else:
         print("Name not valid,please try again...\n")
         print("-" * 120)
         return admin_name
+    get_shift_days()
+    get_shift_times()
+    val_admin_message()
+    update_admin_worksheet()
+    exit_menu()
 
 
 def asses_patient_or_shift():
@@ -502,8 +486,13 @@ def get_shift_days():
     for the manager to analyse and approve.
     """
     shift_info = input(
-        "Please enter the days of the week that you work...\n"
+        "Please enter the days of the week that you work,"
+        "separated by comma...\n"
         )
+    if shift_info.__contains__(','):
+        return shift_info
+    else:
+        print("Please separate the days by comma...\n")
     return shift_info
 
 
@@ -523,25 +512,63 @@ def get_shift_times():
         return shift_time
 
 
-def admin_confirmation_data():
+# exit options
+def exit_menu():
     """
-    Collects all the data form the admin and displays it 
+    The exit menu will offer a choice to user,
+    he can return to the main menu and start
+    again or can exit the screen.
     """
+    print("-" * 120)
+    menu_exit = input(
+        colored(
+            "Please press 'm' for main menu or 'e' to exit...\n", 'blue'
+            )
+            )
+    if menu_exit == "m":
+        main()
+    else:
+        exit_screen()
 
- 
+
+def exit_screen():
+    """
+    This is an exit function wich gives the opportunity
+    for the patient to see his appointment and manage it ,
+    cancel it or reschedule it.
+    Also there is an option to close it and take them to
+    the main screen.
+    """
+    print("-" * 120)
+    print("Thank you for visiting our application !\n")
+    print("What would you like to do next ?\n")
+    exit_choice = input(
+        "To manage your appointments press '1' or 'e' to close:\n"
+        )
+    if exit_choice == "1":
+        return False
+    else:
+        text = "GoodBye...exiting...\n"
+        welcome_msg(text)
+
+
 def update_admin_worksheet():
     """
     Updates the admin worksheet in order
     to store admin details into the database.
     """
     # Get all the details stored into the worksheet
-    details = SHEET.worksheet("admin")
+    admin_input_name = admin_shift_management()
+    shift_days = get_shift_days()
+    shift_times = get_shift_times()
+    admin_mess = val_admin_message()
+    admin = SHEET.worksheet("admin")
     row = [
-        f"{NAME}",
-        f"{SYMPTOMS}", f"{DATE}", f"{TIME}:00"
+        f"{admin_input_name}", f"{shift_days}", f"{shift_times}",
+        f"{admin_mess}"
         ]
     index = 2
-    details.insert_row(row, index)
+    admin.insert_row(row, index)
 
 
 # Declare global variables used to return all the details
@@ -555,7 +582,8 @@ DATE = pick_a_date()
 TIME = get_time()
 confirmation_data()
 update_worksheet()
-ADMIN = admin_shift_management()
+update_admin_worksheet()
+exit_screen()
 
 
 def main():
