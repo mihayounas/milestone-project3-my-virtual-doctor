@@ -155,7 +155,6 @@ def val_date():
                     "DD/MM/YYYY...\n", 'red'
                     )
                     )
-            return date_input
     return True
 
 
@@ -244,22 +243,6 @@ def validate_symptoms():
     return True
 
 
-# Update and store the details of the user in the spreadsheet
-def update_worksheet():
-    """
-    Updates the right worksheet in order
-    to store patient details into the database.
-    """
-    # Get all the details stored into the worksheet
-    details = SHEET.worksheet("details")
-    row = [
-        f"{NAME}", f"{BORN}", f"{EMAIL}",
-        f"{SYMPTOMS}", f"{DATE}", f"{TIME}:00"
-        ]
-    index = 2
-    details.insert_row(row, index)
-
-
 # Pick an appointment date and validate it
 def pick_a_date():
     """
@@ -283,9 +266,8 @@ def validate_booking_date():
         month_inp = int(
             input("Please enter the month you wish to book for 1-12...\n : ")
         )
-        if month_inp <= 12 and month_inp != 0:
+        if month_inp <= 12:
             print("Month input is valid...")
-            break
         else:
             print("Not valid...")
             return month_inp
@@ -305,7 +287,7 @@ def validate_booking_date():
                     "Sorry your date is invalid,please try again...\n", 'red'
                 )
                 )
-            return month_inp
+    return True
 
 
 # Gat time for the appoinment
@@ -356,11 +338,6 @@ def confirmation_data():
     """
     print("-" * 120)
     print("Please check your details bellow...\n")
-    print(f"Name : {NAME}\n")
-    print(f"DOB : {BORN}\n")
-    print(f"Email : {EMAIL}\n")
-    print(f"Your personalised message to the doctor : {SYMPTOMS}\n")
-    print(f"Your appointment date and time : {DATE} at {TIME}:00 ...\n")
     change_app = input(
         "If you wish to make any changes press '1' or 'e' to exit...\n"
         )
@@ -416,9 +393,6 @@ def admin_shift_management():
         print("Name not valid,please try again...\n")
         print("-" * 120)
         return admin_name
-    get_shift_days()
-    get_shift_times()
-    val_admin_message()
     update_admin_worksheet()
     exit_menu()
 
@@ -526,7 +500,7 @@ def exit_menu():
             )
             )
     if menu_exit == "m":
-        main()
+        main_user()
     else:
         exit_screen()
 
@@ -571,34 +545,33 @@ def update_admin_worksheet():
     admin.insert_row(row, index)
 
 
-# Declare global variables used to return all the details
-# in confirmation_data function and display it at the end
-welcome_message()
-NAME = get_name()
-BORN = get_birth_date()
-EMAIL = get_email()
-SYMPTOMS = get_symptoms()
-DATE = pick_a_date()
-TIME = get_time()
-confirmation_data()
-update_worksheet()
-update_admin_worksheet()
-exit_screen()
+# Update and store the details of the user in the spreadsheet
+def update_worksheet(data, worksheet):
+    """
+    Updates the right worksheet in order
+    to store patient details into the database.
+    """
+    # Get all the details stored into the worksheet
+    worksheet_to_update = SHEET.worksheet(worksheet)
+    worksheet_to_update.append_row(data)
+    print("Thank you,your details have been succesfully saved...\n")
 
 
-def main():
+def main_user():
     """
     Run all the functions
     """
-    welcome_message()
-    get_name()
-    get_birth_date()
-    validate_email()
-    get_symptoms()
-    pick_a_date()
-    get_time()
-    confirmation_data()
-    update_worksheet()
+    name_user = get_name()
+    birth_date = get_birth_date()
+    email_user = validate_email()
+    symptoms_user = get_symptoms()
+    date_user = pick_a_date()
+    time_user = get_time()
+    data = [
+        name_user, birth_date, email_user, symptoms_user, date_user, time_user
+        ]
+    update_worksheet(data, 'details')
 
 
-main()
+welcome_message()
+main_user()
