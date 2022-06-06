@@ -151,18 +151,12 @@ def val_date():
             "Please enter your date of birth in this "
             "format DD/MM/YYYY:\n"
         )
-        # Only accept if it contains a /
-        if date_input.__contains__("/"):
-            format_str = "%d/%m/%Y"
+        format_str = "%d/%m/%Y"
+        try:
             datetime.datetime.strptime(date_input, format_str)
             return date_input
-        else:
-            print(
-                colored(
-                    "This is the incorrect date format.It should be "
-                    "DD/MM/YYYY...\n", 'red'
-                    )
-                    )
+        except ValueError:
+            print("This format is incorrect,it should be DD/MM/YYY/..., 'red'")
     return True
 
 
