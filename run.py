@@ -36,9 +36,7 @@ def welcome_msg(text):
     """
     # Displays a welcome message in cyan color Figlet
     font = Figlet(font="slant")
-    print("-" * 80)
     print(colored(font.renderText(text), "cyan",  attrs=["bold"]))
-    print("-" * 80)
 
 
 def welcome_message():
@@ -47,7 +45,11 @@ def welcome_message():
     Giving the choice of booking an appointment
     or logging in as admin.
     """
-    welcome_msg(" "*14 + "My Virtual Doctor...")
+    welcome_msg(" "*15 + "My")
+    welcome_msg(" "*10 + "Virtual")
+    welcome_msg(" "*10 + "Doctor...")
+    print("-" * 80)
+    print("-" * 80)
     print('Welcome to My Virtual Doctor !')
     print('An app which helps you book your doctor appointments fast!')
     print('To use this app, press enter after each choice.')
