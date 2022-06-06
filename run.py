@@ -36,9 +36,9 @@ def welcome_msg(text):
     """
     # Displays a welcome message in blue color Figlet
     font = Figlet(font="ogre")
-    print("-" * 120)
+    print("-" * 80)
     print(colored(font.renderText(text), "blue"))
-    print("-" * 120)
+    print("-" * 80)
 
 
 def welcome_message():
@@ -49,11 +49,11 @@ def welcome_message():
     """
     text = "Welcome"
     welcome_msg(text)
-    print('Welcome to My Virtual Doctor !\n')
-    print('An app which helps you book your doctor appointments fast!\n')
-    print('To use this app, press enter after each choice.\n')
-    print('After confirming all your details you will be able\n')
-    print('to see, edit or cancel your appoinment...!\n')
+    print('Welcome to My Virtual Doctor !')
+    print('An app which helps you book your doctor appointments fast!')
+    print('To use this app, press enter after each choice.')
+    print('After confirming all your details you will be able')
+    print('to see, edit or cancel your appoinment...!')
     while True:
         admin_or_patient = input(
             'Please press "r" to register an appointment or "a" '
@@ -76,13 +76,13 @@ def get_name():
     Gets name input from the user
     """
     # Gets a validated name to display
-    print("-" * 120)
+    print("-" * 80)
     name = validate_name()
     if name:
         print(f'Welcome {name}...\n')
     else:
         print("Name not valid,please try again...\n")
-    print("-" * 120)
+    print("-" * 80)
     return name
 
 
@@ -123,7 +123,7 @@ def get_birth_date():
     returning date of birth if it's matching
     the format.
     """
-    print("-" * 120)
+    print("-" * 80)
     # Gets a validated date of birth and display it
     date_val = val_date()
     if date_val:
@@ -173,7 +173,7 @@ def get_email():
     if is matching then return the user email if not
     then restart and getting the email again.
     """
-    print("-" * 120)
+    print("-" * 80)
     # Get the email from the user after the validation and display it
     email = validate_email()
     if email:
@@ -216,7 +216,7 @@ def get_symptoms():
     symptoms for the doctor to know before hand what to
     discuss on their appointment.
     """
-    print("-" * 120)
+    print("-" * 80)
     # Get user symptoms and display a response message
     user_symptoms = validate_symptoms()
     if user_symptoms:
@@ -256,7 +256,7 @@ def pick_a_date():
     """
     Getting a booking date for the user.
     """
-    print("-" * 120)
+    print("-" * 80)
     chosen_date = validate_booking_date()
     if chosen_date:
         print(f"Your {chosen_date} is available...\n")
@@ -304,7 +304,7 @@ def get_time():
     Gets the time input for the appointment
     and diplays it.
     """
-    print("-" * 120)
+    print("-" * 80)
     time_choice = validate_time()
     if time_choice:
         print("Time is valid...\n")
@@ -381,7 +381,7 @@ def admin_shift_management():
         )
     else:
         print("Name not valid,please try again...\n")
-        print("-" * 120)
+        print("-" * 80)
     return admin_name
 
 
@@ -390,7 +390,7 @@ def asses_patient_or_shift():
     Gets the choice from the admin if he wants to asses patient
     or manage the shift and holidays requests.
     """
-    print("-" * 120)
+    print("-" * 80)
     admin_val = admin_login()
     asses_or_shift = input(
             "To asses a patient press 'a' or 's' to manage shift...\n"
@@ -416,7 +416,7 @@ def admin_login():
     and will have a choice of asses the patient
     or open the screen to manage the weekly shift.
     """
-    print("-" * 120)
+    print("-" * 80)
     admin_pass = 'Admin'
     inputs = 0
     admin_welcome = 'Welcome Admin'
@@ -481,7 +481,7 @@ def exit_menu():
     he can return to the main menu and start
     again or can exit the screen.
     """
-    print("-" * 120)
+    print("-" * 80)
     menu_exit = input(
         colored(
             "Please press 'm' for main menu or 'e' to exit...\n", 'blue'
@@ -501,7 +501,7 @@ def exit_screen():
     Also there is an option to close it and take them to
     the main screen.
     """
-    print("-" * 120)
+    print("-" * 80)
     print("Thank you for visiting our application !\n")
     print("What would you like to do next ?\n")
     exit_choice = input(
