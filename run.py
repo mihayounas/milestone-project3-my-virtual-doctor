@@ -32,12 +32,12 @@ SHEET = GSPREAD_CLIENT.open("my_virtual_doctor")
 
 def welcome_msg(text):
     """
-    Print banner msg using Figlet font.
+    Welcome message with special figlet styling.
     """
-    # Displays a welcome message in blue color Figlet
-    font = Figlet(font="ogre")
+    # Displays a welcome message in cyan color Figlet
+    font = Figlet(font="slant")
     print("-" * 80)
-    print(colored(font.renderText(text), "blue",  attrs=["bold"]))
+    print(colored(font.renderText(text), "cyan",  attrs=["bold"]))
     print("-" * 80)
 
 
@@ -47,7 +47,7 @@ def welcome_message():
     Giving the choice of booking an appointment
     or logging in as admin.
     """
-    text = "Welcome..."
+    text = "Welcome to My Virtual Doctor"
     welcome_msg(text)
     print('Welcome to My Virtual Doctor !')
     print('An app which helps you book your doctor appointments fast!')
@@ -94,25 +94,23 @@ def validate_name():
     Displaying the age of the customer.
     """
     while True:
-        names = input('Please enter your first and last name with space:\n')
+        fname = input('Please enter your first name:\n')
+        lname = input('Please enter your last name:\n')
+        names = (f"{fname}" + " " + f"{lname}")
+        if len(fname) > 2:
+            return (f"{fname}" + " " + f"{lname}")
+        elif len(lname) > 2:
+            return (f"{fname}" + " " + f"{lname}")
         #  Don't accept numbers in name,letters only
-        if any(chr.isdigit() for chr in names):
+        elif any(chr.isdigit() for chr in names):
             print(
                 "Sorry your Name should contain only letters,"
-                "please try again..."
+                "please try again...", 'red'
                 "\n"
                 )
             return False
-        #  Only accept if name contains a space
-        elif names.__contains__(' '):
-            return names
         else:
-            print(
-                colored(
-                    "Invalid entry, please try again...\n"
-                    "First and Last name with space between...\n", 'red'
-                    )
-                    )
+            return (f"{fname}" + " " + f"{lname}")
     return True
 
 
@@ -156,7 +154,11 @@ def val_date():
             datetime.datetime.strptime(date_input, format_str)
             return date_input
         except ValueError:
-            print("This format is incorrect,it should be DD/MM/YYY/..., 'red'")
+            print(
+                colored(
+                    "This format is incorrect,it should be DD/MM/YYY/...",
+                    'red')
+                    )
     return True
 
 
