@@ -177,7 +177,7 @@ def get_email():
     # Get the email from the user after the validation and display it
     email = validate_email()
     if email:
-        print(f"Your email is :{email}")
+        print(f"Your email is :{email}\n.")
     else:
         print(
             colored(
