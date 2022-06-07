@@ -106,7 +106,7 @@ def validate_name():
         elif any(char.isdigit() for char in names):
             print("Names should not contain numbers...")
 
-        #  Only accept if name contains a space
+        #  Only accept the names if contains a space
         elif names.__contains__(' '):
             return names
 
@@ -264,19 +264,26 @@ def validate_booking_date():
     displaying a calendar for checking the days.
     """
     while True:
+        mydate = datetime.datetime.now()
+        mydate.strftime("%b")
+        print(colored(f"Today's date is {mydate}", 'yellow'))
+        print("Please enter a date further in time to validate...")
+        year_inp = int(input("Please enter the year...\n "))
         month_inp = int(
             input("Please enter the month you wish to book for 1-12...\n : ")
         )
-        if month_inp <= 12:
-            print("Month input is valid...")
-        else:
-            print("Not valid...")
-            return month_inp
-        year_inp = int(input("Please enter the year...\n "))
         if year_inp >= 2022:
             print(calendar.month(year_inp, month_inp))
         else:
             print("Sorry you have to pick current year 2022 or later...\n")
+            return year_inp
+        if "month_inp" >= mydate.strftime("%b"):
+            print("Date not available,please try again...")
+            return month_inp
+        if month_inp <= 12:
+            print("Month input is valid...")
+        else:
+            print("Not valid...")
             return month_inp
         day_inp = input("Enter a day from the calendar...\n")
         date = f"{day_inp}/{month_inp}/{year_inp}"
@@ -288,6 +295,7 @@ def validate_booking_date():
                     "Sorry your date is invalid,please try again...\n", 'red'
                 )
                 )
+            return month_inp
     return True
 
 
