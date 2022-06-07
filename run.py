@@ -98,10 +98,14 @@ def validate_name():
         names = (f"{fname}" + " " + f"{lname}")
         if len(fname) > 2:
             return f"{fname}" + " " + f"{lname}"
-        elif len(lname) > 2:
+        else:
+            return fname
+        if len(lname) > 2:
             return f"{fname}" + " " + f"{lname}"
+        else:
+            return lname
         #  Don't accept numbers in name,letters only
-        elif any(chr.isdigit() for chr in names):
+        if any(chr.isdigit() for chr in names):
             print(
                 "Sorry your Name should contain only letters,"
                 "please try again...", 'red'
