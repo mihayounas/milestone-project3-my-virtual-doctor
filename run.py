@@ -64,7 +64,7 @@ def welcome_message():
             asses_patient_or_shift()
             main_admin()
             return False
-        print('Invalid entry, please try again...\n')
+        print('Invalid entry, please try again...\n', 'red')
     return True
 
 
@@ -80,7 +80,7 @@ def get_name():
     if name:
         print(f'Welcome {name}...\n')
     else:
-        print("Name not valid,please try again...\n")
+        print("Name not valid,please try again...")
     print("-" * 81)
     return name
 
@@ -93,28 +93,22 @@ def validate_name():
     Displaying the age of the customer.
     """
     while True:
-        fname = input('Please enter your first name:\n')
-        lname = input('Please enter your last name:\n')
-        names = (f"{fname}" + " " + f"{lname}")
-        if len(fname) > 2:
-            return f"{fname}" + " " + f"{lname}"
-        else:
-            return fname
-        if len(lname) > 2:
-            return f"{fname}" + " " + f"{lname}"
-        else:
-            return lname
-        #  Don't accept numbers in name,letters only
-        if any(chr.isdigit() for chr in names):
+        names = input("Please enter your full name with space between...\n")
+        if len(names) <= 2:
             print(
-                "Sorry your Name should contain only letters,"
-                "please try again...", 'red'
-                "\n"
-                )
-            return False
-        else:
-            return f"{fname}" + " " + f"{lname}"
-    return True
+                colored(
+                    "Please enter your full name with space between...\n",
+                    'red'
+                    )
+                    )
+
+        #  Don't accept numbers in name
+        elif any(char.isdigit() for char in names):
+            print("Names should not contain numbers...")
+
+        #  Only accept if name contains a space
+        elif names.__contains__(' '):
+            return names
 
 
 # Get DATE of birth input
