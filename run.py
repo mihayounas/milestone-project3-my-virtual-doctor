@@ -45,11 +45,9 @@ def welcome_message():
     Giving the choice of booking an appointment
     or logging in as admin.
     """
-    welcome_msg(" "*15 + "My")
-    welcome_msg(" "*10 + "Virtual")
-    welcome_msg(" "*10 + "Doctor...")
-    print("-" * 80)
-    print("-" * 80)
+    welcome_msg("My Virtual Doctor...")
+    print("-" * 81)
+    print("-" * 81)
     print('Welcome to My Virtual Doctor !')
     print('An app which helps you book your doctor appointments fast!')
     print('To use this app, press enter after each choice.')
@@ -77,13 +75,13 @@ def get_name():
     Gets name input from the user
     """
     # Gets a validated name to display
-    print("-" * 80)
+    print("-" * 81)
     name = validate_name()
     if name:
         print(f'Welcome {name}...\n')
     else:
         print("Name not valid,please try again...\n")
-    print("-" * 80)
+    print("-" * 81)
     return name
 
 
@@ -99,9 +97,9 @@ def validate_name():
         lname = input('Please enter your last name:\n')
         names = (f"{fname}" + " " + f"{lname}")
         if len(fname) > 2:
-            return (f"{fname}" + " " + f"{lname}")
+            return f"{fname}" + " " + f"{lname}"
         elif len(lname) > 2:
-            return (f"{fname}" + " " + f"{lname}")
+            return f"{fname}" + " " + f"{lname}"
         #  Don't accept numbers in name,letters only
         elif any(chr.isdigit() for chr in names):
             print(
@@ -111,7 +109,7 @@ def validate_name():
                 )
             return False
         else:
-            return (f"{fname}" + " " + f"{lname}")
+            return f"{fname}" + " " + f"{lname}"
     return True
 
 
@@ -122,7 +120,7 @@ def get_birth_date():
     returning date of birth if it's matching
     the format.
     """
-    print("-" * 80)
+    print("-" * 81)
     # Gets a validated date of birth and display it
     date_val = val_date()
     if date_val:
@@ -170,7 +168,7 @@ def get_email():
     if is matching then return the user email if not
     then restart and getting the email again.
     """
-    print("-" * 80)
+    print("-" * 81)
     # Get the email from the user after the validation and display it
     email = validate_email()
     if email:
@@ -213,7 +211,7 @@ def get_symptoms():
     symptoms for the doctor to know before hand what to
     discuss on their appointment.
     """
-    print("-" * 80)
+    print("-" * 81)
     # Get user symptoms and display a response message
     user_symptoms = validate_symptoms()
     if user_symptoms:
@@ -245,6 +243,7 @@ def validate_symptoms():
                     "Please add more details for your doctor...\n", 'pink'
                     )
                     )
+            return symptoms_val
     return True
 
 
@@ -253,7 +252,7 @@ def pick_a_date():
     """
     Getting a booking date for the user.
     """
-    print("-" * 80)
+    print("-" * 81)
     chosen_date = validate_booking_date()
     if chosen_date:
         print(f"Your {chosen_date} is available...\n")
@@ -301,7 +300,7 @@ def get_time():
     Gets the time input for the appointment
     and diplays it.
     """
-    print("-" * 80)
+    print("-" * 81)
     time_choice = validate_time()
     if time_choice:
         print("Time is valid...\n")
@@ -378,7 +377,7 @@ def admin_shift_management():
         )
     else:
         print("Name not valid,please try again...\n")
-        print("-" * 80)
+        print("-" * 81)
     return admin_name
 
 
@@ -387,7 +386,7 @@ def asses_patient_or_shift():
     Gets the choice from the admin if he wants to asses patient
     or manage the shift and holidays requests.
     """
-    print("-" * 80)
+    print("-" * 81)
     admin_val = admin_login()
     asses_or_shift = input(
             "To asses a patient press 'a' or 's' to manage shift...\n"
@@ -413,7 +412,7 @@ def admin_login():
     and will have a choice of asses the patient
     or open the screen to manage the weekly shift.
     """
-    print("-" * 80)
+    print("-" * 81)
     admin_pass = 'Admin'
     inputs = 0
     admin_welcome = 'Welcome Admin'
@@ -478,7 +477,7 @@ def exit_menu():
     he can return to the main menu and start
     again or can exit the screen.
     """
-    print("-" * 80)
+    print("-" * 81)
     menu_exit = input(
         colored(
             "Please press 'm' for main menu or 'e' to exit...\n", 'blue'
@@ -498,26 +497,17 @@ def exit_screen():
     Also there is an option to close it and take them to
     the main screen.
     """
-    print("-" * 80)
+    print("-" * 81)
     print("Thank you for visiting our application !\n")
     print("What would you like to do next ?\n")
     exit_choice = input(
         "To manage your appointments press '1' or 'e' to close:\n"
         )
     if exit_choice == "1":
-        get_user_values()
+        collect_data()
     else:
         text = "GoodBye...\n"
         welcome_msg(text)
-
-
-def get_user_values():
-    """
-    Gets all the values entered and allows changes .
-    """
-    headings = SHEET.worksheet('details').get_all_values()[0]
-    headings_dict = {headings[i]: [i] for i in range(len(headings))}
-    return headings_dict
 
 
 # Update and store the details of the user in the spreadsheet
@@ -530,6 +520,49 @@ def update_worksheet(data, worksheet):
     worksheet_to_update = SHEET.worksheet(worksheet)
     worksheet_to_update.append_row(data)
     print("Thank you,your details have been succesfully saved...\n")
+
+
+def cancel_or_change_data():
+    """
+    Gets the answer from user of the action
+    that he wants to take.
+    """
+    cancel_or_change = input(
+        "If you would like to cancel or change your appoinment "
+        "press '1' or 'e' to exit"
+        )
+    if cancel_or_change == 1:
+        collect_data()
+    else:
+        exit_screen()
+    return cancel_or_change
+
+
+def collect_data():
+    """
+    Displays data for the user in order to allow them
+    to cancel or change their appoinment
+    """
+    email = get_email()
+    worksheet = SHEET.worksheet('details')
+    emails = worksheet.col_values(3)
+    regex1 = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+.[a-z]{1,3}$"
+    for email in emails:
+        if re.fullmatch(regex1, email):
+            return f"{email} is matching our records..."
+        else:
+            print("No email matching...")
+            return email
+    name_details = worksheet.col_values(1)
+    print(name_details)
+    date_of_birth_details = worksheet.col_values(2)
+    print(date_of_birth_details)
+    symptoms_details = worksheet.col_values(4)
+    print(symptoms_details)
+    app_date = worksheet.col_values(5)
+    print(app_date)
+    app_time = worksheet.col_values(6)
+    print(app_time)
 
 
 def main_user():
@@ -549,7 +582,7 @@ def main_user():
         ]
     update_worksheet(data, 'details')
     exit_screen()
-    values_data = get_user_values()
+    values_data = cancel_or_change_data()
     return values_data
 
 
