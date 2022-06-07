@@ -219,7 +219,7 @@ def get_symptoms():
     else:
         print(
             colored(
-                "Please add more details for your doctor...\n", 'pink'
+                "Please add more details for your doctor...\n", 'red'
                 )
                 )
     return user_symptoms
@@ -240,10 +240,9 @@ def validate_symptoms():
         else:
             print(
                 colored(
-                    "Please add more details for your doctor...\n", 'pink'
+                    "Please add more details for your doctor...\n", 'red'
                     )
                     )
-            return symptoms_val
     return True
 
 
