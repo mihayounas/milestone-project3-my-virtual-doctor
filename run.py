@@ -76,6 +76,10 @@ def get_name():
     """
     # Gets a validated name to display
     print("-" * 80)
+    print(
+        "PLease note that your details will be saved into our database..."
+        )
+    pick_exit()
     name = validate_name()
     if name:
         print(f'Welcome {name}...\n')
@@ -233,7 +237,7 @@ def validate_symptoms():
     while True:
         symptoms_val = input("Please enter you symptoms bellow :\n")
         # Only accept a proper message description
-        if len(symptoms_val) > 8:
+        if len(symptoms_val) > 7:
             return symptoms_val
         else:
             print(
@@ -264,39 +268,36 @@ def validate_booking_date():
     displaying a calendar for checking the days.
     """
     while True:
-        mydate = datetime.datetime.now()
-        mydate.strftime("%b")
+        mydate = datetime.date.today()
         print(colored(f"Today's date is {mydate}", 'yellow'))
         print("Please enter a date further in time to validate...")
-        year_inp = int(input("Please enter the year...\n "))
+        # Take year input of current year or later
+        year_inp = int(input(
+            "Please enter the year (current year 2022 or later)...\n "
+            )
+            )
+        today_year = datetime.date.today().year
+        if year_inp >= today_year:
+            print(f"Chosen year is {year_inp}")
+        else:
+            print("Not a valid please try again...\n")
+            return year_inp
+
         month_inp = int(
             input("Please enter the month you wish to book for 1-12...\n : ")
         )
-        if year_inp >= 2022:
+        today_month = datetime.date.today().month
+        if month_inp > today_month:
             print(calendar.month(year_inp, month_inp))
         else:
-            print("Sorry you have to pick current year 2022 or later...\n")
-            return year_inp
-        if "month_inp" >= mydate.strftime("%b"):
-            print("Date not available,please try again...")
+            print("No appoiments available...\n")
             return month_inp
-        if month_inp <= 12:
-            print("Month input is valid...")
-        else:
-            print("Not valid...")
-            return month_inp
-        day_inp = input("Enter a day from the calendar...\n")
-        date = f"{day_inp}/{month_inp}/{year_inp}"
-        if date.__contains__('/'):
-            return date
-        else:
+        day_inp = input("Please enter the day from the calendar...\n")
+        if day_inp:
             print(
-                colored(
-                    "Sorry your date is invalid,please try again...\n", 'red'
+                f"Date chosen : {day_inp}/{month_inp}/{year_inp} is available."
                 )
-                )
-            return month_inp
-    return True
+        return True
 
 
 # Gat time for the appoinment
@@ -476,6 +477,20 @@ def get_shift_times():
 
 
 # exit options
+def pick_exit():
+    """
+    Offers an choice of leaving the app if anyone
+    changes their mind.
+    """
+    exit_or_not = input(
+        colored(
+            "Please press 'c' to continue or 'm' for main menu...\n", 'blue'
+        )
+        )
+    if exit_or_not != 'c':
+        main_user()
+
+
 def exit_menu():
     """
     The exit menu will offer a choice to user,
@@ -540,7 +555,8 @@ def cancel_or_change_data():
         collect_data()
     else:
         exit_screen()
-    return cancel_or_change
+        return cancel_or_change
+    cancel_appoinment()
 
 
 def collect_data():
@@ -555,10 +571,26 @@ def collect_data():
     if re.fullmatch(regex1, email):
         if email in emails:
             print("Your email is matching our records'...\n")
-            name = worksheet.col_values(1)
-            print(name)
         else:
             print("Sorry you are not registered yet...\n")
+            pick_exit()
+
+
+def cancel_appoinment():
+    """
+    Cancel app
+    """
+    cancel_input = input(
+        "Please press '1' to change the date or 'c' to cancel your appoinment"
+        "...\n"
+        )
+    if cancel_input == '1':
+        validate_booking_date()
+        get_time()
+        print("Your appointment has been changed...")
+        exit_menu()
+    else:
+        print("deleted...")
 
 
 def main_user():
