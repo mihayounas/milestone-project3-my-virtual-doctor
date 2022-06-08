@@ -548,26 +548,17 @@ def collect_data():
     Displays data for the user in order to allow them
     to cancel or change their appoinment
     """
-    email = get_email()
     worksheet = SHEET.worksheet('details')
     emails = worksheet.col_values(3)
-    regex1 = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+.[a-z]{1,3}$"
-    for email in emails:
-        if re.fullmatch(regex1, email):
-            return f"{email} is matching our records..."
+    email = input("Please enter the registered email...\n")
+    regex1 = re.compile("^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+.[a-z]{1,3}$")
+    if re.fullmatch(regex1, email):
+        if email in emails:
+            print("Your email is matching our records'...\n")
+            name = worksheet.col_values(1)
+            print(name)
         else:
-            print("No email matching...")
-            return email
-    name_details = worksheet.col_values(1)
-    print(name_details)
-    date_of_birth_details = worksheet.col_values(2)
-    print(date_of_birth_details)
-    symptoms_details = worksheet.col_values(4)
-    print(symptoms_details)
-    app_date = worksheet.col_values(5)
-    print(app_date)
-    app_time = worksheet.col_values(6)
-    print(app_time)
+            print("Sorry you are not registered yet...\n")
 
 
 def main_user():
