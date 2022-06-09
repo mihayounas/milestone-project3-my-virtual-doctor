@@ -259,7 +259,7 @@ def pick_a_date():
     else:
         print("Date not valid please enter the date again...\n")
         print("-" * 80)
-    return chosen_date
+        return chosen_date
 
 
 def validate_booking_date():
@@ -275,20 +275,26 @@ def validate_booking_date():
             "Please enter your desired date here"
             " DD/MM/YYYY...\n"
         )
-        try:
-            datetime.datetime.strptime(date_chosen_user, format_str)
-            return date_chosen_user
-        except ValueError:
+        past = datetime.datetime.strptime(date_chosen_user, "%d/%m/%Y")
+        present = datetime.datetime.now()
+        if past.date() < present.date():
             print(
                 colored(
-                    "This format is incorrect,it should be DD/MM/YYY/...",
-                    'red')
+                    "This date is invalid,please enter a future date...", 'red'
                     )
-    if date_chosen_user.date() > datetime.datetime.today().date():
-        print("Date not valid")
+                )
+        else:
+            print(f"This date {date_chosen_user} chosen is valid...")
+            return date_chosen_user
+    try:
+        datetime.datetime.strptime(date_chosen_user, format_str)
         return date_chosen_user
-    else:
-        print("Date valid")
+    except ValueError:
+        print(
+            colored(
+                "This format is incorrect,it should be DD/MM/YYY/...",
+                'red')
+                )
     return True
 
 
