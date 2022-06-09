@@ -9,6 +9,7 @@ The information of the user is saved into a spreadsheet on Google drive.
 """
 import datetime
 import re
+import time
 import calendar
 # import Pyfiglet library for text to fonts functionality
 from pyfiglet import Figlet
@@ -586,6 +587,7 @@ def collect_data():
     app_timming = worksheet.cell(time_row, 6).value
     print(app_timming)
     cancel_appoinment()
+    
 
 
 def cancel_appoinment():
@@ -600,7 +602,7 @@ def cancel_appoinment():
         validate_booking_date()
         get_time()
         print("Your appointment has been changed...")
-        exit_menu()
+        exit_screen()
     else:
         print("deleted...")
 
@@ -610,7 +612,7 @@ def main_user():
     Run all the functions for user input, validation
     and saving into the spreadsheet...
     """
-    collect_data()
+    validate_booking_date()
     name_user = get_name()
     birth_date = get_birth_date()
     email_user = validate_email()
