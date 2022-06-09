@@ -253,12 +253,12 @@ def pick_a_date():
     """
     Getting a booking date for the user.
     """
-    print("-" * 80)
     chosen_date = validate_booking_date()
     if chosen_date:
         print(f"Your {chosen_date} is available...\n")
     else:
-        print(f"{chosen_date} is not valid please enter the date again...\n")
+        print("Date not valid please enter the date again...\n")
+        print("-" * 80)
         return chosen_date
 
 
@@ -268,37 +268,32 @@ def validate_booking_date():
     displaying a calendar for checking the days.
     """
     while True:
-        mydate = datetime.date.today()
-        print(colored(f"Today's date is {mydate}", 'yellow'))
-        print("Please enter a date further in time to validate...")
-        # Take year input of current year or later
-        year_inp = int(input(
-            "Please enter the year (current year 2022 or later)...\n "
-            )
-            )
-        today_year = datetime.date.today().year
-        if year_inp >= today_year:
-            print(f"Chosen year is {year_inp}")
-        else:
-            print("Not a valid please try again...\n")
-            return year_inp
-
-        month_inp = int(
-            input("Please enter the month you wish to book for 1-12...\n : ")
+        format_str = "%d/%m/%Y"
+        today_date = (time.strftime("%d/%m/%Y"))
+        print("This is today's date: " + today_date)
+        date_chosen_user = input(
+            "Please enter your desired date here"
+            " DD/MM/YYYY...\n"
         )
-        today_month = datetime.date.today().month
-        if month_inp > today_month:
-            print(calendar.month(year_inp, month_inp))
-        else:
-            print("No appoiments available...\n")
-            return month_inp
-        day_inp = input("Please enter the day from the calendar...\n")
-        if day_inp:
+        try:
+            datetime.datetime.strptime(date_chosen_user, format_str)
+            return date_chosen_user
+        except ValueError:
             print(
-                f"Date chosen : {day_inp}/{month_inp}/{year_inp} is available."
-                )
+                colored(
+                    "This format is incorrect,it should be DD/MM/YYY/...",
+                    'red')
+                    )
+        try:
+            date_chosen_user <= today_date
+            return date_chosen_user
+        except ValueError:
+            print(
+                colored(
+                    "Please enter a future date...",
+                    'red')
+                    )
     return True
-
 
 # Gat time for the appoinment
 def get_time():
@@ -587,7 +582,6 @@ def collect_data():
     app_timming = worksheet.cell(time_row, 6).value
     print(app_timming)
     cancel_appoinment()
-    
 
 
 def cancel_appoinment():
