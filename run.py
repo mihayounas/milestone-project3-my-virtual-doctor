@@ -79,7 +79,6 @@ def get_name():
     print(
         "PLease note that your details will be saved into our database..."
         )
-    pick_exit()
     name = validate_name()
     if name:
         print(f'Welcome {name}...\n')
@@ -259,7 +258,7 @@ def pick_a_date():
         print(f"Your {chosen_date} is available...\n")
     else:
         print(f"{chosen_date} is not valid please enter the date again...\n")
-    return chosen_date
+        return chosen_date
 
 
 def validate_booking_date():
@@ -297,7 +296,7 @@ def validate_booking_date():
             print(
                 f"Date chosen : {day_inp}/{month_inp}/{year_inp} is available."
                 )
-        return True
+    return True
 
 
 # Gat time for the appoinment
@@ -484,10 +483,12 @@ def pick_exit():
     """
     exit_or_not = input(
         colored(
-            "Please press 'c' to continue or 'm' for main menu...\n", 'blue'
+            "Please press 'c' to continue or 'e' for exit menu...\n", 'blue'
         )
         )
-    if exit_or_not != 'c':
+    if exit_or_not == "e":
+        exit_screen()
+    else:
         main_user()
 
 
@@ -574,6 +575,17 @@ def collect_data():
         else:
             print("Sorry you are not registered yet...\n")
             pick_exit()
+    print("Your appoinment details:")
+    name_row = worksheet.find(email).row
+    name = worksheet.cell(name_row, 1).value
+    print(name)
+    date_row = worksheet.find(email).row
+    app_date = worksheet.cell(date_row, 5).value
+    print(app_date)
+    time_row = worksheet.find(email).row
+    app_timming = worksheet.cell(time_row, 6).value
+    print(app_timming)
+    cancel_appoinment()
 
 
 def cancel_appoinment():
@@ -598,6 +610,7 @@ def main_user():
     Run all the functions for user input, validation
     and saving into the spreadsheet...
     """
+    collect_data()
     name_user = get_name()
     birth_date = get_birth_date()
     email_user = validate_email()
@@ -609,6 +622,8 @@ def main_user():
         time_user
         ]
     update_worksheet(data, 'details')
+    new_data = [date_user, time_user]
+    update_worksheet(new_data, 'details')
     exit_screen()
     values_data = cancel_or_change_data()
     return values_data
