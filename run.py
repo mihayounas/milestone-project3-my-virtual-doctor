@@ -259,7 +259,7 @@ def pick_a_date():
     else:
         print("Date not valid please enter the date again...\n")
         print("-" * 80)
-        return chosen_date
+    return chosen_date
 
 
 def validate_booking_date():
@@ -284,16 +284,13 @@ def validate_booking_date():
                     "This format is incorrect,it should be DD/MM/YYY/...",
                     'red')
                     )
-        try:
-            date_chosen_user <= today_date
-            return date_chosen_user
-        except ValueError:
-            print(
-                colored(
-                    "Please enter a future date...",
-                    'red')
-                    )
+    if date_chosen_user.date() > datetime.datetime.today().date():
+        print("Date not valid")
+        return date_chosen_user
+    else:
+        print("Date valid")
     return True
+
 
 # Gat time for the appoinment
 def get_time():
