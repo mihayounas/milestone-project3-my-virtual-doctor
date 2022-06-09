@@ -601,8 +601,6 @@ def cancel_appoinment():
     else:
         print("deleted...")
 
-    
-
 
 def main_user():
     """
