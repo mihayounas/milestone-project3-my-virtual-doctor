@@ -56,13 +56,17 @@ def welcome_message():
     while True:
         admin_or_patient = input(
             'Please press "r" to register an appointment or "a" '
-            'for admin area:\n'
+            'for admin area or '
+            'if you have an appoinment press "1":\n'
         )
         if admin_or_patient == 'r':
             return False
         if admin_or_patient == 'a':
             asses_patient_or_shift()
             main_admin()
+            return False
+        if admin_or_patient == '1':
+            collect_data()
             return False
         print(colored('Invalid entry, please try again...\n', 'red'))
     return True
@@ -272,7 +276,7 @@ def validate_booking_date():
             "Please enter your the appoinment date DD/MM/YYY:\n"
             )
         format_str = "%d/%m/%Y"
-        today_date = (time.strftime("%m/%d/%Y"))
+        today_date = (time.strftime("%d/%m/%Y"))
         print(colored("This is today's date: " + today_date, 'yellow'))
 
         if date_user_input < today_date:
