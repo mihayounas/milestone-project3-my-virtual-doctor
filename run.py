@@ -253,13 +253,14 @@ def pick_a_date():
     """
     Getting a booking date for the user.
     """
-    chosen_date = validate_booking_date()
-    if chosen_date:
-        print(f"Your {chosen_date} is available...\n")
+    print("-" * 80)
+    date_choice = validate_booking_date()
+    if date_choice:
+        print(f'Date {date_choice} is available...\n')
     else:
-        print("Date not valid please enter the date again...\n")
-        print("-" * 80)
-    return chosen_date
+        print("Not valid,please try again...")
+    print("-" * 80)
+    return date_choice
 
 
 def validate_booking_date():
@@ -268,31 +269,32 @@ def validate_booking_date():
     displaying a calendar for checking the days.
     """
     while True:
-        today_date = (time.strftime("%d/%m/%Y"))
-        print("This is today's date: " + today_date)
-        month_chosen_user = input(
-            "Please enter your desired date here"
-            " DD/MM/YYYY...\n"
-        )
-        current_month = datetime.today().month
-        if month_chosen_user < current_month:
-            print("invalid")
-        else:
+        date_user_input = input(
+            "Please enter your the appoinment date DD/MM/YYY:\n"
+            )
+        format_str = "%d/%m/%Y"
+        today_date = (time.strftime("%m/%d/%Y"))
+        print(colored("This is today's date: " + today_date, 'yellow'))
+
+        if date_user_input < today_date:
+            print(colored("Invalid,please try again...", 'red'))
             continue
-        if date_chosen_user.__contains__('/'):
-            return date_chosen_user
         else:
+            print("Valid date...saving...")
+            return date_user_input
+        try:
+            datetime.datetime.strptime(date_user_input, format_str)
+            return date_user_input
+        except ValueError:
             print(
                 colored(
-                    "This date is invalid,please enter a future date...", 'red'
+                    "This format is incorrect,it should be DD/MM/YYY/...",
+                    'red')
                     )
-                )
-            continue
-
     return True
 
 
-# Gat time for the appoinment
+# Get time for the appoinment
 def get_time():
     """
     Gets the time input for the appointment
