@@ -373,47 +373,32 @@ def val_admin_message():
     return True
 
 
-def admin_shift_management():
-    """
-    Takes admin requests and store it into the spreadsheet
-    for the managers to check and approve.
-    """
-    # Takes admin name and validates it and then takes patient details
-    admin_name = input("Please enter your full name : \n")
-    if len(admin_name) > 4:
-        print(
-            f"Welcome {admin_name}, please follow the next steps in"
-            "order to send your request..."
-        )
-    else:
-        print("Name not valid,please try again...\n")
-        print("-" * 0)
-    return admin_name
-
-
 def asses_patient_or_shift():
     """
     Gets the choice from the admin if he wants to asses patient
     or manage the shift and holidays requests.
     """
     print("-" * 80)
-    admin_val = admin_login()
-    asses_or_shift = input(
-            "To asses a patient press 'a' or 's' to manage shift...\n"
-        )
-    if admin_val:
-        return admin_val
-    else:
-        print("Logged in ...\n")
-    if asses_or_shift == 'a':
-        print(
-            "Please assess your patients carefully...\n"
+    while True:
+        admin_val = admin_login()
+        asses_or_shift = input(
+                "To asses a patient press 'a' or 's' to manage shift...\n"
             )
-        main_user()
-        # Asses patients over the phone or over the counter
-        # and enter their details
-    if asses_or_shift == 's':
-        admin_shift_management()
+        if admin_val:
+            return admin_val
+        else:
+            print("Logged in ...\n")
+        if asses_or_shift == 'a':
+            print(
+                "Please assess your patients carefully...\n"
+                )
+            main_user()
+            return False
+            # Asses patients over the phone or over the counter
+            # and enter their details
+        if asses_or_shift == 's':
+            admin_shift_management()
+    return True
 
 
 def admin_login():
@@ -442,9 +427,27 @@ def admin_login():
             print("Valid Password...\n")
             return False
         else:
-            print('\nWrong password, please try again\n')
+            print(colored('\nWrong password, please try again\n', 'red'))
             inputs += 1
     return True
+
+
+def admin_shift_management():
+    """
+    Takes admin requests and store it into the spreadsheet
+    for the managers to check and approve.
+    """
+    # Takes admin name and validates it and then takes patient details
+    admin_name = input("Please enter your full name : \n")
+    if len(admin_name) > 4:
+        print(
+            f"Welcome {admin_name}, please follow the next steps in"
+            "order to send your request..."
+        )
+    else:
+        print("Name not valid,please try again...\n")
+        print("-" * 0)
+    return admin_name
 
 
 def get_shift_days():
@@ -453,15 +456,17 @@ def get_shift_days():
     in order to get the infor into the spreadsheet
     for the manager to analyse and approve.
     """
-    shift_info = input(
-        "Please enter the days of the week that you work,"
-        "separated by comma...\n"
-        )
-    if shift_info.__contains__(','):
+    while True:
+        shift_info = input(
+            "Please enter the days of the week that you work,"
+            "separated by comma...\n"
+            )
+        if shift_info.__contains__(','):
+            return shift_info
+        else:
+            print("Please separate the days by comma...\n")
         return shift_info
-    else:
-        print("Please separate the days by comma...\n")
-    return shift_info
+    return True
 
 
 def get_shift_times():
@@ -469,15 +474,18 @@ def get_shift_times():
     Gets shift times from the admin and store it into the
     spreadsheet for manager to assess...
     """
-    shift_time = input("Please enter the shift times...\n")
-    if shift_time:
-        print("Thank you for your details...\n")
-        print("We can confirm that your data is correct...\n")
-    else:
-        print(
-            "Sorry this data does not match our records, please try again...\n"
-            )
-    return shift_time
+    while True:
+        shift_time = input("Please enter the shift times...\n")
+        if shift_time:
+            print("Thank you for your details...\n")
+            print("We can confirm that your data is correct...\n")
+        else:
+            print(
+                "Sorry this data does not match our records, "
+                "please try again...\n"
+                )
+        return shift_time
+    return True
 
 
 # exit options
@@ -486,15 +494,18 @@ def pick_exit():
     Offers an choice of leaving the app if anyone
     changes their mind.
     """
-    exit_or_not = input(
-        colored(
-            "Please press 'c' to continue or 'e' for exit menu...\n", 'blue'
-        )
-        )
-    if exit_or_not == "e":
-        exit_screen()
-    else:
-        main_user()
+    while True:
+        exit_or_not = input(
+            colored(
+                "Please press 'c' to continue or 'e' "
+                "for exit menu...\n", 'blue'
+            )
+            )
+        if exit_or_not == "e":
+            exit_screen()
+        else:
+            main_user()
+    return True
 
 
 def exit_menu():
