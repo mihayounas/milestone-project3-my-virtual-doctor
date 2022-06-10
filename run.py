@@ -79,7 +79,6 @@ def get_name():
     print(
         "PLease note that your details will be saved into our database..."
         )
-    exit_menu()
     name = validate_name()
     if name:
         print(f'Welcome {name}...\n')
@@ -303,9 +302,8 @@ def get_time():
     print("-" * 80)
     time_choice = validate_time()
     if time_choice:
-        print("Time is valid...\n")
         print("Checking if is available...\n")
-        print("Time available...\n")
+        print(f"{time_choice}:00 is available...\n")
     else:
         print(
             colored(
@@ -323,14 +321,22 @@ def validate_time():
     """
     while True:
         time_val = input("Please enter a time between 9 - 18...\n")
-        if int(time_val) in range(9, 19):
-            print("Valid time...\n")
-            return f"{time_val}:00"
-        else:
+        try:
+            if int(time_val) in range(9, 19):
+                print("Time is valid...saving...")
+                return f"{time_val}"
+            else:
+                print(
+                    colored(
+                        "This is not valid...please try again...",
+                        'red')
+                        )
+                continue
+        except ValueError:
             print(
                 colored(
-                    "Time chosen is not available,please try again...\n", 'red'
-                    )
+                    "This is not valid...please try again...",
+                    'red')
                     )
     return True
 
@@ -552,7 +558,6 @@ def cancel_or_change_data():
     else:
         exit_screen()
         return cancel_or_change
-    cancel_appoinment()
 
 
 def collect_data():
@@ -566,20 +571,26 @@ def collect_data():
     regex1 = re.compile("^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+.[a-z]{1,3}$")
     if re.fullmatch(regex1, email):
         if email in emails:
-            print("Your email is matching our records'...\n")
+            print("Your email is matching our records...\n")
         else:
             print("Sorry you are not registered yet...\n")
             pick_exit()
     print("Your appoinment details:")
     name_row = worksheet.find(email).row
     name = worksheet.cell(name_row, 1).value
-    print(name)
+    print(f"Name: {name}")
     date_row = worksheet.find(email).row
     app_date = worksheet.cell(date_row, 5).value
-    print(app_date)
+    print(f"Date: {app_date}")
     time_row = worksheet.find(email).row
     app_timming = worksheet.cell(time_row, 6).value
-    print(app_timming)
+    print(f"Time: {app_timming}:00")
+    print("Please enter your new details...")
+    name_new = get_name()
+    date_new = pick_a_date()
+    time_new = get_time()
+    new_data = [name_new, date_new, time_new]
+    update_worksheet(new_data, 'rescheduled')
 
 
 def cancel_appoinment():
@@ -604,7 +615,6 @@ def main_user():
     Run all the functions for user input, validation
     and saving into the spreadsheet...
     """
-    pick_a_date()
     name_user = get_name()
     birth_date = get_birth_date()
     email_user = validate_email()
