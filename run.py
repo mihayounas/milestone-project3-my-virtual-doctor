@@ -79,6 +79,7 @@ def get_name():
     print(
         "PLease note that your details will be saved into our database..."
         )
+    exit_menu()
     name = validate_name()
     if name:
         print(f'Welcome {name}...\n')
@@ -267,33 +268,27 @@ def validate_booking_date():
     displaying a calendar for checking the days.
     """
     while True:
-        format_str = "%d/%m/%Y"
         today_date = (time.strftime("%d/%m/%Y"))
         print("This is today's date: " + today_date)
-        date_chosen_user = input(
+        month_chosen_user = input(
             "Please enter your desired date here"
             " DD/MM/YYYY...\n"
         )
-        past = datetime.datetime.strptime(date_chosen_user, "%d/%m/%Y")
-        present = datetime.datetime.now()
-        if past.date() < present.date():
+        current_month = datetime.today().month
+        if month_chosen_user < current_month:
+            print("invalid")
+        else:
+            continue
+        if date_chosen_user.__contains__('/'):
+            return date_chosen_user
+        else:
             print(
                 colored(
                     "This date is invalid,please enter a future date...", 'red'
                     )
                 )
-        else:
-            print(f"This date {date_chosen_user} chosen is valid...")
-            return date_chosen_user
-    try:
-        datetime.datetime.strptime(date_chosen_user, format_str)
-        return date_chosen_user
-    except ValueError:
-        print(
-            colored(
-                "This format is incorrect,it should be DD/MM/YYY/...",
-                'red')
-                )
+            continue
+
     return True
 
 
@@ -607,6 +602,7 @@ def main_user():
     Run all the functions for user input, validation
     and saving into the spreadsheet...
     """
+    pick_a_date()
     name_user = get_name()
     birth_date = get_birth_date()
     email_user = validate_email()
