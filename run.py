@@ -83,7 +83,6 @@ def get_name():
     print(
         "PLease note that your details will be saved into our database..."
         )
-    pick_a_date()
     name = validate_name()
     if name:
         print(f'Welcome {name}...\n')
@@ -312,7 +311,6 @@ def get_time():
     print("-" * 80)
     time_choice = validate_time()
     if time_choice:
-        print("Checking if is available...\n")
         print(f"{time_choice}:00 is available...\n")
     else:
         print(
@@ -352,33 +350,6 @@ def validate_time():
 
 
 # Taking user's Admin details
-def val_admin_message():
-    """
-    Gets a message from the admin like a holiday
-    request of shift change
-    """
-    while True:
-        message = input(
-            "Please enter your request bellow, to be checked and approved"
-            " by manager on shift make sure to include the dates you are "
-            "are requesting for...\n"
-            )
-        print(
-            f"Your message: [{message}] will be checked and manager"
-            " will approve it shortly...\n"
-            )
-        if len(message) > 8:
-            return message
-        else:
-            print(
-                colored(
-                    "Please add more details to describe the situation"
-                    "for the manager...\n", 'pink'
-                    )
-                    )
-    return True
-
-
 def asses_patient_or_shift():
     """
     Gets the choice from the admin if he wants to asses patient
@@ -387,22 +358,22 @@ def asses_patient_or_shift():
     print("-" * 80)
     while True:
         admin_val = admin_login()
-        asses_or_shift = input(
-                "To asses a patient press 'a' or 's' to manage shift...\n"
-            )
         if admin_val:
             return admin_val
         else:
             print("Logged in ...\n")
+        asses_or_shift = input(
+                "To assess a patient press 'a' or 's' to manage shift...\n"
+            )
         if asses_or_shift == 'a':
             print(
                 "Please assess your patients carefully...\n"
                 )
             main_user()
-            return False
             # Asses patients over the phone or over the counter
             # and enter their details
         if asses_or_shift == 's':
+            print("Please enter your details...")
             admin_shift_management()
     return True
 
@@ -443,35 +414,63 @@ def admin_shift_management():
     Takes admin requests and store it into the spreadsheet
     for the managers to check and approve.
     """
-    # Takes admin name and validates it and then takes patient details
-    admin_name = input("Please enter your full name : \n")
-    if len(admin_name) > 4:
-        print(
-            f"Welcome {admin_name}, please follow the next steps in"
-            "order to send your request..."
-        )
-    else:
-        print("Name not valid,please try again...\n")
-        print("-" * 0)
-    return admin_name
+    while True:
+        # Takes admin name and validates it and then takes patient details
+        admin_name = validate_name()
+        if admin_name:
+            print(
+                f"Welcome {admin_name}, please follow the next steps in "
+                "order to send your request..."
+            )
+        else:
+            print("Name not valid,please try again...\n")
+            print("-" * 0)
+            return admin_name
+        get_shift_days()
+        get_shift_times()
+        val_admin_message()
+    return True
 
 
 def get_shift_days():
     """
-    Gets information about each admin's personal shift
-    in order to get the infor into the spreadsheet
-    for the manager to analyse and approve.
+     Gets information about each admin's personal shift
+    in order to get the info into the spreadsheet
+    for the manager to analyze and approve.
+    """
+    shift_days = val_days()
+    if shift_days:
+        print(f"Days you work:{shift_days}")
+    else:
+        print("Please enter correct values...\n")
+    return shift_days
+
+
+def val_days():
+    """
+    Validates the shift days input.
     """
     while True:
         shift_info = input(
             "Please enter the days of the week that you work,"
             "separated by comma...\n"
             )
-        if shift_info.__contains__(','):
-            return shift_info
-        else:
-            print("Please separate the days by comma...\n")
-        return shift_info
+        try:
+            if shift_info.__contains__(','):
+                return shift_info
+            else:
+                print(
+                    colored(
+                        "This is not valid...please try again...",
+                        'red')
+                        )
+                continue
+        except ValueError:
+            print(
+                colored(
+                    "This is not valid...please try again...",
+                    'red')
+                    )
     return True
 
 
@@ -491,6 +490,33 @@ def get_shift_times():
                 "please try again...\n"
                 )
         return shift_time
+    return True
+
+
+def val_admin_message():
+    """
+    Gets a message from the admin like a holiday
+    request of shift change
+    """
+    while True:
+        message = input(
+            "Please enter your request bellow, to be checked and approved"
+            " by manager on shift make sure to include the dates you are "
+            "are requesting for...\n"
+            )
+        print(
+            f"Your message: [{message}] will be checked and manager"
+            " will approve it shortly...\n"
+            )
+        if len(message) > 8:
+            return message
+        else:
+            print(
+                colored(
+                    "Please add more details to describe the situation"
+                    "for the manager...\n", 'pink'
+                    )
+                    )
     return True
 
 
@@ -521,15 +547,17 @@ def exit_menu():
     again or can exit the screen.
     """
     print("-" * 80)
-    menu_exit = input(
-        colored(
-            "Please press 'm' for main menu or 'e' to exit...\n", 'blue'
-            )
-            )
-    if menu_exit == "m":
-        main_user()
-    else:
-        exit_screen()
+    while True:
+        menu_exit = input(
+            colored(
+                "Please press 'm' for main menu or 'e' to exit...\n", 'blue'
+                )
+                )
+        if menu_exit == "e":
+            exit_screen()
+        else:
+            main_user()
+    return True
 
 
 def exit_screen():
@@ -543,14 +571,17 @@ def exit_screen():
     print("-" * 0)
     print("Thank you for visiting our application !\n")
     print("What would you like to do next ?\n")
-    exit_choice = input(
-        "To manage your appointments press '1' or 'e' to close:\n"
-        )
-    if exit_choice == "1":
-        collect_data()
-    else:
-        text = "GoodBye...\n"
-        welcome_msg(text)
+    while True:
+        exit_choice = input(
+            "To manage your appointments press '1' or 'e' to close:\n"
+            )
+        if exit_choice == "1":
+            collect_data()
+        else:
+            text = "GoodBye...\n"
+            welcome_msg(text)
+            break
+    return True
 
 
 # Update and store the details of the user in the spreadsheet
