@@ -83,6 +83,7 @@ def get_name():
     print(
         "PLease note that your details will be saved into our database..."
         )
+    val_admin_message()
     name = validate_name()
     if name:
         print(f'Welcome {name}...\n')
@@ -480,15 +481,13 @@ def get_shift_times():
     spreadsheet for manager to assess...
     """
     while True:
-        shift_time = input("Please enter the shift times...\n")
+        print("Please enter the shift times...\n")
+        shift_time = validate_time()
         if shift_time:
             print("Thank you for your details...\n")
             print("We can confirm that your data is correct...\n")
         else:
-            print(
-                "Sorry this data does not match our records, "
-                "please try again...\n"
-                )
+            print("Invalid,data does not match our records...\n")
         return shift_time
     return True
 
@@ -504,19 +503,21 @@ def val_admin_message():
             " by manager on shift make sure to include the dates you are "
             "are requesting for...\n"
             )
-        print(
-            f"Your message: [{message}] will be checked and manager"
-            " will approve it shortly...\n"
-            )
-        if len(message) > 8:
-            return message
-        else:
-            print(
-                colored(
-                    "Please add more details to describe the situation"
-                    "for the manager...\n", 'pink'
+        try:
+            if len(message) > 8:
+                print(
+                    f"Your message: [{message}] will be checked and manager"
+                    " will approve it shortly...\n"
                     )
+                return message
+            else:
+                print(
+                    "Sorry this data does not match our records, "
+                    "please try again...\n"
                     )
+                continue
+        except ValueError:
+            print("Invalid,try again...")
     return True
 
 
