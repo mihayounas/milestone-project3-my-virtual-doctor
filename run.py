@@ -130,16 +130,9 @@ def get_birth_date():
     date_val = val_date()
     if date_val:
         print(f"Your date of birth is : {date_val}\n")
-        day, month, year = date_val.split('/')
-        birth_date = datetime.datetime(int(year), int(month), int(day))
-        age_years = (datetime.datetime.now() - birth_date)
-        convertdays = int(age_years.days)
-        age_years = int(convertdays/365)
-        print(f"Your are {age_years} years old...\n")
-        return date_val
     else:
         print(colored("Please enter the right format DD/MM/YYY...\n", 'red'))
-        return date_val
+    return date_val
 
 
 # Validate DATE of birth
@@ -156,13 +149,25 @@ def val_date():
         format_str = "%d/%m/%Y"
         try:
             datetime.datetime.strptime(date_input, format_str)
-            return date_input
+            day, month, year = date_input.split('/')
+            birth_date = datetime.datetime(int(year), int(month), int(day))
+            age_years = (datetime.datetime.now() - birth_date)
+            convertdays = int(age_years.days)
+            age_years = int(convertdays/365)
+            if age_years < 100:
+                print("valid")
+                print(f"Your are {age_years} years old...\n")
+            else:
+                print('The year you entered is invalid,please try again...\n')
+                continue
         except ValueError:
             print(
                 colored(
                     "This format is incorrect,it should be DD/MM/YYY/...",
                     'red')
                     )
+            continue
+        return date_input
     return True
 
 
