@@ -83,7 +83,6 @@ def get_name():
     print(
         "PLease note that your details will be saved into our database..."
         )
-    val_admin_message()
     name = validate_name()
     if name:
         print(f'Welcome {name}...\n')
@@ -620,7 +619,7 @@ def collect_data():
     """
     worksheet = SHEET.worksheet('details')
     emails = worksheet.col_values(3)
-    email = input("Please enter the registered email...\n")
+    email = validate_email()
     regex1 = re.compile("^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+.[a-z]{1,3}$")
     if re.fullmatch(regex1, email):
         if email in emails:
