@@ -83,6 +83,7 @@ def get_name():
     print(
         "PLease note that your details will be saved into our database..."
         )
+    pick_a_date()
     name = validate_name()
     if name:
         print(f'Welcome {name}...\n')
@@ -278,18 +279,18 @@ def validate_booking_date():
     """
     while True:
         date_user_input = input(
-            "Please enter your the appoinment date DD/MM/YYY:\n"
+            "Please enter your the appoinment date DD/MM/YYYY:\n"
             )
         format_str = "%d/%m/%Y"
         today_date = (time.strftime("%d/%m/%Y"))
         print(colored("This is today's date: " + today_date, 'yellow'))
 
-        if date_user_input < today_date:
-            print(colored("Invalid,please try again...", 'red'))
-            continue
-        else:
+        if date_user_input > today_date:
             print("Valid date...saving...")
             return date_user_input
+        else:
+            print(colored("Invalid,please try again...", 'red'))
+            continue
         try:
             datetime.datetime.strptime(date_user_input, format_str)
             return date_user_input
