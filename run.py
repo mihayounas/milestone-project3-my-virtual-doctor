@@ -1,19 +1,24 @@
 """
-Main My Virtual Doctor file for a command line interface appointments
-system for patients and admins.
+Main My Virtual Doctor file for a command line interface it is
+an appointment system for patients and admins.
 
-This app's purpose is to help patients to book their appointments
+This app's purpose is to help patients to book their appointments,
 change or cancel it.
 
 The information of the user is saved into a spreadsheet on Google drive.
+
+It also gives the option for the admins to assess the patients or send a
+holiday request which is also stored into the spreadsheet.
 """
+# Datetime import to handle date and time
 import datetime
 import re
 import time
-# import Pyfiglet library for text to fonts functionality
+# Pyfiglet library for text to fonts functionality
 from pyfiglet import Figlet
-# import Termcolor library for text colours
+# Termcolor library for text colours
 from termcolor import colored
+# Google spreadsheets to save our data
 import gspread
 from google.oauth2.service_account import Credentials
 
@@ -30,6 +35,7 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("my_virtual_doctor")
 
 
+# Welcome function which will help display welcome message
 def welcome_msg(text):
     """
     Welcome message with special figlet styling.
@@ -39,6 +45,7 @@ def welcome_msg(text):
     print(colored(font.renderText(text), "cyan",  attrs=["bold"]))
 
 
+# Welcome message with description of the application
 def welcome_message():
     """
     Welcoming the patients or the admin.
@@ -54,17 +61,22 @@ def welcome_message():
     print('After confirming all your details you will be able')
     print('to see, edit or cancel your appoinment...!')
     while True:
+        # Gives the option for patient or admin user
         admin_or_patient = input(
             'Please press "r" to register an appointment or "a" '
             'for admin area or '
             'if you have an appoinment press "1":\n'
         )
+        # This part will start taking patient's details
         if admin_or_patient == 'r':
             return False
+        # This part will start taking admins's details
         if admin_or_patient == 'a':
             asses_patient_or_shift()
             main_admin()
             return False
+        # This part will help someone already registered
+        # to manage his appoinment
         if admin_or_patient == '1':
             collect_data()
             return False
@@ -151,10 +163,12 @@ def val_date():
             datetime.datetime.strptime(date_input, format_str)
             day, month, year = date_input.split('/')
             birth_date = datetime.datetime(int(year), int(month), int(day))
+            # Calculates age in years for the patient
             age_years = (datetime.datetime.now() - birth_date)
             convertdays = int(age_years.days)
             age_years = int(convertdays/365)
-            if age_years < 100:
+            # It won't take anything later than 110 years old
+            if age_years < 110:
                 print("valid")
                 print(f"Your are {age_years} years old...\n")
             else:
@@ -271,6 +285,7 @@ def pick_a_date():
     return date_choice
 
 
+# Validates a date in future ,do not accept past dates
 def validate_booking_date():
     """
     Helps the patient pick a available date and
@@ -322,6 +337,7 @@ def get_time():
     return time_choice
 
 
+# Validates the time input
 def validate_time():
     """
     Gets time input and validates that
@@ -373,11 +389,13 @@ def asses_patient_or_shift():
             # Asses patients over the phone or over the counter
             # and enter their details
         if asses_or_shift == 's':
+            # Will take Admin's details
             print("Please enter your details...")
             admin_shift_management()
     return True
 
 
+# Admin log in area
 def admin_login():
     """
     This function will enter the admin only area
@@ -385,6 +403,8 @@ def admin_login():
     or open the screen to manage the weekly shift.
     """
     print("-" * 80)
+    # Admin password - I will hide in the future but use it like this for
+    # this project
     admin_pass = 'Admin'
     inputs = 0
     admin_welcome = 'Welcome Admin'
@@ -393,6 +413,7 @@ def admin_login():
         admin_pass_input = input(
             "Please enter your password to log in...\n"
             )
+        # If wrong password too many time it will go to Admin Welcome page
         if inputs == 3:
             print(
                 "You have reached maximum attempts, password is invalid..."
@@ -409,6 +430,7 @@ def admin_login():
     return True
 
 
+# Entering details for admin and getting their message to be stored
 def admin_shift_management():
     """
     Takes admin requests and store it into the spreadsheet
@@ -432,6 +454,7 @@ def admin_shift_management():
     return True
 
 
+# Getting admin shift days
 def get_shift_days():
     """
      Gets information about each admin's personal shift
@@ -446,9 +469,11 @@ def get_shift_days():
     return shift_days
 
 
+# Validates shift days for admin
 def val_days():
     """
-    Validates the shift days input.
+    Validates the shift days input, days with comma
+    between.
     """
     while True:
         shift_info = input(
@@ -474,6 +499,7 @@ def val_days():
     return True
 
 
+# Gets admin's working times
 def get_shift_times():
     """
     Gets shift times from the admin and store it into the
@@ -491,6 +517,7 @@ def get_shift_times():
     return True
 
 
+# Gets admin's personalised message for a holiday request
 def val_admin_message():
     """
     Gets a message from the admin like a holiday
@@ -503,6 +530,7 @@ def val_admin_message():
             "are requesting for...\n"
             )
         try:
+            # Input message has to be clear and descriptive
             if len(message) > 8:
                 print(
                     f"Your message: [{message}] will be checked and manager"
@@ -520,7 +548,7 @@ def val_admin_message():
     return True
 
 
-# exit options
+# Exit option giving option to continue with main menu or exit
 def pick_exit():
     """
     Offers an choice of leaving the app if anyone
@@ -540,6 +568,7 @@ def pick_exit():
     return True
 
 
+# Gives option to on to the main menu or exit screen
 def exit_menu():
     """
     The exit menu will offer a choice to user,
@@ -560,6 +589,7 @@ def exit_menu():
     return True
 
 
+# Gives option to see the existing appoinment details or close the app
 def exit_screen():
     """
     This is an exit function wich gives the opportunity
@@ -591,11 +621,12 @@ def update_worksheet(data, worksheet):
     to store patient details into the database.
     """
     # Get all the details stored into the worksheet
-    worksheet_to_update = SHEET.worksheet(worksheet)
-    worksheet_to_update.append_row(data)
+    new_data_worksheet = SHEET.worksheet(worksheet)
+    new_data_worksheet.append_row(data)
     print("Thank you,your details have been succesfully saved...\n")
 
 
+# Offers option to cancel or change the appoinment
 def cancel_or_change_data():
     """
     Gets the answer from user of the action
@@ -612,6 +643,7 @@ def cancel_or_change_data():
         return cancel_or_change
 
 
+# Collect the data already save into the spreadsheet
 def collect_data():
     """
     Displays data for the user in order to allow them
@@ -621,6 +653,8 @@ def collect_data():
     emails = worksheet.col_values(3)
     email = validate_email()
     regex1 = re.compile("^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+.[a-z]{1,3}$")
+    # Matching the email to the regex to validate it is an email
+    # Finds where the email is,if it exists it's matching it
     if re.fullmatch(regex1, email):
         if email in emails:
             print("Your email is matching our records...\n")
@@ -628,16 +662,20 @@ def collect_data():
             print("Sorry you are not registered yet...\n")
             pick_exit()
     print("Your appoinment details:")
+    # Collects the name matching to the email
     name_row = worksheet.find(email).row
     name = worksheet.cell(name_row, 1).value
     print(f"Name: {name}")
+    # Collects the date matching to the email
     date_row = worksheet.find(email).row
     app_date = worksheet.cell(date_row, 5).value
     print(f"Date: {app_date}")
+    # Collects the appoinment time matching to the email
     time_row = worksheet.find(email).row
     app_timming = worksheet.cell(time_row, 6).value
     print(f"Time: {app_timming}:00")
     print("Please enter your new details...")
+    # Collects new details for a new appoinment
     name_new = get_name()
     date_new = pick_a_date()
     time_new = get_time()
@@ -645,6 +683,7 @@ def collect_data():
     update_worksheet(new_data, 'rescheduled')
 
 
+# Removes the old appoinment and keeps the new one
 def cancel_appoinment():
     """
     Cancel app
@@ -662,6 +701,7 @@ def cancel_appoinment():
         print("deleted...")
 
 
+# Main User App functions
 def main_user():
     """
     Run all the functions for user input, validation
@@ -683,6 +723,7 @@ def main_user():
     return values_data
 
 
+# Main Admin area functions
 def main_admin():
     """
     Run all the functions for admin section when called
@@ -693,6 +734,7 @@ def main_admin():
     shift_times = get_shift_times()
     admin_mess = val_admin_message()
     data = [admin_input_name, shift_days, shift_times, admin_mess]
+    # Saves all the admin data into the spreadsheet to be checked further
     update_worksheet(data, "admin")
     exit_menu()
 
