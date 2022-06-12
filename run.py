@@ -59,7 +59,12 @@ def welcome_message():
     print('An app which helps you book your doctor appointments fast!')
     print('To use this app, press enter after each choice.')
     print('After confirming all your details you will be able')
-    print('to see, edit or cancel your appoinment...!')
+    print('to see, edit or cancel your appoinment...!\n')
+
+    print(
+        "After each information entered please press enter to send your"
+        " response.\n"
+        )
     while True:
         # Gives the option for patient or admin user
         admin_or_patient = input(
@@ -95,6 +100,8 @@ def get_name():
     print(
         "PLease note that your details will be saved into our database..."
         )
+    exit_menu()
+    print("-" * 80)
     name = validate_name()
     if name:
         print(f'Welcome {name}...\n')
@@ -548,26 +555,6 @@ def val_admin_message():
     return True
 
 
-# Exit option giving option to continue with main menu or exit
-def pick_exit():
-    """
-    Offers a choice of leaving the app if anyone
-    changes their mind.
-    """
-    while True:
-        exit_or_not = input(
-            colored(
-                "Please press 'c' to continue or 'e' "
-                "for exit menu...\n", 'blue'
-            )
-            )
-        if exit_or_not == "e":
-            exit_screen()
-        else:
-            main_user()
-    return True
-
-
 # Gives option to on to the main menu or exit screen
 def exit_menu():
     """
@@ -579,10 +566,10 @@ def exit_menu():
     while True:
         menu_exit = input(
             colored(
-                "Please press 'm' for main menu or 'e' to exit...\n", 'blue'
+                "Please press 'c' to continue or 'e' to exit...\n", 'blue'
                 )
                 )
-        if menu_exit == "e":
+        if menu_exit != "c":
             exit_screen()
         else:
             main_user()
@@ -660,7 +647,7 @@ def collect_data():
             print("Your email is matching our records...\n")
         else:
             print("Sorry you are not registered yet...\n")
-            pick_exit()
+            exit_menu()
     print("Your appoinment details:")
     # Collects the name matching to the email
     name_row = worksheet.find(email).row
