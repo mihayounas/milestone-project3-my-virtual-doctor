@@ -41,7 +41,7 @@ def welcome_msg(text):
     Welcome message with special figlet styling.
     """
     # Displays a welcome message in cyan color Figlet
-    font = Figlet(font="slant")
+    font = Figlet(font="block")
     print(colored(font.renderText(text), "cyan",  attrs=["bold"]))
 
 
@@ -551,7 +551,7 @@ def val_admin_message():
 # Exit option giving option to continue with main menu or exit
 def pick_exit():
     """
-    Offers an choice of leaving the app if anyone
+    Offers a choice of leaving the app if anyone
     changes their mind.
     """
     while True:
