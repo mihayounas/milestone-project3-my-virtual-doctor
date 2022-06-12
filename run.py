@@ -100,7 +100,6 @@ def get_name():
     print(
         "PLease note that your details will be saved into our database..."
         )
-    exit_menu()
     print("-" * 80)
     name = validate_name()
     if name:
