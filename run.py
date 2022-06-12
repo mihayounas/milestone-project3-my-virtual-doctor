@@ -52,10 +52,10 @@ def welcome_message():
     Giving the choice of booking an appointment
     or logging in as admin.
     """
-    welcome_msg("My Virtual Doctor...")
+    welcome_msg("Welcome")
     print("-" * 80)
     print("-" * 80)
-    print('Welcome to My Virtual Doctor !')
+    print('Welcome to My Virtual Doctor app...!')
     print('An app which helps you book your doctor appointments fast!')
     print('To use this app, press enter after each choice.')
     print('After confirming all your details you will be able')
