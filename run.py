@@ -11,9 +11,8 @@ It also gives the option for the admins to assess the patients or send a
 holiday request which is also stored into the spreadsheet.
 """
 # Datetime import to handle date and time
-import datetime
+from datetime import datetime
 import re
-import time
 # Pyfiglet library for text to fonts functionality
 from pyfiglet import Figlet
 # Termcolor library for text colours
@@ -97,6 +96,7 @@ def get_name():
     """
     # Gets a validated name to display
     print("-" * 80)
+    validate_booking_date()
     print(
         "PLease note that your details will be saved into our database..."
         )
@@ -283,13 +283,20 @@ def validate_symptoms():
     while True:
         symptoms_val = input("Please enter you symptoms bellow :\n")
         # Only accept a proper message description
-        if len(symptoms_val) > 7:
+        regex_mess = re.compile(
+            r'^([a-z]+)( [a-z]+)+( [a-z]+)( [a-z]+)( [a-z]+)*$', re.IGNORECASE
+            )
+        re_format_check = regex_mess.search(symptoms_val)
+        # If match is found, the string is valid
+        if re_format_check:
+            print("Thank you...saving...")
             return symptoms_val
+        # If match is not found, string is invalid
         else:
             print(
                 colored(
-                    "Please add more details for your doctor...\n", 'red'
-                    )
+                    "Not valid please try to enter valid information...",
+                    'red')
                     )
     return True
 
@@ -320,10 +327,11 @@ def validate_booking_date():
             "Please enter your the appoinment date DD/MM/YYYY:\n"
             )
         format_str = "%d/%m/%Y"
-        today_date = (time.strftime("%d/%m/%Y"))
-        print(colored("This is today's date: " + today_date, 'yellow'))
-
-        if date_user_input > today_date:
+        now = datetime.now()
+        # convert to string
+        date_time_str = now.strftime("%d/%m/%Y")
+        print(colored("This is today's date: " + date_time_str, 'yellow'))
+        if date_user_input > date_time_str:
             print("Valid date...saving...")
             return date_user_input
         else:
