@@ -131,7 +131,8 @@ def validate_name():
         else:
             print(
                 colored(
-                    "Not valid please enter First and Last name separated by space...",
+                    "Not valid please enter First and Last name separated by"
+                    " space...",
                     'red')
                     )
     return True
@@ -174,12 +175,28 @@ def val_date():
             age_years = (datetime.datetime.now() - birth_date)
             convertdays = int(age_years.days)
             age_years = int(convertdays/365)
-            # It won't take anything later than 110 years old
-            if age_years < 110:
-                print("valid")
+            # It won't take anything later than 100 years old
+            if age_years <= 0:
+                print(
+                    colored(
+                        "The year you entered is invalid,please try again...\n"
+                        "The date entered is in the future...\n",
+                        'red')
+                        )
+                continue
+            else:
+                print("valid...")
+                print(f"Your are {age_years} years old...\n")
+            if age_years < 100:
+                print("valid...")
                 print(f"Your are {age_years} years old...\n")
             else:
-                print('The year you entered is invalid,please try again...\n')
+                print(
+                    colored(
+                        "The year you entered is invalid,please try again...\n"
+                        "The year you entered is too far in the past...\n",
+                        'red')
+                        )
                 continue
         except ValueError:
             print(
