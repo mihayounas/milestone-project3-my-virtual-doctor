@@ -57,7 +57,6 @@ def welcome_message():
     print("-" * 80)
     print('Welcome to My Virtual Doctor app...!')
     print('An app which helps you book your doctor appointments fast!')
-    print('To use this app, press enter after each choice.')
     print('After confirming all your details you will be able')
     print('to see, edit or cancel your appoinment...!\n')
 
@@ -97,10 +96,10 @@ def get_name():
     """
     # Gets a validated name to display
     print("-" * 80)
-    pick_a_date()
     print(
         "PLease note that your details will be saved into our database..."
         )
+    continue_menu()
     print("-" * 80)
     name = validate_name()
     if name:
@@ -162,6 +161,8 @@ def val_date():
     Validates and calculates age of the user
     by the date of birth.
     """
+    print("Please enter your date of birth or :")
+    continue_menu()
     while True:
         date_input = input(
             "Please enter your date of birth in this "
@@ -581,7 +582,7 @@ def val_admin_message():
 
 
 # Gives option to on to the main menu or exit screen
-def exit_menu():
+def continue_menu():
     """
     The exit menu will offer a choice to user,
     he can return to the main menu and start
@@ -591,13 +592,14 @@ def exit_menu():
     while True:
         menu_exit = input(
             colored(
-                "Please press 'c' to continue or 'e' to exit...\n", 'blue'
+                "If you would like to continue press 'c' or 'e' to go back "
+                "to main menu...\n", 'blue'
                 )
                 )
-        if menu_exit != "c":
-            exit_screen()
-        else:
-            main_user()
+        if menu_exit == "c":
+            break
+        elif menu_exit == 'e':
+            welcome_message()
     return True
 
 
@@ -615,14 +617,13 @@ def exit_screen():
     print("What would you like to do next ?\n")
     while True:
         exit_choice = input(
-            "To manage your appointments press '1' or 'e' to close:\n"
+            "To go back to main menu press '1' or 'e' to exit:\n"
             )
         if exit_choice == "1":
             collect_data()
         else:
             text = "GoodBye...\n"
             welcome_msg(text)
-            break
     return True
 
 
@@ -645,7 +646,7 @@ def cancel_or_change_data():
     that he wants to take.
     """
     cancel_or_change = input(
-        "If you would like to cancel or change your appoinment "
+        "If you would like to manage your appoinment "
         "press '1' or 'e' to exit"
         )
     if cancel_or_change == 1:
@@ -672,7 +673,7 @@ def collect_data():
             print("Your email is matching our records...\n")
         else:
             print("Sorry you are not registered yet...\n")
-            exit_menu()
+            continue_menu()
     print("Your appoinment details:")
     # Collects the name matching to the email
     name_row = worksheet.find(email).row
@@ -699,25 +700,6 @@ def collect_data():
     new_data = [name_new, date_new, time_new, new_email, new_dob]
     update_worksheet(new_data, 'rescheduled')
     print(f"You appoinment was now reschedule on {date_new} at {time_new}.")
-    print()
-
-
-# Removes the old appoinment and keeps the new one
-def cancel_appoinment():
-    """
-    Cancel app
-    """
-    cancel_input = input(
-        "Please press '1' to change the date or 'c' to cancel your appoinment"
-        "...\n"
-        )
-    if cancel_input == '1':
-        validate_booking_date()
-        get_time()
-        print("Your appointment has been changed...")
-        exit_screen()
-    else:
-        print("deleted...")
 
 
 # Main User App functions
@@ -755,7 +737,7 @@ def main_admin():
     data = [admin_input_name, shift_days, shift_times, admin_mess]
     # Saves all the admin data into the spreadsheet to be checked further
     update_worksheet(data, "admin")
-    exit_menu()
+    continue_menu()
 
 
 welcome_message()
