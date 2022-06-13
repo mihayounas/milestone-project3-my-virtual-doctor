@@ -70,7 +70,7 @@ def welcome_message():
         admin_or_patient = input(
             'Please press "r" to register an appointment or "a" '
             'for admin area or '
-            'if you have an appoinment press "1":\n'
+            'if you have an appoinment press "h" to check your history:\n'
         )
         # This part will start taking patient's details
         if admin_or_patient == 'r':
@@ -119,21 +119,22 @@ def validate_name():
     """
     while True:
         names = input("Please enter your full name with space between...\n")
-        if len(names) <= 2:
+        regex_name = re.compile(
+            r'^([a-z]+)( [a-z]+)*( [a-z]+)*$', re.IGNORECASE
+            )
+        re_format_check = regex_name.search(names)
+        # If match is found, the string is valid
+        if re_format_check:
+            print("Name is Valid...saving")
+            return names
+        # If match is not found, string is invalid
+        else:
             print(
                 colored(
-                    "Please enter your full name with space between...\n",
-                    'red'
+                    "Not valid please enter First and Last name separated by space...",
+                    'red')
                     )
-                    )
-
-        #  Don't accept numbers in name
-        elif any(char.isdigit() for char in names):
-            print("Names should not contain numbers...")
-
-        #  Only accept the names if contains a space
-        elif names.__contains__(' '):
-            return names
+    return True
 
 
 # Get DATE of birth input
@@ -673,7 +674,7 @@ def collect_data():
     new_data = [name_new, date_new, time_new, new_email, new_dob]
     update_worksheet(new_data, 'rescheduled')
     print(f"You appoinment was now reschedule on {date_new} at {time_new}.")
-    print("Thank you...")
+    print()
 
 
 # Removes the old appoinment and keeps the new one
