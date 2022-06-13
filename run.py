@@ -12,6 +12,7 @@ holiday request which is also stored into the spreadsheet.
 """
 # Datetime import to handle date and time
 from datetime import datetime
+import time
 import re
 # Pyfiglet library for text to fonts functionality
 from pyfiglet import Figlet
@@ -96,7 +97,7 @@ def get_name():
     """
     # Gets a validated name to display
     print("-" * 80)
-    validate_booking_date()
+    pick_a_date()
     print(
         "PLease note that your details will be saved into our database..."
         )
@@ -312,8 +313,8 @@ def pick_a_date():
         print(f'Date {date_choice} is available...\n')
     else:
         print("Not valid,please try again...")
-    print("-" * 80)
-    return date_choice
+        print("-" * 80)
+        return date_choice
 
 
 # Validates a date in future ,do not accept past dates
@@ -326,20 +327,19 @@ def validate_booking_date():
         date_user_input = input(
             "Please enter your the appoinment date DD/MM/YYYY:\n"
             )
-        format_str = "%d/%m/%Y"
         now = datetime.now()
-        # convert to string
-        date_time_str = now.strftime("%d/%m/%Y")
-        print(colored("This is today's date: " + date_time_str, 'yellow'))
-        if date_user_input > date_time_str:
-            print("Valid date...saving...")
-            return date_user_input
-        else:
-            print(colored("Invalid,please try again...", 'red'))
-            continue
         try:
-            datetime.datetime.strptime(date_user_input, format_str)
-            return date_user_input
+            # convert to string
+            date_time_str = now.strftime("%d/%m/%Y")
+            print("Please choose a date later than today's date.")
+            print(colored("This is today's date: " + date_time_str, 'yellow'))
+            date1 = time.strptime(date_user_input, "%d/%m/%Y")
+            date2 = time.strptime(date_time_str, "%d/%m/%Y")
+            if date1 > date2:
+                print("Valid date...saving...")
+                return date_user_input
+            else:
+                print(colored("Invalid,please try again...", 'red'))
         except ValueError:
             print(
                 colored(
