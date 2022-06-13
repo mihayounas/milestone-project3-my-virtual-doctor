@@ -66,6 +66,7 @@ My Virtual Doctor runs in Heroku terminaland  was tested on the following browse
 
 # Testing:
 * The app was tested in [PEP8](http://pep8online.com).No errors were found.
+![Testing](/images/test.png)
 
 # Deployment: 
 The site was deployed to Heroku pages.
