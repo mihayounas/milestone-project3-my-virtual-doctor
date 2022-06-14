@@ -606,7 +606,7 @@ def continue_menu():
         if menu_exit == "c":
             break
         if menu_exit == 'e':
-            print(colored("Exiting...",'red'))
+            print(colored("Exiting...", 'red'))
             welcome_message()
     return True
 
@@ -628,7 +628,8 @@ def exit_screen():
             "To go back to main menu press '1' or 'e' to exit:\n"
             )
         if exit_choice == "1":
-            collect_data()
+            welcome_message()
+            main_user()
         else:
             text = "GoodBye...\n"
             welcome_msg(text)
@@ -645,23 +646,6 @@ def update_worksheet(data, worksheet):
     new_data_worksheet = SHEET.worksheet(worksheet)
     new_data_worksheet.append_row(data)
     print("Thank you,your details have been succesfully saved...\n")
-
-
-# Offers option to cancel or change the appoinment
-def cancel_or_change_data():
-    """
-    Gets the answer from user of the action
-    that he wants to take.
-    """
-    cancel_or_change = input(
-        "If you would like to manage your appoinment "
-        "press '1' or 'e' to exit"
-        )
-    if cancel_or_change == 1:
-        collect_data()
-    else:
-        exit_screen()
-        return cancel_or_change
 
 
 # Collect the data already save into the spreadsheet
@@ -695,11 +679,13 @@ def collect_data():
     time_row = worksheet.find(email).row
     app_timming = worksheet.cell(time_row, 6).value
     print(f"Time: {app_timming}:00")
+    # Offers option to reschedule or change the appoinment
     cancel_return = input(
         "To reschedule your appointment press 'r' or 'm' for main menu:\n"
         )
     if cancel_return == 'r':
         print("Please enter your new details...")
+        continue_menu()
         # Deletes all the data entered for the old appoinment from the
         # spreadsheet.
         details = SHEET.worksheet('details')
@@ -725,7 +711,6 @@ def main_user():
     Run all the functions for user input, validation
     and saving into the spreadsheet...
     """
-    welcome_message()
     name_user = get_name()
     birth_date = get_birth_date()
     email_user = validate_email()
@@ -738,8 +723,6 @@ def main_user():
         ]
     update_worksheet(data, 'details')
     exit_screen()
-    values_data = cancel_or_change_data()
-    return values_data
 
 
 # Main Admin area functions
