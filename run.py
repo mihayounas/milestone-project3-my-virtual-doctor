@@ -654,6 +654,8 @@ def collect_data():
     Displays data for the user in order to allow them
     to cancel or change their appoinment
     """
+    print("Here you will be able to check your appoinment details.")
+    print("Your email has to match to the one you used to book your appoinment...")
     worksheet = SHEET.worksheet('details')
     emails = worksheet.col_values(3)
     email = validate_email()
@@ -680,6 +682,12 @@ def collect_data():
     app_timming = worksheet.cell(time_row, 6).value
     print(f"Time: {app_timming}:00")
     # Offers option to reschedule or change the appoinment
+    print(
+        colored(
+            "Reschedule process will remove the existing appoinment and"
+            " create a new one...", 'red'
+            )
+            )
     cancel_return = input(
         "To reschedule your appointment press 'r' or 'm' for main menu:\n"
         )
@@ -699,10 +707,25 @@ def collect_data():
         new_data = [name_new, date_new, time_new, new_email, new_dob]
         update_worksheet(new_data, 'rescheduled')
         print(
-            f"You appoinment was now reschedule on {date_new} at {time_new}."
+            f"You appoinment was now rescheduled on {date_new} at {time_new}."
             )
     else:
         main_user()
+
+
+def book_one_more():
+    """
+    Gives option to book one more appoinment or exit
+    the app.
+    """
+    one_more_app = input(
+        "If you would like to book another appointment please press 'b' or 'e'"
+        " to exit to main menu"
+        )
+    if one_more_app == 'b':
+        main_user()
+    if one_more_app == 'e':
+        exit_screen()
 
 
 # Main User App functions
@@ -722,6 +745,7 @@ def main_user():
         time_user
         ]
     update_worksheet(data, 'details')
+    book_one_more()
     exit_screen()
 
 
