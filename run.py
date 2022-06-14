@@ -81,7 +81,7 @@ def welcome_message():
             return False
         # This part will help someone already registered
         # to manage his appoinment
-        if admin_or_patient == '1':
+        if admin_or_patient == 'h':
             collect_data()
             return False
         print(colored('Invalid entry, please try again...\n', 'red'))
@@ -120,7 +120,7 @@ def validate_name():
     while True:
         names = input("Please enter your full name with space between...\n")
         regex_name = re.compile(
-            r'^([a-z]+)( [a-z]+)*( [a-z]+)*$', re.IGNORECASE
+            r'^([a-z]+)( [a-z]+)+( [a-z]+)*( [a-z]+)*$', re.IGNORECASE
             )
         re_format_check = regex_name.search(names)
         # If match is found, the string is valid
@@ -161,7 +161,7 @@ def val_date():
     Validates and calculates age of the user
     by the date of birth.
     """
-    print("Please enter your date of birth or :")
+    print("Continue to enter your date of birth or...")
     continue_menu()
     while True:
         date_input = input(
@@ -170,11 +170,11 @@ def val_date():
         )
         format_str = "%d/%m/%Y"
         try:
-            datetime.datetime.strptime(date_input, format_str)
+            datetime.strptime(date_input, format_str)
             day, month, year = date_input.split('/')
-            birth_date = datetime.datetime(int(year), int(month), int(day))
+            birth_date = datetime(int(year), int(month), int(day))
             # Calculates age in years for the patient
-            age_years = (datetime.datetime.now() - birth_date)
+            age_years = (datetime.now() - birth_date)
             convertdays = int(age_years.days)
             age_years = int(convertdays/365)
             # It won't take anything later than 100 years old
@@ -190,8 +190,7 @@ def val_date():
                 print("valid...")
                 print(f"Your are {age_years} years old...\n")
             if age_years < 100:
-                print("valid...")
-                print(f"Your are {age_years} years old...\n")
+                print("Saving DOB...")
             else:
                 print(
                     colored(
@@ -238,6 +237,8 @@ def validate_email():
     Validates email addresses by checking
     for a common pathern and returns a valid email address.
     """
+    print("Continue to enter your email or...")
+    continue_menu()
     while True:
         email_val = input("Please enter a valid email address:\n")
         regex = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+.[a-z]{1,3}$"
@@ -282,6 +283,8 @@ def validate_symptoms():
     and makes sure that it gives the right information
     for the appointment.
     """
+    print("Continue to enter your symptoms or...")
+    continue_menu()
     while True:
         symptoms_val = input("Please enter you symptoms bellow :\n")
         # Only accept a proper message description
@@ -297,7 +300,7 @@ def validate_symptoms():
         else:
             print(
                 colored(
-                    "Not valid please try to enter valid information...",
+                    "Not valid,please try to enter more details...",
                     'red')
                     )
     return True
@@ -324,6 +327,8 @@ def validate_booking_date():
     Helps the patient pick a available date and
     displaying a calendar for checking the days.
     """
+    print("Continue to enter appoinment date or...")
+    continue_menu()
     while True:
         date_user_input = input(
             "Please enter your the appoinment date DD/MM/YYYY:\n"
@@ -376,6 +381,8 @@ def validate_time():
     Gets time input and validates that
     time is in a timeframe 9 - 18
     """
+    print("Continue to enter the appoinment time or...")
+    continue_menu()
     while True:
         time_val = input("Please enter a time between 9 - 18...\n")
         try:
@@ -412,7 +419,7 @@ def asses_patient_or_shift():
         else:
             print("Logged in ...\n")
         asses_or_shift = input(
-                "To assess a patient press 'a' or 's' to manage shift...\n"
+                "To register a patient press 'a' or 's' to manage shift...\n"
             )
         if asses_or_shift == 'a':
             print(
