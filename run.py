@@ -605,7 +605,8 @@ def continue_menu():
                 )
         if menu_exit == "c":
             break
-        elif menu_exit == 'e':
+        if menu_exit == 'e':
+            print(colored("Exiting...",'red'))
             welcome_message()
     return True
 
@@ -694,19 +695,28 @@ def collect_data():
     time_row = worksheet.find(email).row
     app_timming = worksheet.cell(time_row, 6).value
     print(f"Time: {app_timming}:00")
-    print("Please enter your new details...")
-    # Deletes all the data entered for the old appoinment from the spreadsheet.
-    details = SHEET.worksheet('details')
-    details.delete_rows(name_row)
-    # Collects new details for a new appoinment
-    name_new = get_name()
-    date_new = pick_a_date()
-    time_new = get_time()
-    new_email = get_email()
-    new_dob = get_birth_date()
-    new_data = [name_new, date_new, time_new, new_email, new_dob]
-    update_worksheet(new_data, 'rescheduled')
-    print(f"You appoinment was now reschedule on {date_new} at {time_new}.")
+    cancel_return = input(
+        "To reschedule your appointment press 'r' or 'm' for main menu:\n"
+        )
+    if cancel_return == 'r':
+        print("Please enter your new details...")
+        # Deletes all the data entered for the old appoinment from the
+        # spreadsheet.
+        details = SHEET.worksheet('details')
+        details.delete_rows(name_row)
+        # Collects new details for a new appoinment
+        name_new = get_name()
+        date_new = pick_a_date()
+        time_new = get_time()
+        new_email = get_email()
+        new_dob = get_birth_date()
+        new_data = [name_new, date_new, time_new, new_email, new_dob]
+        update_worksheet(new_data, 'rescheduled')
+        print(
+            f"You appoinment was now reschedule on {date_new} at {time_new}."
+            )
+    else:
+        main_user()
 
 
 # Main User App functions
@@ -715,6 +725,7 @@ def main_user():
     Run all the functions for user input, validation
     and saving into the spreadsheet...
     """
+    welcome_message()
     name_user = get_name()
     birth_date = get_birth_date()
     email_user = validate_email()
