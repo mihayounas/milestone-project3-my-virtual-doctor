@@ -161,13 +161,12 @@ def val_date():
     Validates and calculates age of the user
     by the date of birth.
     """
-    print("Continue to enter your date of birth or...")
-    continue_menu()
     while True:
         date_input = input(
             "Please enter your date of birth in this "
-            "format DD/MM/YYYY:\n"
+            "format DD/MM/YYYY or press 'e' to exit:\n"
         )
+        e_for_exit(date_input)
         format_str = "%d/%m/%Y"
         try:
             datetime.strptime(date_input, format_str)
@@ -237,10 +236,12 @@ def validate_email():
     Validates email addresses by checking
     for a common pathern and returns a valid email address.
     """
-    print("Continue to enter your email or...")
-    continue_menu()
     while True:
-        email_val = input("Please enter a valid email address:\n")
+        email_val = input(
+            "Please enter a valid email address or 'e' to exit:"
+            "\n"
+        )
+        e_for_exit(email_val)
         regex = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+.[a-z]{1,3}$"
         # Only accept if it's matching the regex format
         if re.search(regex, email_val):
@@ -283,10 +284,12 @@ def validate_symptoms():
     and makes sure that it gives the right information
     for the appointment.
     """
-    print("Continue to enter your symptoms or...")
-    continue_menu()
     while True:
-        symptoms_val = input("Please enter you symptoms bellow :\n")
+        symptoms_val = input(
+            "Please enter you symptoms bellow or 'e' to exit:"
+            "\n"
+            )
+        e_for_exit(symptoms_val)
         # Only accept a proper message description
         regex_mess = re.compile(
             r'^([a-z]+)( [a-z]+)+( [a-z]+)( [a-z]+)( [a-z]+)*$', re.IGNORECASE
@@ -317,8 +320,8 @@ def pick_a_date():
         print(f'Date {date_choice} is available...\n')
     else:
         print("Not valid,please try again...")
-        print("-" * 80)
-        return date_choice
+    print("-" * 80)
+    return date_choice
 
 
 # Validates a date in future ,do not accept past dates
@@ -327,25 +330,30 @@ def validate_booking_date():
     Helps the patient pick a available date and
     displaying a calendar for checking the days.
     """
-    print("Continue to enter appoinment date or...")
-    continue_menu()
     while True:
-        date_user_input = input(
-            "Please enter your the appoinment date DD/MM/YYYY:\n"
-            )
         now = datetime.now()
         try:
             # convert to string
             date_time_str = now.strftime("%d/%m/%Y")
             print("Please choose a date later than today's date.")
             print(colored("This is today's date: " + date_time_str, 'yellow'))
+            date_user_input = input(
+                "Please enter your the appoinment date DD/MM/YYYY or 'e' for"
+                " exit:"
+                "\n"
+            )
+            e_for_exit(date_user_input)
             date1 = time.strptime(date_user_input, "%d/%m/%Y")
             date2 = time.strptime(date_time_str, "%d/%m/%Y")
             if date1 > date2:
                 print("Valid date...saving...")
                 return date_user_input
             else:
-                print(colored("Invalid,please try again...", 'red'))
+                print(
+                    colored(
+                        "Invalid,please choose a date in the future...", 'red'
+                        )
+                        )
         except ValueError:
             print(
                 colored(
@@ -381,10 +389,12 @@ def validate_time():
     Gets time input and validates that
     time is in a timeframe 9 - 18
     """
-    print("Continue to enter the appoinment time or...")
-    continue_menu()
     while True:
-        time_val = input("Please enter a time between 9 - 18...\n")
+        time_val = input(
+            "Please enter a time between 9 - 18 or 'e' to exit..."
+            "\n"
+            )
+        e_for_exit(time_val)
         try:
             if int(time_val) in range(9, 19):
                 print("Time is valid...saving...")
@@ -392,14 +402,16 @@ def validate_time():
             else:
                 print(
                     colored(
-                        "This is not valid...please try again...",
+                        "This is not valid,choose a time between 9-18..."
+                        "please try again...",
                         'red')
                         )
                 continue
         except ValueError:
             print(
                 colored(
-                    "This is not valid...please try again...",
+                    "This is not valid,choose a time between 9-18..."
+                    "please try again...",
                     'red')
                     )
     return True
@@ -584,16 +596,15 @@ def val_admin_message():
                     )
                 continue
         except ValueError:
-            print("Invalid,try again...")
+            print("Invalid,please enter a descriptive message...")
     return True
 
 
 # Gives option to on to the main menu or exit screen
 def continue_menu():
     """
-    The exit menu will offer a choice to user,
-    he can return to the main menu and start
-    again or can exit the screen.
+    This menu will offer a choice to user,
+    he can continue entering his details or exit.
     """
     print("-" * 80)
     while True:
@@ -625,12 +636,11 @@ def exit_screen():
     print("What would you like to do next ?\n")
     while True:
         exit_choice = input(
-            "To go back to main menu press '1' or 'e' to exit:\n"
+            "To go back to main menu press 'm' or 'e' to exit:\n"
             )
-        if exit_choice == "1":
-            welcome_message()
+        if exit_choice == "m":
             main_user()
-        else:
+        if exit_choice == 'e':
             text = "GoodBye...\n"
             welcome_msg(text)
     return True
@@ -655,7 +665,10 @@ def collect_data():
     to cancel or change their appoinment
     """
     print("Here you will be able to check your appoinment details.")
-    print("Your email has to match to the one you used to book your appoinment...")
+    print(
+        "Your email has to match to the one you used to book your"
+        " appoinment..."
+    )
     worksheet = SHEET.worksheet('details')
     emails = worksheet.col_values(3)
     email = validate_email()
@@ -726,6 +739,17 @@ def book_one_more():
         main_user()
     if one_more_app == 'e':
         exit_screen()
+
+
+# This function will offer the chance to restart the booking
+# process in case that user changes their mind or makes a mistake.
+def e_for_exit(input_choice):
+    """
+    This function gives the option to exit and leave the process
+    of the booking if user changed their mind.
+    """
+    if input_choice == 'e':
+        welcome_message()
 
 
 # Main User App functions
