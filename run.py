@@ -367,7 +367,7 @@ def get_time():
     print("-" * 80)
     time_choice = validate_time()
     if time_choice:
-        print(f"{time_choice}:00 is available...\n")
+        print(f"{time_choice} is available...\n")
     else:
         print(
             colored(
@@ -426,19 +426,21 @@ def asses_patient_or_shift():
         else:
             print("Logged in ...\n")
         asses_or_shift = input(
-                "To register a patient press 'a' or 's' to manage shift...\n"
+                "To register a patient press 'r' or 's' to manage shift...\n"
             )
-        if asses_or_shift == 'a':
+        if asses_or_shift == 'r':
             print(
                 "Please assess your patients carefully...\n"
                 )
             main_user()
             # Asses patients over the phone or over the counter
             # and enter their details
+            continue
         if asses_or_shift == 's':
             # Will take Admin's details
             print("Please enter your details...")
             admin_shift_management()
+            break
     return True
 
 
@@ -552,15 +554,58 @@ def get_shift_times():
     Gets shift times from the admin and store it into the
     spreadsheet for manager to assess...
     """
+    print("Please enter the shift times...\n")
+    shift_time = val_shift_time()
+    if shift_time:
+        print("Thank you for your details...\n")
+        print("We can confirm that your data is correct...\n")
+    else:
+        print("Invalid,data does not match our records...\n")
+    return shift_time
+
+
+def val_shift_time():
+    """
+    Makes sure that time chosen is in between 9-18 and
+    presents the hours they work...
+    """
     while True:
-        print("Please enter the shift times...\n")
-        shift_time = validate_time()
-        if shift_time:
-            print("Thank you for your details...\n")
-            print("We can confirm that your data is correct...\n")
-        else:
-            print("Invalid,data does not match our records...\n")
-        return shift_time
+        enter_start = input(
+            "Please enter the time you start working "
+            "between 9-12:\n"
+            )
+        try:
+            if int(enter_start) in range(9, 13):
+                print(f"You start at :{enter_start}:00")
+            else:
+                print(
+                    colored(
+                        "This is not valid,choose a starting time between "
+                        "9-12", 'red'
+                        )
+                        )
+            enter_finish = input(
+                "Please enter the time you finish between 12-18:"
+                "\n"
+                )
+            if int(enter_finish) in range(12, 19):
+                print(f"You finish at :{enter_finish}:00")
+            else:
+                print(
+                    colored(
+                        "This is not valid,choose a starting time between "
+                        "9-18", 'red'
+                        )
+                        )
+            return enter_finish
+        except ValueError:
+            print(
+                colored(
+                    "This is not valid,please try enter starting values"
+                    " between 9-12 and ending shift values between 12-18",
+                    'red'
+                    )
+                    )
     return True
 
 
@@ -572,9 +617,9 @@ def val_admin_message():
     """
     while True:
         message = input(
-            "Please enter your request bellow, to be checked and approved"
-            " by manager on shift make sure to include the dates you are "
-            "are requesting for...\n"
+            "Please enter your request bellow, to be checked and approved\n"
+            " by manager on shift make sure to include the dates you are \n"
+            "are requesting for or press 'e' to exit...\n"
             )
         try:
             # Input message has to be clear and descriptive
@@ -585,13 +630,11 @@ def val_admin_message():
                     )
                 return message
             else:
-                print(
-                    "Sorry this data does not match our records, "
-                    "please try again...\n"
-                    )
+                print("Invalid,please enter a descriptive message...")
                 continue
         except ValueError:
             print("Invalid,please enter a descriptive message...")
+        e_for_exit(message)
     return True
 
 
@@ -727,10 +770,10 @@ def new_data():
     time_new = get_time()
     new_email = get_email()
     new_dob = get_birth_date()
-    new_info = [name_new, date_new, time_new, new_email, new_dob]
+    new_info = [name_new, date_new, f"{time_new}:00", new_email, new_dob]
     update_worksheet(new_info, 'rescheduled')
     print(
-        f"You appoinment was now rescheduled on {date_new} at {time_new}."
+        f"You appoinment was now rescheduled on {date_new} at {time_new}:00."
         )
 
 
@@ -739,15 +782,17 @@ def book_one_more():
     Gives option to book one more appoinment or exit
     the app.
     """
-    one_more_app = input(
-        "If you would like to book another appointment please press 'b' or 'e'"
-        " to exit to main menu"
-        )
-    if one_more_app == 'b':
-        main_user()
-    if one_more_app == 'e':
-        welcome_message()
-        main_user()
+    while True:
+        one_more_app = input(
+            "If you would like to book another appointment please press 'b' "
+            " or 'e' to exit to main menu: \n"
+            )
+        if one_more_app == 'b':
+            main_user()
+        if one_more_app == 'e':
+            welcome_message()
+            main_user()
+    return True
 
 
 # This function will offer the chance to restart the booking
