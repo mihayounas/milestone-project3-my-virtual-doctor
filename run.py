@@ -338,8 +338,7 @@ def validate_booking_date():
             print("Please choose a date later than today's date.")
             print(colored("This is today's date: " + date_time_str, 'yellow'))
             date_user_input = input(
-                "Please enter your the appoinment date DD/MM/YYYY or 'e' for"
-                " exit:"
+                "Please enter your appoinment date DD/MM/YYYY or 'e' to exit:"
                 "\n"
             )
             e_for_exit(date_user_input)
@@ -680,7 +679,13 @@ def collect_data():
             print("Your email is matching our records...\n")
         else:
             print("Sorry you are not registered yet...\n")
-            continue_menu()
+            register_choice = input(
+                "Please press 'm' for main menu or 'e' to exit:"
+                )
+            if register_choice == 'm':
+                welcome_message()
+            if register_choice == 'e':
+                e_for_exit(register_choice)
     print("Your appoinment details:")
     # Collects the name matching to the email
     name_row = worksheet.find(email).row
@@ -706,24 +711,31 @@ def collect_data():
         )
     if cancel_return == 'r':
         print("Please enter your new details...")
-        continue_menu()
         # Deletes all the data entered for the old appoinment from the
         # spreadsheet.
         details = SHEET.worksheet('details')
         details.delete_rows(name_row)
-        # Collects new details for a new appoinment
-        name_new = get_name()
-        date_new = pick_a_date()
-        time_new = get_time()
-        new_email = get_email()
-        new_dob = get_birth_date()
-        new_data = [name_new, date_new, time_new, new_email, new_dob]
-        update_worksheet(new_data, 'rescheduled')
-        print(
-            f"You appoinment was now rescheduled on {date_new} at {time_new}."
-            )
-    else:
+        new_data()
+    if cancel_return == 'm':
         main_user()
+
+
+# Collects new details for a new appoinment
+def new_data():
+    """
+    Collects new data and saves it into a different
+    spreadsheet.
+    """
+    name_new = get_name()
+    date_new = pick_a_date()
+    time_new = get_time()
+    new_email = get_email()
+    new_dob = get_birth_date()
+    new_info = [name_new, date_new, time_new, new_email, new_dob]
+    update_worksheet(new_info, 'rescheduled')
+    print(
+        f"You appoinment was now rescheduled on {date_new} at {time_new}."
+        )
 
 
 def book_one_more():
