@@ -185,11 +185,10 @@ def val_date():
                         'red')
                         )
                 continue
-            else:
-                print("valid...")
-                print(f"Your are {age_years} years old...\n")
             if age_years < 100:
                 print("Saving DOB...")
+                print(f"You are {age_years} years old.")
+                return date_input
             else:
                 print(
                     colored(
@@ -197,15 +196,12 @@ def val_date():
                         "The year you entered is too far in the past...\n",
                         'red')
                         )
-                continue
         except ValueError:
             print(
                 colored(
                     "This format is incorrect,it should be DD/MM/YYY/...",
                     'red')
                     )
-            continue
-        return date_input
     return True
 
 
@@ -397,7 +393,7 @@ def validate_time():
         try:
             if int(time_val) in range(9, 19):
                 print("Time is valid...saving...")
-                return f"{time_val}"
+                return time_val
             else:
                 print(
                     colored(
@@ -632,12 +628,12 @@ def exit_screen():
     """
     print("-" * 0)
     print("Thank you for visiting our application !\n")
-    print("What would you like to do next ?\n")
     while True:
         exit_choice = input(
             "To go back to main menu press 'm' or 'e' to exit:\n"
             )
         if exit_choice == "m":
+            welcome_message()
             main_user()
         if exit_choice == 'e':
             text = "GoodBye...\n"
@@ -750,7 +746,8 @@ def book_one_more():
     if one_more_app == 'b':
         main_user()
     if one_more_app == 'e':
-        exit_screen()
+        welcome_message()
+        main_user()
 
 
 # This function will offer the chance to restart the booking
@@ -778,7 +775,7 @@ def main_user():
     time_user = get_time()
     data = [
         name_user, birth_date, email_user, symptoms_user, date_user,
-        time_user
+        f'{time_user}:00'
         ]
     update_worksheet(data, 'details')
     book_one_more()
