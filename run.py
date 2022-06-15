@@ -559,6 +559,7 @@ def get_shift_times():
     if shift_time:
         print("Thank you for your details...\n")
         print("We can confirm that your data is correct...\n")
+        continue_menu()
     else:
         print("Invalid,data does not match our records...\n")
     return shift_time
