@@ -300,6 +300,7 @@ def validate_symptoms():
             print(
                 colored(
                     "Not valid,please try to enter more details...",
+                    "min 5 words required..."
                     'red')
                     )
     return True
@@ -733,6 +734,10 @@ def collect_data():
     name_row = worksheet.find(email).row
     name = worksheet.cell(name_row, 1).value
     print(f"Name: {name}")
+    # Collects date of birth
+    d_o_b_row = worksheet.find(email).row
+    app_dob = worksheet.cell(d_o_b_row, 2).value
+    print(f"Date of birth: {app_dob}")
     # Collects the date matching to the email
     date_row = worksheet.find(email).row
     app_date = worksheet.cell(date_row, 5).value
@@ -752,9 +757,11 @@ def collect_data():
         "To reschedule your appointment press 'r' or 'm' for main menu:\n"
         )
     if cancel_return == 'r':
-        print("Please enter your new details...")
+        print(f"{name} please enter your new details...")
         # Deletes all the data entered for the old appoinment from the
         # spreadsheet.
+        existing_info = [name, email, app_dob]
+        update_worksheet(existing_info, 'rescheduled')
         details = SHEET.worksheet('details')
         details.delete_rows(name_row)
         new_data()
@@ -860,8 +867,8 @@ def book_one_more():
     """
     while True:
         one_more_app = input(
-            "If you would like to book another appointment please press 'b' "
-            " or 'e' to exit to main menu: \n"
+            "If you would like to book another appointment please press 'b'"
+            "or 'e' to exit to main menu:\n"
             )
         if one_more_app == 'b':
             main_user()
