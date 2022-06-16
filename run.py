@@ -426,7 +426,8 @@ def asses_patient_or_shift():
         else:
             print("Logged in ...\n")
         asses_or_shift = input(
-                "To register a patient press 'r' or 's' to manage shift...\n"
+                "To register a patient press 'r' , 'h' to send a "
+                "holiday request shift or 'v' to view appoinments...\n"
             )
         if asses_or_shift == 'r':
             print(
@@ -436,11 +437,12 @@ def asses_patient_or_shift():
             # Asses patients over the phone or over the counter
             # and enter their details
             continue
-        if asses_or_shift == 's':
+        if asses_or_shift == 'h':
             # Will take Admin's details
             print("Please enter your details...")
             admin_shift_management()
-            break
+        if asses_or_shift == 'v':
+            get_all_app_for_a_day()
     return True
 
 
@@ -776,6 +778,79 @@ def new_data():
     print(
         f"You appoinment was now rescheduled on {date_new} at {time_new}:00."
         )
+
+
+def get_all_app_for_a_day():
+    """
+    Gets all the appoinment for a day for admin only
+    """
+    worksheet = SHEET.worksheet('details')
+    app_dates = worksheet.col_values(5)
+    regex2 = "^[0-9]{1,2}\\/[0-9]{1,2}\\/[0-9]{4}$"
+    get_all_app = pick_existing_date()
+    if re.fullmatch(regex2, get_all_app):
+        if get_all_app in app_dates:
+            print(f"You have {get_all_app}\n")
+        else:
+            print("No appoinments for the chosen date..\n")
+            register_choice = input(
+                "Please press 'm' for main menu or 'e' to exit:"
+                )
+            if register_choice == 'm':
+                welcome_message()
+            if register_choice == 'e':
+                e_for_exit(register_choice)
+
+
+def pick_existing_date():
+    """
+    Validates the chosen date for the admin and displays
+    if any appoinments available for the chosen day.
+    """
+    existing_date = val_existing_app_dates()
+    if existing_date:
+        print(f"You have {existing_date} appoinments.")
+    else:
+        print("Sorry no appoinments to display...\n")
+        e_for_exit(existing_date)
+    return existing_date
+
+
+def val_existing_app_dates():
+    """
+    Helps the admin pick a date and
+    validating it in order to match it and displays how many
+    appoinment for the chosen date.
+    """
+    while True:
+        now = datetime.now()
+        try:
+            # convert to string
+            date_time_str = now.strftime("%d/%m/%Y")
+            print(colored("This is today's date: " + date_time_str, 'yellow'))
+            date_admin_input = input(
+                "Please enter a date you would like to check your"
+                " appoinments:\n"
+                )
+            e_for_exit(date_admin_input)
+            date1 = time.strptime(date_admin_input, "%d/%m/%Y")
+            date2 = time.strptime(date_time_str, "%d/%m/%Y")
+            if date1 > date2:
+                print("Valid date...saving...")
+                return date_admin_input
+            else:
+                print(
+                    colored(
+                        "Invalid,please choose a date in the future...", 'red'
+                        )
+                        )
+        except ValueError:
+            print(
+                colored(
+                    "This format is incorrect,it should be DD/MM/YYY/...",
+                    'red')
+                    )
+    return True
 
 
 def book_one_more():
