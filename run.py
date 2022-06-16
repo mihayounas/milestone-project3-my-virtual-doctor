@@ -94,6 +94,7 @@ def get_name():
     """
     Gets name input from the user
     """
+    val_days()
     # Gets a validated name to display
     print("-" * 80)
     print(
@@ -533,21 +534,33 @@ def val_days():
             "separated by comma...\n"
             )
         try:
-            if shift_info.__contains__(','):
+            regex3 = (
+                "(mon(day)?)?|tue(s(day)?)?)?|wed(nesday)?)?|"
+                "thu(r(s(day)?)?)?)?|fri(day)?)?|sat(urday)?)?|sun(day)?"
+                ")?)"
+                )
+            if len(shift_info) < 3:
+                print("Please enter minimum 3 characters...")
+                continue
+            else:
+                return shift_info
+            if re.search(regex3, shift_info):
                 return shift_info
             else:
                 print(
                     colored(
-                        "This is not valid...please try again...",
-                        'red')
+                        "Sorry your input is not valid,please enter days of "
+                        "the week only...\n",
+                        'red'
                         )
-                continue
+                        )
         except ValueError:
             print(
-                colored(
-                    "This is not valid...please try again...",
-                    'red')
-                    )
+                    colored(
+                        "This is not valid...please try again and enter the"
+                        " weekdays with comma in between...",
+                        'red')
+                        )
     return True
 
 
