@@ -758,33 +758,17 @@ def collect_data():
         )
     if cancel_return == 'r':
         print(f"{name} please enter your new details...")
+        # Collects new details for a new appoinment
+        new_date = pick_a_date()
+        time_new = get_time()
+        existing_info = [name, email, app_dob, new_date, time_new]
+        update_worksheet(existing_info, 'rescheduled')
         # Deletes all the data entered for the old appoinment from the
         # spreadsheet.
-        existing_info = [name, email, app_dob]
-        update_worksheet(existing_info, 'rescheduled')
         details = SHEET.worksheet('details')
         details.delete_rows(name_row)
-        new_data()
     if cancel_return == 'm':
         main_user()
-
-
-# Collects new details for a new appoinment
-def new_data():
-    """
-    Collects new data and saves it into a different
-    spreadsheet.
-    """
-    name_new = get_name()
-    date_new = pick_a_date()
-    time_new = get_time()
-    new_email = get_email()
-    new_dob = get_birth_date()
-    new_info = [name_new, date_new, f"{time_new}:00", new_email, new_dob]
-    update_worksheet(new_info, 'rescheduled')
-    print(
-        f"You appoinment was now rescheduled on {date_new} at {time_new}:00."
-        )
 
 
 def get_all_app_for_a_day():
