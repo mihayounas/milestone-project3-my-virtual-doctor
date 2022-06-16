@@ -94,7 +94,6 @@ def get_name():
     """
     Gets name input from the user
     """
-    val_days()
     # Gets a validated name to display
     print("-" * 80)
     print(
@@ -417,7 +416,7 @@ def validate_time():
 # Taking user's Admin details
 def asses_patient_or_shift():
     """
-    Gets the choice from the admin if he wants to asses patient
+    Gets the choice from the admin if he wants to assess patient
     or manage the shift and holidays requests.
     """
     print("-" * 80)
@@ -497,13 +496,16 @@ def admin_shift_management():
                 f"Welcome {admin_name}, please follow the next steps in "
                 "order to send your request..."
             )
+            days = get_shift_days()
+            times = get_shift_times()
+            mess = val_admin_message()
+            data_admin = [admin_name, days, times, mess]
+            update_worksheet(data_admin, 'admin')
+            exit_screen()
+            break
         else:
             print("Name not valid,please try again...\n")
             print("-" * 0)
-            return admin_name
-        get_shift_days()
-        get_shift_times()
-        val_admin_message()
     return True
 
 
@@ -571,29 +573,32 @@ def get_shift_times():
     spreadsheet for manager to assess...
     """
     print("Please enter the shift times...\n")
-    shift_time = val_shift_time()
-    if shift_time:
-        print("Thank you for your details...\n")
-        print("We can confirm that your data is correct...\n")
-        continue_menu()
+    shift_time_start = val_start_time()
+    if shift_time_start:
+        print(f"You start at {shift_time_start}")
+    shift_time_end = val_finish_time()
+    if shift_time_end:
+        print(f"You finish at {shift_time_end}")
     else:
         print("Invalid,data does not match our records...\n")
-    return shift_time
+    return shift_time_start, shift_time_end
 
 
-def val_shift_time():
+def val_start_time():
     """
-    Makes sure that time chosen is in between 9-18 and
+    Makes sure that time chosen is in between 9-12 and
     presents the hours they work...
+    Validates start of the shift.
     """
     while True:
-        enter_start = input(
-            "Please enter the time you start working "
-            "between 9-12:\n"
-            )
         try:
+            enter_start = input(
+                "Please enter the time you start working "
+                "between 9-12:\n"
+            )
             if int(enter_start) in range(9, 13):
                 print(f"You start at :{enter_start}:00")
+                return enter_start
             else:
                 print(
                     colored(
@@ -601,6 +606,26 @@ def val_shift_time():
                         "9-12", 'red'
                         )
                         )
+        except ValueError:
+            print(
+                colored(
+                    "This is not valid,please try enter starting values"
+                    " between 9-12 and ending shift values between 12-18",
+                    'red'
+                    )
+                    )
+            return enter_start
+        return True
+
+
+def val_finish_time():
+    """
+    Makes sure that time chosen is in between 12-18 and
+    presents the hours they work...
+    Validates time to end shift.
+    """
+    while True:
+        try:
             enter_finish = input(
                 "Please enter the time you finish between 12-18:"
                 "\n"
@@ -645,14 +670,29 @@ def val_admin_message():
                     f"Your message: [{message}] will be checked and manager"
                     " will approve it shortly...\n"
                     )
-                return message
+                e_for_exit(message)
             else:
                 print("Invalid,please enter a descriptive message...")
-                continue
         except ValueError:
             print("Invalid,please enter a descriptive message...")
-        e_for_exit(message)
+            e_for_exit(message)
+        return message
     return True
+
+
+def admin_request():
+    """
+    Gets the validated admin request.
+    """
+    admin_request_mess = val_admin_message()
+    if admin_request_mess:
+        print("Thank you,we will get back to you shortly...")
+    else:
+        print(
+            "Sorry not enough info...please enter a more descriptive "
+            "message..."
+            )
+        return admin_request_mess
 
 
 # Gives option to on to the main menu or exit screen
@@ -916,7 +956,7 @@ def main_admin():
     admin_input_name = admin_shift_management()
     shift_days = get_shift_days()
     shift_times = get_shift_times()
-    admin_mess = val_admin_message()
+    admin_mess = admin_request()
     data = [admin_input_name, shift_days, shift_times, admin_mess]
     # Saves all the admin data into the spreadsheet to be checked further
     update_worksheet(data, "admin")
