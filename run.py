@@ -299,9 +299,9 @@ def validate_symptoms():
         else:
             print(
                 colored(
-                    "Not valid,please try to enter more details...",
-                    "min 5 words required..."
-                    'red')
+                    "Please add more details for your doctor..."
+                    "min 5 characters\n", 'red'
+                    )
                     )
     return True
 
@@ -821,8 +821,13 @@ def collect_data():
             )
             )
     cancel_return = input(
-        "To reschedule your appointment press 'r' or 'm' for main menu:\n"
+        "To reschedule your appointment press 'r' , 'm' for main menu "
+        "or hit enter to start again:"
+        "\n"
         )
+    if len(cancel_return) == 0:
+        print("You did not enter any data,exiting...")
+        main_user()
     if cancel_return == 'r':
         print(f"{name} please enter your new details...")
         # Collects new details for a new appoinment
