@@ -99,8 +99,13 @@ The site was deployed to Heroku pages.
                 -enter heroku username
                 enter api key and press entered.
 
+
+# Known bugs:
+* If the same email is entered it is not going to say that this email already exists and should retrieve the details.
+* I am planning to make a function which will return all the data if the email already exists and give an option to reschedule even thought there already exist a similar function it doesn't do exactly what i would like.
+
  # Acknowledgements
-The site was completed as a Portfolio 3 Project  (Python)for the Full Stack Software Developer at the [Code Institute](https://codeinstitute.net/). As such I would like to thank my mentor [Precious Ijege](https://www.linkedin.com/in/precious-ijege-908a00168/) , slack community and tutor support for their help and support.
+The site was completed as a Portfolio 3 Project  (Python)for the Full Stack Software Developer at the [Code Institute](https://codeinstitute.net/). As such I would like to thank my mentor [Precious Ijege](https://www.linkedin.com/in/precious-ijege-908a00168/) , Slack community and Code Institute Tutor Support for their help and support.
 
 Mihaela Younas 2022.
 
