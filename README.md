@@ -155,6 +155,15 @@ You can view [Live website here](https://my-virtual-doctorherokuapp.com/).
 
 [Spreadsheet used for saving data.](https://docs.google.com/spreadsheets/d/1y60tI0gt4NnrIyExtoctOSfaJJ9PFFF-GCdFeit8gAc/edit?usp=sharing)
 
+
+# Credits
+
+### Content
+* Tutors for directing me for some of the functions.
+* Some of the code ideas came from  [Stack Overflow](https://stackoverflow.com/).
+* Help from Slack community .
+* Some more research on Slack .
+
  # Acknowledgements
 The site was completed as a Portfolio 3 Project  (Python)for the Full Stack Software Developer at the [Code Institute](https://codeinstitute.net/). As such I would like to thank my mentor [Precious Ijege](https://www.linkedin.com/in/precious-ijege-908a00168/) , Slack community and Code Institute Tutor Support for their help and support.
 
