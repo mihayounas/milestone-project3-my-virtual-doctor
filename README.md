@@ -2,9 +2,11 @@
  
  <a href="https://my-virtual-doctor.herokuapp.com/" target="_blank" rel="noopener">My Virtual Doctor</a>(press for DEMO) is a it is an appointment system for patients and admins.
 
+![wireframe](/images/wireframes.png)
+
  # Wireframes
 The wireframes for My Virtual Doctor were produced in Lucidchart.
-![wireframe](/images/wireframes.png)
+![lucidchart](/images/lucid.png)
 
 # Site Structure
 
