@@ -37,6 +37,8 @@ My Virtual Doctor is set up to be easy to use . It contains features that a user
 ![user_area](/images/img2.png)
 ![options](/images/users.png)
 ![error](/images/error.png)
+![spredsheet_user](/images/user-spread.png)
+
 * ## Admin Area
 * Includes a section where admin can log in and has a choice of assessing a patient or putting in a holiday request.
 * Please note the password I used is not hidden but this is a future feature that I will include.
@@ -46,13 +48,16 @@ My Virtual Doctor is set up to be easy to use . It contains features that a user
 * Also the time admin works daily which has to also be validated.
 * Message - is a personalised message from admin to the manager ,it can be holiday request,or any other type of message thathas to be seen by superiors, also has to be descriptive enough or will turn an error.
 ![admin_area](/images/admins.png)
+![admin_spreadsheet](/images/spread-adm.png)
 
 * ## Changing an appointment
 * This section offers the posibility of changing appoinment by collecting the email registered and if it's matching in the spreadsheet it will return details of the appoinment.
 * Enter Email - if email does not match any of the emails saved into the spreadsheet error will occur that data is not registered.
 * If emails is matched then name ,dob, date and time of appoinment will be displayed .
-* Ift will follow steps to take the name , new date of appoinment and new time all have to be validated.
-![app_change](/images//dates.png)
+* It will follow steps to take the new date of appoinment and new time all have to be validated.
+* All the old data will be deleted and new appoinment will be saved in a different spreadsheet
+![app_change](/images/reshh.png)
+![rescheduled-app](/images/resh-spread.png)
 
 # Technologies Used
 * Please note that this project is made from a Template from Code Institute and there are aditional languages used only for the purpose of properly running the mock terminal to demostrate this specific project.
@@ -72,6 +77,28 @@ My Virtual Doctor runs in Heroku terminaland  was tested on the following browse
 * The app was tested in [PEP8](http://pep8online.com).No errors were found.
 ![Testing](/images/test.png)
 
+### Lighthouse
+The website was tested using [Google Lighthouse](https://developers.google.com/web/tools/lighthouse) in Chrome Developer Tools to test each of the pages for:
+* Performance - How the page will be loading.
+* Accessibility - Checking if the website is  accessible for all users and how can it be improved.
+* Best Practices 
+* SEO - Search Engine Optimisation. This helps us to understand if the website is optimised for search engine result rankings.
+![lighthouse-result](/images/lighthouse.png)
+
 # Deployment: 
 The site was deployed to Heroku pages.
+* Log into heroku : heroku login - i
+* Next command : heroku apps
+* Next command: <app-name> with the actual app name and remove <> : heroku git: remote -a <app_name>
+* Now we have remote control over the app and we can push our changes straight to heroku terminal.
+* MFA/2FA enabled? - click Account setting on heroku website.
+                - scroll down to API and click Reveal and Copy the key.
+                - command: heroku config and enter api key
+                -enter heroku username
+                enter api key and press entered.
+
+ # Acknowledgements
+The site was completed as a Portfolio 3 Project  (Python)for the Full Stack Software Developer at the [Code Institute](https://codeinstitute.net/). As such I would like to thank my mentor [Precious Ijege](https://www.linkedin.com/in/precious-ijege-908a00168/) , slack community and tutor support for their help and support.
+
+Mihaela Younas 2022.
 
