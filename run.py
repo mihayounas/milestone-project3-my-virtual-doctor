@@ -821,8 +821,8 @@ def collect_data():
             )
             )
     cancel_return = input(
-        "To reschedule your appointment press 'r' , 'm' for main menu "
-        "or hit enter to start again:"
+        "To reschedule your appointment press 'r' , 'm' for main menu\n "
+        "or hit enter to start again:\n"
         "\n"
         )
     if len(cancel_return) == 0:

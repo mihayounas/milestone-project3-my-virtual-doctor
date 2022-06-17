@@ -2,6 +2,10 @@
  
  <a href="https://my-virtual-doctor.herokuapp.com/" target="_blank" rel="noopener">My Virtual Doctor</a>(press for DEMO) is a it is an appointment system for patients and admins.
 
+ # Wireframes
+The wireframes for My Virtual Doctor were produced in Lucidchart.
+![wireframe](/images/wireframes.png)
+
 # Site Structure
 
 My Virtual Doctor app's purpose is to help patients to book their appointments,change or cancel it.
@@ -31,8 +35,8 @@ My Virtual Doctor is set up to be easy to use . It contains features that a user
 * Time of appoinment -should be only 9-18 every day of the week.
 * All this data is stored in google spreadsheets.
 ![user_area](/images/img2.png)
-![error](/images//img3.png)
-
+![options](/images/users.png)
+![error](/images/error.png)
 * ## Admin Area
 * Includes a section where admin can log in and has a choice of assessing a patient or putting in a holiday request.
 * Please note the password I used is not hidden but this is a future feature that I will include.
@@ -41,7 +45,7 @@ My Virtual Doctor is set up to be easy to use . It contains features that a user
 * The days that admin is working,simple input with comma between or error will occur.
 * Also the time admin works daily which has to also be validated.
 * Message - is a personalised message from admin to the manager ,it can be holiday request,or any other type of message thathas to be seen by superiors, also has to be descriptive enough or will turn an error.
-![admin_area](/images/admin.png)
+![admin_area](/images/admins.png)
 
 * ## Changing an appointment
 * This section offers the posibility of changing appoinment by collecting the email registered and if it's matching in the spreadsheet it will return details of the appoinment.
