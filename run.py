@@ -300,7 +300,7 @@ def validate_symptoms():
             print(
                 colored(
                     "Please add more details for your doctor..."
-                    "min 5 characters\n", 'red'
+                    "min 5 words to explain your problem.\n", 'red'
                     )
                     )
     return True
