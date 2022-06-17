@@ -428,7 +428,8 @@ def asses_patient_or_shift():
             print("Logged in ...\n")
         asses_or_shift = input(
                 "To register a patient press 'r' , 'h' to send a "
-                "holiday request shift or 'v' to view appoinments...\n"
+                "holiday request shift or 'v' to view appoinments "
+                "or hit enter to start again...\n"
             )
         if asses_or_shift == 'r':
             print(
@@ -741,7 +742,8 @@ def exit_screen():
     print("Thank you for visiting our application !\n")
     while True:
         exit_choice = input(
-            "To go back to main menu press 'm' or 'e' to exit:\n"
+            "To go back to main menu press 'm' or 'e' to exit"
+            "or hit enter to start again:\n"
             )
         if exit_choice == "m":
             welcome_message()
@@ -749,6 +751,7 @@ def exit_screen():
         if exit_choice == 'e':
             text = "GoodBye...\n"
             welcome_msg(text)
+        break
     return True
 
 
@@ -845,7 +848,7 @@ def get_all_app_for_a_day():
     get_all_app = pick_existing_date()
     if re.fullmatch(regex2, get_all_app):
         if get_all_app in app_dates:
-            print(f"You have {get_all_app}\n")
+            print(f"You have {app_dates.count(get_all_app)} appointment/s..")
         else:
             print("No appoinments for the chosen date..\n")
             register_choice = input(
@@ -855,6 +858,7 @@ def get_all_app_for_a_day():
                 welcome_message()
             if register_choice == 'e':
                 e_for_exit(register_choice)
+    exit_screen()
 
 
 def pick_existing_date():
@@ -864,7 +868,7 @@ def pick_existing_date():
     """
     existing_date = val_existing_app_dates()
     if existing_date:
-        print(f"You have {existing_date} appoinments.")
+        print("Appoinments found...")
     else:
         print("Sorry no appoinments to display...\n")
         e_for_exit(existing_date)
