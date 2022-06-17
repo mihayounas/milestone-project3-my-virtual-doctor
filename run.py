@@ -504,6 +504,7 @@ def admin_shift_management():
             data_admin = [admin_name, days, times_start, times_end, mess]
             update_worksheet(data_admin, 'admin')
             exit_screen()
+            quit()
             break
         else:
             print("Name not valid,please try again...\n")
@@ -839,6 +840,8 @@ def collect_data():
         # spreadsheet.
         details = SHEET.worksheet('details')
         details.delete_rows(name_row)
+        exit_screen()
+        quit()
     if cancel_return == 'm':
         main_user()
 
